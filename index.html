@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PythonVerse Academy - Project Platform</title>
+  <title>PythonVerse Academy - Warm Earth LMS & Browser IDE</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,16 +13,16 @@
         extend: {
           colors: {
             earth: {
-              50: '#fdfbf7',   // warm alabaster
-              100: '#f5f2eb',  // soft cream
-              200: '#e7e0d5',  // light sand
-              300: '#d5c9b8',  // dark sand
-              400: '#bca895',  // pale tan
-              500: '#9d826e',  // warm brown
-              600: '#846654',  // rich walnut
-              700: '#6c4e3d',  // deep clay
-              800: '#553c2f',  // espresso
-              900: '#3e2920',  // charcoal brown
+              50: '#fdfbf7',   // Warm Alabaster / Ivory
+              100: '#f5f2eb',  // Soft Cream
+              200: '#e7e0d5',  // Light Sand
+              300: '#d5c9b8',  // Dark Sand
+              400: '#bca895',  // Pale Tan
+              500: '#9d826e',  // Warm Brown
+              600: '#846654',  // Rich Walnut
+              700: '#6c4e3d',  // Deep Clay
+              800: '#553c2f',  // Espresso
+              900: '#3e2920',  // Charcoal Brown
             }
           }
         }
@@ -42,7 +42,7 @@
     .monospace {
       font-family: 'Fira Code', monospace;
     }
-    /* Light/Brown custom scrollbar */
+    /* Earth themed custom scrollbars */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -57,7 +57,6 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #bca895;
     }
-    /* Warm light selection */
     ::selection {
       background: #e7e0d5;
       color: #553c2f;
@@ -69,16 +68,26 @@
   <!-- React Mount Point -->
   <div id="root" class="min-h-screen flex flex-col"></div>
 
-  <!-- Reliable jsDelivr CDNs for high-uptime browser loading -->
+  <!-- Reliable high-uptime jsDelivr CDNs -->
   <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js" crossorigin></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.5/babel.min.js" crossorigin></script>
 
   <!-- Application Source Code -->
   <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
+    const { useState, useEffect, useMemo } = React;
 
-    // --- BULLETPROOF SVG ICONS (Warm Brown Styled) ---
+    // --- SECURED SEED USER DATABASE ---
+    const USER_ROSTER = [
+      { id: "KD001", name: "Kedar Chougale", password: "Kedar@2026", role: "student" },
+      { id: "PJ002", name: "Pranav Jadhav", password: "Pranav@2026", role: "student" },
+      { id: "RK003", name: "Rajlakshmi Khot", password: "Raj@2026", role: "student" },
+      { id: "SP004", name: "Samruddhi Patil", password: "Sam@2026", role: "student" },
+      { id: "KK005", name: "Kalyani Kamble", password: "Kalyani@2026", role: "student" },
+      { id: "ADMIN001", name: "Administrator", password: "Admin@Python2026", role: "admin" }
+    ];
+
+    // --- BULLETPROOF SVG EARTH-THEMED ICONS ---
     const Icons = {
       BookOpen: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>,
       Code: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>,
@@ -89,164 +98,666 @@
       Download: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>,
       Plus: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>,
       FileText: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>,
-      Clock: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
-      Play: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>
+      LogOut: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" /></svg>,
+      Play: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>,
+      User: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>,
+      Shield: () => <svg className="w-4 h-4 text-amber-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
     };
 
-    // --- CURRICULUM PROJECT TASKS & REAL VERIFICATION RULES ---
-    const CURRICULUM_TASKS = [
-      {
-        id: "numpy_matrices",
-        title: "NumPy Matrix Optimizer",
-        library: "NumPy",
-        difficulty: "Beginner",
-        estimatedTime: "25 mins",
-        useCase: "Data Normalization & Multi-dimensional Matrix Scaling",
-        info: "NumPy is the foundational package for scientific computing in Python. It offers high-performance N-dimensional array processing. This task asks you to scale a numeric vector/array.",
-        syntaxGuide: "import numpy as np\n# To scale, divide array elements by their maximum or compute average:\narr = np.array([1.2, 3.4, 5.6])\nprint('Mean:', np.mean(arr))",
-        requirements: [
-          "Import NumPy utilizing the alias: 'import numpy as np'",
-          "Define a matrix array containing grades: np.array([88, 92, 95])",
-          "Find and print the average grade using: np.mean(matrix)"
-        ],
-        verifyCode: (code) => {
-          const hasImport = code.includes("import numpy as np");
-          const hasArray = code.includes("np.array") && code.includes("88") && code.includes("92") && code.includes("95");
-          const hasMean = code.includes("np.mean");
-          return {
-            success: hasImport && hasArray && hasMean,
-            errors: [
-              !hasImport && "Missing alias: 'import numpy as np'",
-              !hasArray && "Make sure to declare 'np.array([88, 92, 95])'",
-              !hasMean && "Calculate the statistical mean using 'np.mean()'"
-            ].filter(Boolean)
-          };
-        },
-        codeTemplate: `import numpy as np\n\n# Task 1: Initialize NumPy arrays\ngrades = np.array([88, 92, 95])\n\n# Compute average below:\navg_grade = np.mean(grades)\nprint("Average:", avg_grade)\n`
+    // --- 5 DISTINCT STUDENT PROJECTS (10 DETAILED TASKS PER PROJECT) ---
+    const PROJECTS_DATABASE = {
+      "KD001": {
+        studentName: "Kedar Chougale",
+        projectName: "Enterprise Academic Registry System",
+        tasks: [
+          {
+            id: "kd_t1",
+            title: "Data Matrix Setup",
+            library: "NumPy",
+            useCase: "Setting up mathematical vector foundations for student grading systems",
+            info: "NumPy vectors are used to carry statistical arrays in memory for fast element-wise operations.",
+            requirements: ["Import numpy as 'np'", "Define a grades variable using 'np.array([85, 90, 78])'"],
+            codeTemplate: "import numpy as np\n\n# Initialize vector metrics\ngrades = np.array([85, 90, 78])\nprint('Grades Loaded Successfully')",
+            verify: (code) => code.includes("import numpy as np") && code.includes("np.array") && code.includes("85")
+          },
+          {
+            id: "kd_t2",
+            title: "Load Registry spreadsheet",
+            library: "Pandas",
+            useCase: "Loading offline spreadsheet data logs into reactive in-memory structures",
+            info: "Pandas provides data structuring tools like DataFrames to cleanly manage student enrollment records.",
+            requirements: ["Import pandas as 'pd'", "Create a dataframe from a dictionary containing 'Students' and 'Grades'"],
+            codeTemplate: "import pandas as pd\n\ndata = {'Students': ['A', 'B'], 'Grades': [85, 90]}\ndf = pd.DataFrame(data)\nprint(df)",
+            verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
+          },
+          {
+            id: "kd_t3",
+            title: "Data Cleansing Operations",
+            library: "Pandas",
+            useCase: "Locating and cleansing invalid data cells in academic registers",
+            info: "Cleaning dirty rows ensures calculations are accurate before committing back to persistent ledgers.",
+            requirements: ["Verify use of 'dropna()' or 'fillna(0)' to parse empty cells"],
+            codeTemplate: "import pandas as pd\nimport numpy as np\n\ndata = {'Grades': [85, np.nan, 90]}\ndf = pd.DataFrame(data)\nclean_df = df.fillna(0)\nprint(clean_df)",
+            verify: (code) => code.includes("fillna") || code.includes("dropna")
+          },
+          {
+            id: "kd_t4",
+            title: "Database Initialization",
+            library: "SQLite3",
+            useCase: "Spinning up a localized SQL ledger to hold persistent records",
+            info: "SQLite creates quick, light data structures without the burden of external database installation.",
+            requirements: ["Import sqlite3 library", "Establish a database connection file 'academy.db'"],
+            codeTemplate: "import sqlite3\n\nconn = sqlite3.connect('academy.db')\nprint('Database active')",
+            verify: (code) => code.includes("import sqlite3") && code.includes("sqlite3.connect")
+          },
+          {
+            id: "kd_t5",
+            title: "Registry SQL Transaction",
+            library: "SQLite3",
+            useCase: "Executing SQL commands to structure student data tables",
+            info: "Transactional parameters create local tables to keep roster entries aligned relational database rules.",
+            requirements: ["Execute 'CREATE TABLE IF NOT EXISTS student_records' statement"],
+            codeTemplate: "import sqlite3\n\nconn = sqlite3.connect('academy.db')\nconn.execute('CREATE TABLE IF NOT EXISTS student_records (id INTEGER PRIMARY KEY, name TEXT, score INTEGER)')\nconn.close()",
+            verify: (code) => code.includes("CREATE TABLE") && code.includes("student_records")
+          },
+          {
+            id: "kd_t6",
+            title: "Query Filter Logic",
+            library: "SQLite3",
+            useCase: "Extracting specific registry entries matching target performance scores",
+            info: "Using SQL SELECT commands helps to isolate top performers efficiently.",
+            requirements: ["Incorporate standard SQL 'SELECT' inside transaction call"],
+            codeTemplate: "import sqlite3\n\nconn = sqlite3.connect('academy.db')\ncursor = conn.cursor()\ncursor.execute('SELECT * FROM student_records')\nrows = cursor.fetchall()\nconn.close()",
+            verify: (code) => code.includes("SELECT")
+          },
+          {
+            id: "kd_t7",
+            title: "Class Average Calculations",
+            library: "Pandas",
+            useCase: "Generating mean calculations from dynamic row structures",
+            info: "Aggregate operations allow automatic score calculations on complex arrays.",
+            requirements: ["Compute score aggregates with Pandas 'mean()' on data cells"],
+            codeTemplate: "import pandas as pd\ndf = pd.DataFrame({'scores': [85, 90, 78]})\navg = df['scores'].mean()\nprint(avg)",
+            verify: (code) => code.includes("mean()")
+          },
+          {
+            id: "kd_t8",
+            title: "Visualization curves",
+            library: "Matplotlib",
+            useCase: "Plotting visual distribution charts of academic parameters",
+            info: "Plot layouts provide insights into structural classroom achievements.",
+            requirements: ["Import 'matplotlib.pyplot as plt'", "Call standard 'plt.plot()' or 'plt.bar()' to render vectors"],
+            codeTemplate: "import matplotlib.pyplot as plt\n\nplt.bar(['Kedar', 'Pranav'], [85, 90])\nprint('Plotting executed successfully')",
+            verify: (code) => code.includes("import matplotlib.pyplot as plt") && (code.includes("plot") || code.includes("bar"))
+          },
+          {
+            id: "kd_t9",
+            title: "REST Router API Integration",
+            library: "FastAPI",
+            useCase: "Spinning up RESTful server gateways to query academic systems",
+            info: "FastAPI creates standardized RESTful pathways using Python syntax decorators.",
+            requirements: ["Import FastAPI", "Construct a global server variable using 'app = FastAPI()'"],
+            codeTemplate: "from fastapi import FastAPI\n\napp = FastAPI()\n@app.get('/')\ndef index():\n    return {'status': 'active'}",
+            verify: (code) => code.includes("from fastapi import FastAPI") && code.includes("app = FastAPI()")
+          },
+          {
+            id: "kd_t10",
+            title: "Server Deployment Gateway",
+            library: "FastAPI",
+            useCase: "Deploying high-performance server runners to process external requests",
+            info: "Asynchronous servers map variables, parse data nodes, and respond dynamically under Starlette.",
+            requirements: ["Setup asynchronous GET router path mapping '@app.get(\"/student\")'"],
+            codeTemplate: "from fastapi import FastAPI\n\napp = FastAPI()\n@app.get('/student')\ndef retrieve_student():\n    return {'name': 'Kedar', 'score': 95}",
+            verify: (code) => code.includes("@app.get") && code.includes("student")
+          }
+        ]
       },
-      {
-        id: "pandas_cleaning",
-        title: "Pandas DataFrame Aggregator",
-        library: "Pandas",
-        difficulty: "Intermediate",
-        estimatedTime: "40 mins",
-        useCase: "Analyzing spreadsheets, tabular records, and cleaning null values",
-        info: "Pandas introduces DataFrame grids. It allows rapid grouping, indexing, and statistical aggregates over row structures.",
-        syntaxGuide: "import pandas as pd\ndata = {'Names': ['Sam', 'Raj'], 'XP': [300, 450]}\ndf = pd.DataFrame(data)\nprint(df.describe())",
-        requirements: [
-          "Import Pandas with typical alias: 'import pandas as pd'",
-          "Create a DataFrame containing labels 'Names' and 'Scores' inside a dictionary.",
-          "Invoke df.describe() or df.mean() to print analytical insights."
-        ],
-        verifyCode: (code) => {
-          const hasImport = code.includes("import pandas as pd");
-          const hasDF = code.includes("pd.DataFrame");
-          const hasDescribe = code.includes("describe()") || code.includes("mean()");
-          return {
-            success: hasImport && hasDF && hasDescribe,
-            errors: [
-              !hasImport && "Missing statement: 'import pandas as pd'",
-              !hasDF && "Make sure to instantiate a pandas table with 'pd.DataFrame()'",
-              !hasDescribe && "Call 'describe()' or 'mean()' on your DataFrame to print summaries."
-            ].filter(Boolean)
-          };
-        },
-        codeTemplate: `import pandas as pd\n\n# Task 2: Create dictionary database\nraw_data = {\n    "Names": ["Kedar", "Pranav", "Rajlakshmi", "Samruddhi", "Kalyani"],\n    "Scores": [320, 310, 420, 450, 390]\n}\n\n# Load into DataFrame:\ndf = pd.DataFrame(raw_data)\nprint(df.describe())\n`
+      "PJ002": {
+        studentName: "Pranav Jadhav",
+        projectName: "Interactive Weather Dashboard & Alert Engine",
+        tasks: [
+          {
+            id: "pj_t1",
+            title: "Vectorized Temperature Grids",
+            library: "NumPy",
+            useCase: "Constructing matrix layouts for weather analytics across distinct grids",
+            info: "Using high-performance arrays lets you manipulate multi-zone sensor logs at microsecond speed.",
+            requirements: ["Import numpy as 'np'", "Generate temperature metrics with 'np.array([28.4, 31.2, 29.5])'"],
+            codeTemplate: "import numpy as np\ntemps = np.array([28.4, 31.2, 29.5])\nprint('Weather vectors active')",
+            verify: (code) => code.includes("import numpy as np") && code.includes("np.array") && code.includes("28.4")
+          },
+          {
+            id: "pj_t2",
+            title: "Climate Logs Extraction",
+            library: "Pandas",
+            useCase: "Extracting historical climate registers from file records",
+            info: "DataFrames let you categorize tabular logs representing humidity, rain metrics, and wind vectors easily.",
+            requirements: ["Import pandas as 'pd'", "Structure wind speed rows using 'pd.DataFrame()'"],
+            codeTemplate: "import pandas as pd\nwind_data = {'Day': ['Mon', 'Tue'], 'Wind': [12, 15]}\ndf = pd.DataFrame(wind_data)\nprint(df)",
+            verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
+          },
+          {
+            id: "pj_t3",
+            title: "Climate Anomaly Filtration",
+            library: "Pandas",
+            useCase: "Filtering meteorological record arrays to isolate extreme thermal peaks",
+            info: "Conditional checks help screen dataset registers for warnings.",
+            requirements: ["Apply row filter constraints on Pandas Dataframe (e.g. df[df['temp'] > 30])"],
+            codeTemplate: "import pandas as pd\ndf = pd.DataFrame({'temp': [28, 32, 35]})\nhot_days = df[df['temp'] > 30]\nprint(hot_days)",
+            verify: (code) => code.includes("df['temp']") || code.includes('df["temp"]')
+          },
+          {
+            id: "pj_t4",
+            title: "Alerts Table Schema",
+            library: "SQLite3",
+            useCase: "Setting up lightweight SQLite databases to store threshold parameters",
+            info: "Local ledgers store warning configurations across restarts.",
+            requirements: ["Initialize SQLite engine connection", "Create local table 'weather_alerts'"],
+            codeTemplate: "import sqlite3\nconn = sqlite3.connect('alerts.db')\nconn.execute('CREATE TABLE IF NOT EXISTS weather_alerts (id INTEGER, message TEXT)')\nconn.close()",
+            verify: (code) => code.includes("sqlite3.connect") && code.includes("weather_alerts")
+          },
+          {
+            id: "pj_t5",
+            title: "Commit Meteorological Records",
+            library: "SQLite3",
+            useCase: "Executing structured insert transactions to log anomalies",
+            info: "SQL transactions commit critical security events safely to SQLite databases.",
+            requirements: ["Incorporate SQL 'INSERT' parameters inside execution statement"],
+            codeTemplate: "import sqlite3\nconn = sqlite3.connect('alerts.db')\nconn.execute(\"INSERT INTO weather_alerts VALUES (1, 'Storm Warning')\")\nconn.commit()\nconn.close()",
+            verify: (code) => code.includes("INSERT") && code.includes("weather_alerts")
+          },
+          {
+            id: "pj_t6",
+            title: "Emergency Scraping Bot",
+            library: "BeautifulSoup",
+            useCase: "Scraping emergency warnings and advisory listings from weather bureaus",
+            info: "BeautifulSoup parses complex HTML node configurations into clean variables arrays.",
+            requirements: ["Import BeautifulSoup from bs4", "Instantiate parser object using 'html.parser'"],
+            codeTemplate: "from bs4 import BeautifulSoup\nhtml = '<html><div class=\"alert\">Cyclone Alert</div></html>'\nsoup = BeautifulSoup(html, 'html.parser')\nprint(soup.find(class_='alert').text)",
+            verify: (code) => code.includes("BeautifulSoup") && code.includes("html.parser")
+          },
+          {
+            id: "pj_t7",
+            title: "REST Meteorological Feed",
+            library: "Requests",
+            useCase: "Calling external weather APIs to pull current meteorological conditions",
+            info: "Requests manages HTTP network call blocks asynchronously.",
+            requirements: ["Import 'requests'", "Formulate dummy target GET call using 'requests.get()'"],
+            codeTemplate: "import requests\n# Query simulated REST endpoint\nresponse = requests.get('https://api.weather.com/v1/mock', params={'city': 'Mumbai'})\nprint('REST Weather Loaded')",
+            verify: (code) => code.includes("import requests") && code.includes("requests.get")
+          },
+          {
+            id: "pj_t8",
+            title: "Interactive Plots Builder",
+            library: "Plotly",
+            useCase: "Rendering rich graphical plots depicting temperature fluctuations",
+            info: "Plotly enables responsive graphic charts within HTML viewports.",
+            requirements: ["Import 'plotly.graph_objects as go' or 'plotly.express as px'"],
+            codeTemplate: "import plotly.graph_objects as go\nfig = go.Figure(data=go.Scatter(x=[1,2], y=[28, 32]))\nprint('Plotly active')",
+            verify: (code) => code.includes("plotly")
+          },
+          {
+            id: "pj_t9",
+            title: "Microserver Controller Routing",
+            library: "Flask",
+            useCase: "Constructing responsive Flask routes to serve warning pages",
+            info: "Flask leverages clean routes to serve dashboards over standard TCP/IP gateways.",
+            requirements: ["Import Flask", "Initialize app with 'app = Flask(__name__)'"],
+            codeTemplate: "from flask import Flask\napp = Flask(__name__)\n@app.route('/')\ndef weather():\n    return 'Weather OK'",
+            verify: (code) => code.includes("from flask import Flask") && code.includes("app = Flask")
+          },
+          {
+            id: "pj_t10",
+            title: "Microservice Entrypoint Launcher",
+            library: "Flask",
+            useCase: "Registering server parameters to listen for client triggers",
+            info: "Running Flask servers lets external clients inspect telemetry metrics instantly.",
+            requirements: ["Establish Flask route for endpoint '/alerts'"],
+            codeTemplate: "from flask import Flask\napp = Flask(__name__)\n@app.route('/alerts')\ndef get_alerts():\n    return {'alert': 'Severe Rainfall Alert'}",
+            verify: (code) => code.includes("route('/alerts')") || code.includes('route("/alerts")')
+          }
+        ]
       },
-      {
-        id: "sqlite_engine",
-        title: "SQLite Relational Ledger",
-        library: "SQLite3",
-        difficulty: "Intermediate",
-        estimatedTime: "50 mins",
-        useCase: "Local SQL records transaction ledger inside disk files",
-        info: "SQLite provides robust structural query transactions inside dynamic local files without configuring major daemon services.",
-        syntaxGuide: "import sqlite3\nconn = sqlite3.connect('local.db')\nconn.execute('CREATE TABLE IF NOT EXISTS ledger (id INTEGER, val TEXT)')\nconn.commit()",
-        requirements: [
-          "Import the standard database driver: 'import sqlite3'",
-          "Establish database connection: 'sqlite3.connect(\"academy.db\")'",
-          "Execute an SQL command: 'CREATE TABLE IF NOT EXISTS users (id INTEGER, score INTEGER)'"
-        ],
-        verifyCode: (code) => {
-          const hasImport = code.includes("import sqlite3");
-          const hasConnect = code.includes("sqlite3.connect");
-          const hasSQL = code.includes("CREATE TABLE") && code.includes("users");
-          return {
-            success: hasImport && hasConnect && hasSQL,
-            errors: [
-              !hasImport && "Missing standard SQLite import: 'import sqlite3'",
-              !hasConnect && "Open standard connection using 'sqlite3.connect()'",
-              !hasSQL && "Execute SQL schema check: 'CREATE TABLE IF NOT EXISTS users...'"
-            ].filter(Boolean)
-          };
-        },
-        codeTemplate: `import sqlite3\n\n# Task 3: Open file database connection\nconn = sqlite3.connect("academy.db")\ncursor = conn.cursor()\n\n# Create users schema below:\ncursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER, score INTEGER)")\nconn.commit()\nconn.close()\nprint("Database connection executed safely!")\n`
+      "RK003": {
+        studentName: "Rajlakshmi Khot",
+        projectName: "Personal Finance Ledger & Portfolio Exporter",
+        tasks: [
+          {
+            id: "rk_t1",
+            title: "Transaction Value Vectors",
+            library: "NumPy",
+            useCase: "Configuring vector matrices to store transactional expenses",
+            info: "Array vectors handle complex numerical balances without float precision leaks.",
+            requirements: ["Import numpy as 'np'", "Define transaction vector elements utilizing 'np.array'"],
+            codeTemplate: "import numpy as np\nbalances = np.array([-150.50, 2000.00, -45.00])\nprint('Finance Arrays active')",
+            verify: (code) => code.includes("import numpy as np") && code.includes("np.array")
+          },
+          {
+            id: "rk_t2",
+            title: "Ledger Spreadsheet Loading",
+            library: "Pandas",
+            useCase: "Aggregating monthly income and tax matrices inside DataFrames",
+            info: "Pandas formats unstructured logs into tidy tabular columns.",
+            requirements: ["Import pandas as 'pd'", "Create transactional columns within standard DataFrame wrapper"],
+            codeTemplate: "import pandas as pd\ndf = pd.DataFrame({'Expenses': [120, 45], 'Category': ['Food', 'SaaS']})\nprint(df)",
+            verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
+          },
+          {
+            id: "rk_t3",
+            title: "Monthly Category Pivots",
+            library: "Pandas",
+            useCase: "Grouping transactions to identify expense patterns",
+            info: "Aggregation metrics consolidate large arrays into structured budgets.",
+            requirements: ["Incorporate Pandas DataFrame 'groupby()' to sum transaction records"],
+            codeTemplate: "import pandas as pd\ndf = pd.DataFrame({'Cost': [50, 150, 45], 'Category': ['Food', 'Utilities', 'Food']})\npivot = df.groupby('Category').sum()\nprint(pivot)",
+            verify: (code) => code.includes("groupby")
+          },
+          {
+            id: "rk_t4",
+            title: "Ledger Database Table",
+            library: "SQLite3",
+            useCase: "Creating local SQL tables to securely store sensitive financial ledgers",
+            info: "Lightweight local database storage structures transaction history safely.",
+            requirements: ["Define SQLite ledger schema with 'CREATE TABLE IF NOT EXISTS ledger'"],
+            codeTemplate: "import sqlite3\nconn = sqlite3.connect('finance.db')\nconn.execute('CREATE TABLE IF NOT EXISTS ledger (id INTEGER, amount REAL, category TEXT)')\nconn.close()",
+            verify: (code) => code.includes("sqlite3.connect") && code.includes("ledger")
+          },
+          {
+            id: "rk_t5",
+            title: "SQL Ledger Insertion",
+            library: "SQLite3",
+            useCase: "Committing transaction records to SQLite storage",
+            info: "Standard database cursor executions update ledger records correctly.",
+            requirements: ["Execute SQL 'INSERT' into financial ledger tables"],
+            codeTemplate: "import sqlite3\nconn = sqlite3.connect('finance.db')\nconn.execute(\"INSERT INTO ledger VALUES (1, -45.0, 'SaaS Subscriptions')\")\nconn.commit()\nconn.close()",
+            verify: (code) => code.includes("INSERT") && code.includes("ledger")
+          },
+          {
+            id: "rk_t6",
+            title: "Spreadsheet Exporter Engine",
+            library: "OpenPyXL",
+            useCase: "Exporting cleaned budgets directly into Excel files",
+            info: "OpenPyXL generates standardized spreadsheet files with styling controls.",
+            requirements: ["Import 'openpyxl'", "Call 'openpyxl.Workbook()' method"],
+            codeTemplate: "import openpyxl\nwb = openpyxl.Workbook()\nws = wb.active\nws['A1'] = 'Expense Report'\nwb.save('Ledger_Report.xlsx')",
+            verify: (code) => code.includes("import openpyxl") && code.includes("Workbook()")
+          },
+          {
+            id: "rk_t7",
+            title: "Asymmetric Statement Builder",
+            library: "ReportLab",
+            useCase: "Generating dynamic PDF bank statement documents automatically",
+            info: "ReportLab creates professional financial documents programmatically.",
+            requirements: ["Import 'reportlab' module assets (e.g. from reportlab.pdfgen import canvas)"],
+            codeTemplate: "from reportlab.pdfgen import canvas\nc = canvas.Canvas('Statement.pdf')\nc.drawString(100, 750, 'Monthly Balance Statement')\nc.save()",
+            verify: (code) => code.includes("reportlab") || code.includes("Canvas")
+          },
+          {
+            id: "rk_t8",
+            title: "Categorical Expense Pie Charts",
+            library: "Matplotlib",
+            useCase: "Generating charts to show category spending distributions",
+            info: "Plotting spending visualizes where money is allocated.",
+            requirements: ["Use Matplotlib 'plt.pie()' to render spending percentages"],
+            codeTemplate: "import matplotlib.pyplot as plt\nplt.pie([45, 120, 250], labels=['Books', 'Cloud', 'Hardware'])\nprint('Pie chart compiled')",
+            verify: (code) => code.includes("pie")
+          },
+          {
+            id: "rk_t9",
+            title: "REST Framework Registry",
+            library: "FastAPI",
+            useCase: "Constructing secure REST servers to handle expense uploads",
+            info: "Asynchronous APIs provide structured integration paths for finance apps.",
+            requirements: ["Setup FastAPI router with 'app = FastAPI()'"],
+            codeTemplate: "from fastapi import FastAPI\napp = FastAPI()\n@app.post('/upload')\ndef upload():\n    return {'status': 'processed'}",
+            verify: (code) => code.includes("FastAPI") && code.includes("upload")
+          },
+          {
+            id: "rk_t10",
+            title: "Input Validation Schemas",
+            library: "Pydantic",
+            useCase: "Validating transaction payloads to prevent format errors",
+            info: "Pydantic enforces data types before processing API inputs.",
+            requirements: ["Import 'BaseModel' from pydantic", "Define a schema subclass"],
+            codeTemplate: "from pydantic import BaseModel\n\nclass Transaction(BaseModel):\n    id: int\n    amount: float\n    category: str",
+            verify: (code) => code.includes("BaseModel") && code.includes("pydantic")
+          }
+        ]
       },
-      {
-        id: "fastapi_routers",
-        title: "FastAPI REST Controller",
-        library: "FastAPI",
-        difficulty: "Advanced",
-        estimatedTime: "60 mins",
-        useCase: "Building blazing fast asynchronous API routing structures",
-        info: "FastAPI utilizes standard modern typing decorators to automatically register HTTP routers, sanitize inputs, and build interactive documentation panels.",
-        syntaxGuide: "from fastapi import FastAPI\napp = FastAPI()\n@app.get('/')\ndef root():\n    return {'status': 'success'}",
-        requirements: [
-          "Import FastAPI using keyword: 'from fastapi import FastAPI'",
-          "Create your routing server instance: 'app = FastAPI()'",
-          "Bind a standard GET path mapping: '@app.get(\"/books\")' or '@app.get(\"/\")'"
-        ],
-        verifyCode: (code) => {
-          const hasImport = code.includes("from fastapi import FastAPI");
-          const hasApp = code.includes("app = FastAPI()");
-          const hasGet = code.includes("@app.get");
-          return {
-            success: hasImport && hasApp && hasGet,
-            errors: [
-              !hasImport && "Missing library statement: 'from fastapi import FastAPI'",
-              !hasApp && "Construct server variables instance: 'app = FastAPI()'",
-              !hasGet && "Provide API router binding: e.g. '@app.get(\"/\")'"
-            ].filter(Boolean)
-          };
-        },
-        codeTemplate: `from fastapi import FastAPI\n\n# Task 4: Construct high performance microservice router\napp = FastAPI()\n\n@app.get("/")\ndef home():\n    return {"academy": "PythonVerse", "status": "active"}\n`
+      "SP004": {
+        studentName: "Samruddhi Patil",
+        projectName: "Computer Vision Matrix Filter Studio",
+        tasks: [
+          {
+            id: "sp_t1",
+            title: "Synthetic Pixel Arrays",
+            library: "NumPy",
+            useCase: "Building raw dimensional matrices representing image arrays",
+            info: "NumPy arrays form the raw dimensional matrices that represent pixels in memory.",
+            requirements: ["Import numpy as 'np'", "Generate pixel matrix utilizing 'np.zeros()' or similar initialization"],
+            codeTemplate: "import numpy as np\npixels = np.zeros((100, 100, 3), dtype=np.uint8)\nprint('Pixel Matrix Initialized')",
+            verify: (code) => code.includes("import numpy as np") && (code.includes("zeros") || code.includes("array"))
+          },
+          {
+            id: "sp_t2",
+            title: "Matrix Scaling Transforms",
+            library: "NumPy",
+            useCase: "Manipulating dimensional structures via linear scaling transformations",
+            info: "Math transforms process scale grids across channels smoothly.",
+            requirements: ["Perform pixel vector multiplication by a scaling scalar"],
+            codeTemplate: "import numpy as np\npixels = np.array([10, 20, 30])\nscaled = pixels * 2.5\nprint(scaled)",
+            verify: (code) => code.includes("pixels *") || code.includes("scaled")
+          },
+          {
+            id: "sp_t3",
+            title: "Pixel Properties Aggregation",
+            library: "Pandas",
+            useCase: "Analyzing image metadata attributes across grids",
+            info: "DataFrames organize image data like metadata, colors, and resolution tables.",
+            requirements: ["Load image dimensions data utilizing 'pd.DataFrame'"],
+            codeTemplate: "import pandas as pd\nmetadata = pd.DataFrame({'file': ['img1.jpg'], 'resolution': ['1080p']})\nprint(metadata)",
+            verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
+          },
+          {
+            id: "sp_t4",
+            title: "Database Metadata Ledger",
+            library: "SQLite3",
+            useCase: "Logging filter usage history into structured database ledgers",
+            info: "SQLite catalogs image metrics for reference across processing tasks.",
+            requirements: ["Define sqlite engine connection", "Create schema 'image_metadata'"],
+            codeTemplate: "import sqlite3\nconn = sqlite3.connect('studio.db')\nconn.execute('CREATE TABLE IF NOT EXISTS image_metadata (id INTEGER, path TEXT)')\nconn.close()",
+            verify: (code) => code.includes("sqlite3.connect") && code.includes("image_metadata")
+          },
+          {
+            id: "sp_t5",
+            title: "Image Buffer Loading",
+            library: "Pillow",
+            useCase: "Loading and scaling offline binary image streams",
+            info: "Pillow opens, modifies, and converts static image files securely.",
+            requirements: ["Import 'Image' from PIL"],
+            codeTemplate: "from PIL import Image\n# Open and configure virtual file buffers\nprint('Pillow modules initialized safely')",
+            verify: (code) => code.includes("PIL") && code.includes("Image")
+          },
+          {
+            id: "sp_t6",
+            title: "Monochrome Thermal Filters",
+            library: "OpenCV",
+            useCase: "Applying grayscaling matrices using color filters",
+            info: "OpenCV applies grayscaling transforms to matrices representing pixels in memory.",
+            requirements: ["Import 'cv2' library parameters", "Reference 'cv2.cvtColor()' conversion call"],
+            codeTemplate: "import cv2\nimport numpy as np\n# Simulated grayscaling transformation\nprint('cv2 grayscaling layers mapped')",
+            verify: (code) => code.includes("import cv2")
+          },
+          {
+            id: "sp_t7",
+            title: "Canny Matrix Edges",
+            library: "OpenCV",
+            useCase: "Executing contour and edge detection across image arrays",
+            info: "Edge mapping helps isolate structures within the image matrix.",
+            requirements: ["Reference the OpenCV 'cv2.Canny()' structural algorithm method"],
+            codeTemplate: "import cv2\n# Call edge detector algorithm on pixels\nprint('Canny contour parameters analyzed')",
+            verify: (code) => code.includes("cv2")
+          },
+          {
+            id: "sp_t8",
+            title: "Region of Interest Overlays",
+            library: "OpenCV",
+            useCase: "Rendering bounding box overlays over face matrices",
+            info: "Drawing bounding boxes highlights detected structures in the image.",
+            requirements: ["Reference standard OpenCV 'cv2.rectangle()' plotting call"],
+            codeTemplate: "import cv2\n# Add bounding box to coordinate channels\nprint('Bounding box drawn')",
+            verify: (code) => code.includes("cv2")
+          },
+          {
+            id: "sp_t9",
+            title: "Filter Upload API Gate",
+            library: "Flask",
+            useCase: "Exposing API routing endpoints for remote filter uploads",
+            info: "Flask routes process remote requests to apply image transformations.",
+            requirements: ["Spin up Flask server", "Add router mapping decorator for route '/apply_filter'"],
+            codeTemplate: "from flask import Flask\napp = Flask(__name__)\n@app.route('/apply_filter')\ndef filter_route():\n    return 'Filter applied'",
+            verify: (code) => code.includes("apply_filter")
+          },
+          {
+            id: "sp_t10",
+            title: "Studio Web Portal Dashboard",
+            library: "Streamlit",
+            useCase: "Building lightweight web dashboard interfaces for real-time visualization",
+            info: "Streamlit translates code parameters into interactive slider, tab, and image components.",
+            requirements: ["Import 'streamlit as st' module"],
+            codeTemplate: "import streamlit as st\nst.title('Visual Studio Dashboard')\nst.write('Scale Factor:')",
+            verify: (code) => code.includes("import streamlit as st")
+          }
+        ]
+      },
+      "KK005": {
+        studentName: "Kalyani Kamble",
+        projectName: "Enterprise Hospitality & Booking REST Engine",
+        tasks: [
+          {
+            id: "kk_t1",
+            title: "Room Grid Vectors",
+            library: "NumPy",
+            useCase: "Configuring multi-zone matrices to model room availability slots",
+            info: "High performance vectors track availability states across zones.",
+            requirements: ["Import numpy as 'np'", "Define room availability vectors with 'np.array()'"],
+            codeTemplate: "import numpy as np\nrooms = np.array([101, 102, 201, 202])\nprint('Room grids initialized')",
+            verify: (code) => code.includes("import numpy as np") && code.includes("np.array")
+          },
+          {
+            id: "kk_t2",
+            title: "Guest Tabular Roster",
+            library: "Pandas",
+            useCase: "Loading offline reservation lists into structured dataframes",
+            info: "Dataframe columns organize guest check-in parameters clearly.",
+            requirements: ["Import pandas as 'pd'", "Create guest roster with 'pd.DataFrame'"],
+            codeTemplate: "import pandas as pd\nguests = pd.DataFrame({'Name': ['Kalyani'], 'Room': [101]})\nprint(guests)",
+            verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
+          },
+          {
+            id: "kk_t3",
+            title: "De-duplicate Roster records",
+            library: "Pandas",
+            useCase: "Cleansing booking registers of duplicate reservation entries",
+            info: "Removing redundant check-in records prevents double-booking errors.",
+            requirements: ["Utilize the Pandas dataframe 'drop_duplicates()' optimization call"],
+            codeTemplate: "import pandas as pd\ndf = pd.DataFrame({'Guest': ['Alice', 'Alice'], 'Room': [101, 101]})\ncleaned = df.drop_duplicates()\nprint(cleaned)",
+            verify: (code) => code.includes("drop_duplicates")
+          },
+          {
+            id: "kk_t4",
+            title: "Localized Booking Engine DB",
+            library: "SQLite3",
+            useCase: "Creating local SQL tables to securely store active bookings",
+            info: "Local SQLite databases organize guest check-in histories efficiently.",
+            requirements: ["Establish SQLite database connection file", "Create table 'reservations'"],
+            codeTemplate: "import sqlite3\nconn = sqlite3.connect('hotel.db')\nconn.execute('CREATE TABLE IF NOT EXISTS reservations (id INTEGER, name TEXT, room_num INTEGER)')\nconn.close()",
+            verify: (code) => code.includes("sqlite3.connect") && code.includes("reservations")
+          },
+          {
+            id: "kk_t5",
+            title: "SQL Transaction ledger",
+            library: "SQLite3",
+            useCase: "Inserting and committing reservation entries in transaction logs",
+            info: "Database cursors commit critical reservation actions safely to SQLite databases.",
+            requirements: ["Incorporate SQL 'INSERT' into reservation transaction logs"],
+            codeTemplate: "import sqlite3\nconn = sqlite3.connect('hotel.db')\nconn.execute(\"INSERT INTO reservations VALUES (1, 'Kalyani', 101)\")\nconn.commit()\nconn.close()",
+            verify: (code) => code.includes("INSERT") && code.includes("reservations")
+          },
+          {
+            id: "kk_t6",
+            title: "Booking Validation Schema",
+            library: "Pydantic",
+            useCase: "Enforcing validation rules on check-in objects to prevent data errors",
+            info: "Pydantic validates API input fields automatically.",
+            requirements: ["Import 'BaseModel' from pydantic", "Define reservation schema subclass"],
+            codeTemplate: "from pydantic import BaseModel\n\nclass BookingSchema(BaseModel):\n    guest_name: str\n    room_num: int",
+            verify: (code) => code.includes("BaseModel") && code.includes("pydantic")
+          },
+          {
+            id: "kk_t7",
+            title: "Relational ORM Models",
+            library: "SQLAlchemy",
+            useCase: "Modeling database schemas using declarative ORM classes",
+            info: "SQLAlchemy maps database tables directly to standard Python objects.",
+            requirements: ["Import 'declarative_base' or 'Column' from sqlalchemy"],
+            codeTemplate: "from sqlalchemy.ext.declarative import declarative_base\nBase = declarative_base()\nprint('ORM configurations loaded')",
+            verify: (code) => code.includes("sqlalchemy")
+          },
+          {
+            id: "kk_t8",
+            title: "Asynchronous Booking Router",
+            library: "FastAPI",
+            useCase: "Constructing FastAPI routers to receive reservation requests",
+            info: "FastAPI creates standardized RESTful pathways using Python syntax decorators.",
+            requirements: ["Define FastAPI REST endpoint mapping '@app.post(\"/booking\")'"],
+            codeTemplate: "from fastapi import FastAPI\napp = FastAPI()\n@app.post('/booking')\ndef book():\n    return {'status': 'confirmed'}",
+            verify: (code) => code.includes("app.post") && code.includes("booking")
+          },
+          {
+            id: "kk_t9",
+            title: "Database Session Injector",
+            library: "FastAPI",
+            useCase: "Managing database transaction sessions via route dependencies",
+            info: "Session dependencies ensure secure database transactions for reservations.",
+            requirements: ["Reference FastAPI dependency parameters: 'Depends'"],
+            codeTemplate: "from fastapi import FastAPI, Depends\napp = FastAPI()\n# Setup dependency injections\nprint('Dependencies configured')",
+            verify: (code) => code.includes("Depends")
+          },
+          {
+            id: "kk_t10",
+            title: "Production Gateway Server",
+            library: "FastAPI",
+            useCase: "Deploying high-performance ASGI servers to run the booking API",
+            info: "Running FastAPI APIs lets external clients inspect telemetry metrics instantly.",
+            requirements: ["Setup asynchronous GET router path mapping '@app.get(\"/health\")'"],
+            codeTemplate: "from fastapi import FastAPI\napp = FastAPI()\n@app.get('/health')\ndef health():\n    return {'health': 'ok'}",
+            verify: (code) => code.includes("health") && code.includes("@app.get")
+          }
+        ]
       }
-    ];
+    };
 
     function App() {
+      // Authentication configurations
+      const [currentUser, setCurrentUser] = useState(() => {
+        try {
+          const saved = localStorage.getItem("pv_user");
+          return saved ? JSON.parse(saved) : null;
+        } catch (e) {
+          return null;
+        }
+      });
+
+      const [loginId, setLoginId] = useState("");
+      const [loginPassword, setLoginPassword] = useState("");
+      const [loginError, setLoginError] = useState("");
+
+      // Course project execution parameters
       const [activeTaskIdx, setActiveTaskIndex] = useState(0);
+      const [completedTaskIds, setCompletedTaskIds] = useState(() => {
+        try {
+          const saved = localStorage.getItem("pv_completed_tasks");
+          return saved ? JSON.parse(saved) : [];
+        } catch (e) {
+          return [];
+        }
+      });
+
       const [workspaceFiles, setWorkspaceFiles] = useState({
-        "main.py": CURRICULUM_TASKS[0].codeTemplate,
+        "main.py": "",
         "data.csv": "Names,Scores\nKedar,320\nPranav,310\nRajlakshmi,420\nSamruddhi,450\nKalyani,390\n",
-        "README.md": "# PythonVerse Workspace\nSelect tasks from the left panel to begin working.\n"
+        "README.md": "# PythonVerse Workspace\nSelect a task from the list on the left to begin coding."
       });
       const [activeFile, setActiveFile] = useState("main.py");
-      const [completedTaskIds, setCompletedTaskIds] = useState([]);
-      const [terminalLogs, setTerminalLogs] = useState(["Workspace ready. Select a milestone task to code!"]);
-      const [toast, setToast] = useState(null);
+      const [terminalLogs, setTerminalLogs] = useState(["Environment ready. Select any task module on the left side directory to initialize code structures!"]);
       const [viewMode, setViewMode] = useState("terminal"); // 'terminal' | 'preview'
       const [previewData, setPreviewContent] = useState(null);
       const [newFileName, setNewFileName] = useState("");
       const [showFileModal, setShowFileModal] = useState(false);
+      const [toast, setToast] = useState(null);
 
-      const activeTask = CURRICULUM_TASKS[activeTaskIdx];
+      // Admin State Variables
+      const [selectedAdminStudentId, setSelectedAdminStudentId] = useState("KD001");
+      const [adminAnnTitle, setAdminAnnTitle] = useState("");
+      const [adminAnnText, setAdminAnnText] = useState("");
+      const [announcements, setAnnouncements] = useState(() => {
+        try {
+          const saved = localStorage.getItem("pv_announcements");
+          return saved ? JSON.parse(saved) : [
+            { id: 1, title: "Welcome to PythonVerse!", date: "June 25, 2026", text: "Complete each milestone task sequentially using the Check My Progress system. Your progress will be saved automatically." }
+          ];
+        } catch (e) {
+          return [];
+        }
+      });
 
-      // Automatically load the code template when active task switches
+      // Retrieve student-specific data
+      const studentProject = useMemo(() => {
+        if (currentUser && currentUser.role === "student") {
+          return PROJECTS_DATABASE[currentUser.id];
+        }
+        return null;
+      }, [currentUser]);
+
+      const activeTask = useMemo(() => {
+        if (studentProject) {
+          return studentProject.tasks[activeTaskIdx];
+        }
+        return null;
+      }, [studentProject, activeTaskIdx]);
+
+      // Handle loading task template dynamically when task switches
       useEffect(() => {
-        setWorkspaceFiles(prev => ({
-          ...prev,
-          "main.py": activeTask.codeTemplate
-        }));
-        setActiveFile("main.py");
-        setPreviewContent(null);
-      }, [activeTaskIdx]);
+        if (activeTask) {
+          setWorkspaceFiles(prev => ({
+            ...prev,
+            "main.py": activeTask.codeTemplate
+          }));
+          setActiveFile("main.py");
+          setPreviewContent(null);
+        }
+      }, [activeTaskIdx, activeTask]);
+
+      // Synchronize states
+      useEffect(() => {
+        try {
+          localStorage.setItem("pv_user", currentUser ? JSON.stringify(currentUser) : "");
+          localStorage.setItem("pv_completed_tasks", JSON.stringify(completedTaskIds));
+          localStorage.setItem("pv_announcements", JSON.stringify(announcements));
+        } catch (e) {}
+      }, [currentUser, completedTaskIds, announcements]);
 
       const triggerToast = (msg, type = "success") => {
         setToast({ msg, type });
         setTimeout(() => setToast(null), 3500);
       };
 
-      // Tab indentation handler inside standard code sandbox
+      // Authentication action handlers
+      const handleLogin = (e) => {
+        e.preventDefault();
+        const match = USER_ROSTER.find(
+          u => u.id.trim() === loginId.trim() && u.password === loginPassword
+        );
+
+        if (match) {
+          setCurrentUser(match);
+          setLoginError("");
+          setLoginId("");
+          setLoginPassword("");
+          triggerToast(`Welcome to PythonVerse, ${match.name}!`);
+        } else {
+          setLoginError("Invalid predefined ID or password combination.");
+        }
+      };
+
+      const handleLogout = () => {
+        setCurrentUser(null);
+        setCompletedTaskIds([]);
+        triggerToast("Logged out of session.");
+      };
+
+      // Tab indentation handler inside code sandbox
       const handleTabKey = (e) => {
         if (e.key === "Tab") {
           e.preventDefault();
@@ -260,7 +771,7 @@
         }
       };
 
-      // Standard run code simulator
+      // Standard run code compiler simulation
       const handleRunCode = () => {
         const code = workspaceFiles["main.py"] || "";
         setTerminalLogs(prev => [...prev, `\n$ python main.py`]);
@@ -269,114 +780,107 @@
         setTimeout(() => {
           let output = [];
 
-          if (code.includes("import numpy") && code.includes("np.mean")) {
-            output.push("Initializing NumPy matrix vector...");
-            output.push("Loaded matrix array successfully.");
-            output.push("Calculated Mean Average value: 91.667");
+          if (code.includes("import numpy") && (code.includes("np.array") || code.includes("zeros"))) {
+            output.push("NumPy: Loading matrix grids successfully...");
+            output.push("Matrix dimensions registered in memory.");
             setPreviewContent({
               type: "chart",
-              labels: ["A", "B", "C"],
-              data: [88, 92, 95],
-              title: "NumPy Array Summary Chart"
+              labels: ["X-Zone", "Y-Zone", "Z-Zone"],
+              data: [120, 240, 180],
+              title: "Normalized Vector Distribution Charts"
             });
           } else if (code.includes("import pandas") && code.includes("pd.DataFrame")) {
-            output.push("Constructing pandas structural table layout...");
-            output.push("Calculated aggregation describe() successfully.");
+            output.push("Pandas: Structuring transaction series dataframe...");
+            output.push("Tabular rows parsed successfully.");
             setPreviewContent({
               type: "chart",
-              labels: ["Kedar", "Pranav", "Raj", "Sam", "Kalyani"],
+              labels: ["Kedar", "Pranav", "Rajlakshmi", "Samruddhi", "Kalyani"],
               data: [320, 310, 420, 450, 390],
-              title: "Pandas Analytical Plot Output"
+              title: "Pandas DataFrame Matrix Output"
             });
-          } else if (code.includes("sqlite3") && code.includes("CREATE TABLE")) {
-            output.push("Connected SQLite DB ledger: academy.db");
-            output.push("SQL Query success: Schema updated safely.");
-            setPreviewContent({
-              type: "sqlite"
-            });
-          } else if (code.includes("from fastapi import FastAPI")) {
-            output.push("Uvicorn active pipeline: http://127.0.0.1:8000");
-            output.push("Server initialized successfully.");
-            setPreviewContent({
-              type: "fastapi"
-            });
+          } else if (code.includes("sqlite3") && code.includes("connect")) {
+            output.push("SQLite3: Connection established.");
+            output.push("Tables registered successfully.");
+            setPreviewContent({ type: "sqlite" });
+          } else if (code.includes("from fastapi import FastAPI") || code.includes("from flask import Flask")) {
+            output.push("Server running on http://127.0.0.1:8000");
+            output.push("API routers connected successfully.");
+            setPreviewContent({ type: "fastapi" });
           } else {
-            output.push("Script compiled successfully. Process exited with return status code 0.");
+            output.push("Process exited with return code 0. Standard output stream evaluated.");
           }
 
           setTerminalLogs(prev => [...prev, output.join("\n")]);
-          triggerToast("Program compilation successful!");
+          triggerToast("Run compilation successful!");
         }, 500);
       };
 
-      // VERIFY PROGRESS SYSTEM: checks the code against rules
+      // "Check My Progress" validator: checks the code against rules
       const handleCheckProgress = () => {
+        if (!activeTask) return;
         const code = workspaceFiles["main.py"] || "";
-        const checkResult = activeTask.verifyCode(code);
+        const validated = activeTask.verify(code);
 
-        if (checkResult.success) {
+        if (validated) {
           if (!completedTaskIds.includes(activeTask.id)) {
             const nextCompleted = [...completedTaskIds, activeTask.id];
             setCompletedTaskIds(nextCompleted);
-            
-            // Generate auto-updated README
-            const taskTitles = nextCompleted.map(id => CURRICULUM_TASKS.find(t => t.id === id).title).join(", ");
-            const autoReadme = `# PythonVerse Workspace Portfolio\n\n## Completed Modules\n${nextCompleted.map(id => {
-              const matchingTask = CURRICULUM_TASKS.find(t => t.id === id);
-              return `- **[x] ${matchingTask.title}** utilizing *${matchingTask.library}* (Goal: ${matchingTask.useCase})`;
-            }).join("\n")}\n\n*Auto-generated dynamically via progress check-in tags.*`;
+            triggerToast(`🎉 Task Complete: "${activeTask.title}" verified!`, "success");
+            setTerminalLogs(prev => [...prev, `\n[SYSTEM]: Successfully verified task: "${activeTask.title}"`]);
+
+            // Update README.md dynamically
+            const autoReadme = `# ${studentProject.projectName} Portfolio\n\n## Roster Owner\n- **Student Name**: ${studentProject.studentName}\n- **Classroom ID**: ${currentUser.id}\n\n## Tasks Completed Matrix\n${nextCompleted.map((id, index) => {
+              const matching = studentProject.tasks.find(t => t.id === id);
+              return `- **[x] Task ${index + 1}: ${matching.title}** utilizing *${matching.library}* (Use case: ${matching.useCase})`;
+            }).join("\n")}\n\n*Auto-generated on progress checks.*`;
             
             setWorkspaceFiles(prev => ({
               ...prev,
               "README.md": autoReadme
             }));
-
-            triggerToast(`🎉 Task Approved! You completed: ${activeTask.title}!`, "success");
-            setTerminalLogs(prev => [...prev, `\n[SYSTEM]: Verified task "${activeTask.title}" as completed successfully!`]);
           } else {
-            triggerToast("You already cleared this task! Good job.", "success");
+            triggerToast("This task is already verified!", "success");
           }
         } else {
-          const firstErr = checkResult.errors[0] || "Code criteria verification failed.";
-          triggerToast(`❌ Verification failed: ${firstErr}`, "error");
-          setTerminalLogs(prev => [...prev, `\n[SYSTEM WARNING]: ${checkResult.errors.join("\n[SYSTEM WARNING]: ")}`]);
+          triggerToast("❌ Verification failed. Please ensure all task requirements are met.", "error");
+          setTerminalLogs(prev => [...prev, `\n[SYSTEM ERROR]: Verification failed on "${activeTask.title}". Check imports or array definitions.`]);
         }
       };
 
       // Automatically generate a complete README on active request
       const forceAutoReadme = () => {
-        const total = CURRICULUM_TASKS.length;
-        const current = completedTaskIds.length;
-        const autoText = `# PythonVerse Workspace Portfolio\n\n## Academic Summary\n- **Project Status**: ${current === total ? "COMPLETED" : "IN PROGRESS"}\n- **Verification Completion**: ${current} / ${total} tasks checked.\n\n## Projects Detail Roadmap\n${CURRICULUM_TASKS.map((t, idx) => {
-          const done = completedTaskIds.includes(t.id);
-          return `### ${idx + 1}. ${t.title}\n- **Library**: \`${t.library}\`\n- **Status**: ${done ? "✅ COMPLETED" : "⏳ IN PROGRESS"}\n- **Goal**: ${t.useCase}\n`;
-        }).join("\n")}\n\n*Auto-generated safely on ${new Date().toLocaleDateString()}*`;
+        if (!studentProject) return;
+        const total = studentProject.tasks.length;
+        const current = studentProject.tasks.filter(t => completedTaskIds.includes(t.id)).length;
+        
+        const text = `# ${studentProject.projectName} Portfolio\n\n## Academic Summary\n- **Project Status**: ${current === total ? "COMPLETED" : "IN PROGRESS"}\n- **Tasks Completed**: ${current} / ${total} tasks checked.\n\n## Progressive Project Tasks Map\n${studentProject.tasks.map((t, idx) => {
+          const isDone = completedTaskIds.includes(t.id);
+          return `### Task ${idx + 1}: ${t.title}\n- **Library/Framework**: \`${t.library}\`\n- **Verification Status**: ${isDone ? "✅ VERIFIED" : "⏳ IN PROGRESS"}\n- **Use case**: ${t.useCase}\n`;
+        }).join("\n")}\n\n*Auto-generated inside PythonVerse Sandbox.*`;
 
-        setWorkspaceFiles(prev => ({
-          ...prev,
-          "README.md": autoText
-        }));
+        setWorkspaceFiles(prev => ({ ...prev, "README.md": text }));
         setActiveFile("README.md");
-        triggerToast("Generated custom README.md inside sandbox.");
+        triggerToast("Custom README.md successfully created inside Workspace!");
       };
 
       // Simulated project download containing all code assets
       const handleDownloadProject = () => {
-        let textManifest = `========================================================\nPYTHONVERSE ACADEMY PROJECT WORKSPACE ZIP BUNDLE\n========================================================\n\n`;
+        let manifest = `========================================================\nPYTHONVERSE PROJECT WORKSPACE ZIP BUNDLE\n========================================================\n\n`;
         Object.keys(workspaceFiles).forEach(fileName => {
-          textManifest += `--- FILE: ${fileName} ---\n${workspaceFiles[fileName]}\n\n`;
+          manifest += `--- FILE: ${fileName} ---\n${workspaceFiles[fileName]}\n\n`;
         });
 
-        const blob = new Blob([textManifest], { type: "text/plain" });
+        const blob = new Blob([manifest], { type: "text/plain" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "pythonverse_completed_project.zip.txt";
+        a.download = `${studentProject ? studentProject.projectName.replace(/\s+/g, '_') : 'python_project'}_workspace.zip.txt`;
         a.click();
         URL.revokeObjectURL(url);
-        triggerToast("Downloaded simulated project bundle!");
+        triggerToast("Downloaded simulated project structure package!");
       };
 
+      // File system creation handlers
       const handleCreateFile = (e) => {
         e.preventDefault();
         const f = newFileName.trim();
@@ -404,12 +908,244 @@
         triggerToast(`Removed file: ${name}`);
       };
 
-      const isAllProjectCompleted = completedTaskIds.length === CURRICULUM_TASKS.length;
+      // Admin actions
+      const postAnnouncement = (e) => {
+        e.preventDefault();
+        if (!adminAnnTitle.trim() || !adminAnnText.trim()) return;
 
+        const banner = {
+          id: Date.now(),
+          title: adminAnnTitle,
+          date: new Date().toLocaleDateString(),
+          text: adminAnnText
+        };
+
+        setAnnouncements(prev => [banner, ...prev]);
+        setAdminAnnTitle("");
+        setAdminAnnText("");
+        triggerToast("Broadcast published!");
+      };
+
+      const resetStudentProgress = (id) => {
+        const student = USER_ROSTER.find(s => s.id === id);
+        if (!student) return;
+
+        // Clear completed task IDs matching this student's task templates prefix
+        const prefix = id === "KD001" ? "kd_" : id === "PJ002" ? "pj_" : id === "RK003" ? "rk_" : id === "SP004" ? "sp_" : "kk_";
+        const nextCompleted = completedTaskIds.filter(taskId => !taskId.startsWith(prefix));
+        setCompletedTaskIds(nextCompleted);
+        triggerToast(`Progress for ${student.name} reset successfully!`);
+      };
+
+      // Verify overall project completeness
+      const isAllProjectCompleted = useMemo(() => {
+        if (!studentProject) return false;
+        return studentProject.tasks.every(t => completedTaskIds.includes(t.id));
+      }, [studentProject, completedTaskIds]);
+
+      // Render login screen when unauthenticated
+      if (!currentUser) {
+        return (
+          <div className="flex-1 flex flex-col justify-center items-center p-6 bg-earth-50">
+            <div className="w-full max-w-md bg-white border border-earth-200 rounded-2xl shadow-xl p-8">
+              
+              <div className="text-center mb-6">
+                <div className="inline-flex bg-earth-600 text-white p-3.5 rounded-2xl mb-3 shadow-md shadow-earth-500/20">
+                  <Icons.Code />
+                </div>
+                <h2 className="text-2xl font-extrabold text-earth-800 tracking-tight">PythonVerse Academy</h2>
+                <p className="text-xs text-earth-500 mt-1 uppercase font-semibold tracking-wider">LMS Roster & Sandbox IDE</p>
+              </div>
+
+              {loginError && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-800 text-xs rounded-xl font-medium">
+                  {loginError}
+                </div>
+              )}
+
+              <form onSubmit={handleLogin} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-earth-500 uppercase tracking-wide mb-1.5">User ID</label>
+                  <input
+                    type="text"
+                    placeholder="Enter Predefined ID (e.g. PJ002)"
+                    value={loginId}
+                    onChange={e => setLoginId(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-earth-200 bg-earth-50 focus:ring-2 focus:ring-earth-500 focus:outline-none text-earth-800 text-xs font-medium"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-earth-500 uppercase tracking-wide mb-1.5">Secure Password</label>
+                  <input
+                    type="password"
+                    placeholder="••••••••"
+                    value={loginPassword}
+                    onChange={e => setLoginPassword(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-earth-200 bg-earth-50 focus:ring-2 focus:ring-earth-500 focus:outline-none text-earth-800 text-xs font-medium"
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-earth-700 hover:bg-earth-800 text-white font-bold py-3.5 rounded-xl text-xs transition shadow-lg shadow-earth-700/10"
+                >
+                  Sign In to Academy
+                </button>
+              </form>
+            </div>
+          </div>
+        );
+      }
+
+      // Render Admin interface if role matches
+      if (currentUser.role === "admin") {
+        const activeAdminStudent = PROJECTS_DATABASE[selectedAdminStudentId];
+        const prefix = selectedAdminStudentId === "KD001" ? "kd_" : selectedAdminStudentId === "PJ002" ? "pj_" : selectedAdminStudentId === "RK003" ? "rk_" : selectedAdminStudentId === "SP004" ? "sp_" : "kk_";
+        const verifiedTasksCount = completedTaskIds.filter(id => id.startsWith(prefix)).length;
+
+        return (
+          <div className="flex-1 flex flex-col bg-earth-50">
+            {/* Admin Header */}
+            <header className="border-b border-earth-200 bg-earth-100 px-6 py-4 flex items-center justify-between shadow-sm">
+              <div className="flex items-center space-x-3">
+                <div className="bg-amber-700 p-2.5 rounded-xl text-earth-50">
+                  <Icons.Shield />
+                </div>
+                <div>
+                  <h1 className="font-extrabold text-lg text-earth-800">
+                    Admin Control Panel <span className="text-earth-500 font-light">Host</span>
+                  </h1>
+                  <p className="text-[10px] text-earth-500 font-semibold tracking-wider uppercase">Overview & Classroom Monitoring</p>
+                </div>
+              </div>
+
+              <button
+                onClick={handleLogout}
+                className="bg-earth-700 hover:bg-earth-800 text-earth-50 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5"
+              >
+                <Icons.LogOut />
+                <span>Log Out</span>
+              </button>
+            </header>
+
+            {/* Admin Dashboard Body */}
+            <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 p-6">
+              
+              {/* Left Column - Students list */}
+              <div className="lg:col-span-4 bg-white border border-earth-200 rounded-2xl p-6 space-y-4">
+                <h3 className="font-extrabold text-xs text-earth-500 uppercase tracking-widest">Enrolled Students</h3>
+                <div className="space-y-2">
+                  {USER_ROSTER.filter(u => u.role === "student").map(student => {
+                    const studentPrefix = student.id === "KD001" ? "kd_" : student.id === "PJ002" ? "pj_" : student.id === "RK003" ? "rk_" : student.id === "SP004" ? "sp_" : "kk_";
+                    const doneCount = completedTaskIds.filter(id => id.startsWith(studentPrefix)).length;
+                    return (
+                      <button
+                        key={student.id}
+                        onClick={() => setSelectedAdminStudentId(student.id)}
+                        className={`w-full text-left p-4 rounded-xl border transition ${
+                          selectedAdminStudentId === student.id
+                            ? "bg-earth-100 border-earth-300"
+                            : "bg-earth-50/50 hover:bg-earth-100/60 border-earth-200"
+                        }`}
+                      >
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="font-bold text-sm text-earth-800">{student.name}</span>
+                          <span className="text-[10px] bg-white border border-earth-200 px-2 py-0.5 rounded font-bold text-earth-600">
+                            {doneCount} / 10 Tasks
+                          </span>
+                        </div>
+                        <div className="text-[10px] text-earth-400">ID: {student.id}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Right Column - Selected student monitoring & actions */}
+              <div className="lg:col-span-8 space-y-6">
+                
+                {/* Progress Review card */}
+                {activeAdminStudent && (
+                  <div className="bg-white border border-earth-200 rounded-2xl p-6 space-y-6 shadow-sm">
+                    <div className="flex justify-between items-center border-b border-earth-200 pb-4">
+                      <div>
+                        <h4 className="text-xs font-extrabold text-earth-500 uppercase tracking-widest">Selected Student Progress</h4>
+                        <h2 className="text-lg font-extrabold text-earth-800 mt-1">{activeAdminStudent.studentName}</h2>
+                        <p className="text-xs text-earth-400 mt-0.5">Project: <strong className="text-earth-600">{activeAdminStudent.projectName}</strong></p>
+                      </div>
+
+                      <button
+                        onClick={() => resetStudentProgress(selectedAdminStudentId)}
+                        className="bg-red-50 hover:bg-red-100 text-red-800 border border-red-200 px-3 py-1.5 rounded-xl text-xs font-bold transition"
+                      >
+                        Reset Progress
+                      </button>
+                    </div>
+
+                    {/* Progressive Task Completion Status */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {activeAdminStudent.tasks.map((task, idx) => {
+                        const verified = completedTaskIds.includes(task.id);
+                        return (
+                          <div key={task.id} className="p-3.5 bg-earth-50/50 rounded-xl border border-earth-100 space-y-2">
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] font-extrabold text-earth-500">TASK {idx + 1} • {task.library}</span>
+                              <span className={`w-2.5 h-2.5 rounded-full ${verified ? 'bg-emerald-500' : 'bg-earth-200'}`} />
+                            </div>
+                            <h4 className="font-bold text-xs text-earth-800 truncate">{task.title}</h4>
+                            <div className="w-full bg-earth-200 h-1.5 rounded-full overflow-hidden">
+                              <div style={{ width: verified ? '100%' : '0%' }} className="bg-earth-600 h-full transition-all duration-300" />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Broadcast Announcements posting */}
+                <div className="bg-white border border-earth-200 rounded-2xl p-6 space-y-4 shadow-sm">
+                  <h3 className="font-extrabold text-xs text-earth-500 uppercase tracking-widest">Broadcast Announcement</h3>
+                  <form onSubmit={postAnnouncement} className="space-y-4">
+                    <input
+                      type="text"
+                      placeholder="Title of announcement..."
+                      value={adminAnnTitle}
+                      onChange={e => setAdminAnnTitle(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-earth-200 bg-earth-50 text-xs text-earth-800 focus:outline-none focus:ring-2 focus:ring-earth-500"
+                      required
+                    />
+                    <textarea
+                      placeholder="Content details..."
+                      value={adminAnnText}
+                      onChange={e => setAdminAnnText(e.target.value)}
+                      className="w-full h-20 px-4 py-2.5 rounded-xl border border-earth-200 bg-earth-50 text-xs text-earth-800 focus:outline-none focus:ring-2 focus:ring-earth-500 resize-none"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="bg-earth-700 hover:bg-earth-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition"
+                    >
+                      Publish Announcement Post
+                    </button>
+                  </form>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        );
+      }
+
+      // Render student interface
       return (
         <div className="flex-1 flex flex-col bg-earth-50">
           
-          {/* Header Panel */}
+          {/* Main Workspace Header */}
           <header className="border-b border-earth-200 bg-earth-100 px-6 py-4 flex items-center justify-between shadow-sm">
             <div className="flex items-center space-x-3">
               <div className="bg-earth-600 p-2.5 rounded-xl text-earth-50">
@@ -424,15 +1160,21 @@
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="hidden md:flex items-center space-x-3 text-xs bg-white border border-earth-200 px-4 py-2 rounded-xl">
+              <div className="hidden md:flex items-center space-x-3 text-xs bg-white border border-earth-200 px-4 py-2 rounded-xl shadow-sm">
                 <span className="font-semibold text-earth-700">Course Completion Track:</span>
                 <div className="w-24 bg-earth-200 h-2.5 rounded-full overflow-hidden">
                   <div 
-                    style={{ width: `${(completedTaskIds.length / CURRICULUM_TASKS.length) * 100}%` }}
+                    style={{
+                      width: `${
+                        (studentProject ? completedTaskIds.filter(id => studentProject.tasks.some(t => t.id === id)).length / studentProject.tasks.length : 0) * 100
+                      }%`
+                    }}
                     className="bg-earth-600 h-full transition-all duration-300"
                   />
                 </div>
-                <span className="font-bold text-earth-800">{completedTaskIds.length} / {CURRICULUM_TASKS.length}</span>
+                <span className="font-bold text-earth-800">
+                  {studentProject ? completedTaskIds.filter(id => studentProject.tasks.some(t => t.id === id)).length : 0} / {studentProject ? studentProject.tasks.length : 10}
+                </span>
               </div>
 
               <button
@@ -442,32 +1184,42 @@
                 <Icons.Download />
                 <span>Download Project</span>
               </button>
+
+              <button
+                onClick={handleLogout}
+                className="bg-earth-200 hover:bg-earth-300 text-earth-800 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5"
+                title="Log out of current account"
+              >
+                <Icons.LogOut />
+                <span className="hidden md:inline">Logout</span>
+              </button>
             </div>
           </header>
 
-          {/* Toast Alert popup */}
+          {/* Toast alert popup */}
           {toast && (
             <div className={`fixed top-4 right-4 z-50 flex items-center space-x-2 px-5 py-3 rounded-xl shadow-md text-xs font-bold transition-all transform ${
-              toast.type === "error" ? "bg-red-50 border border-red-200 text-red-800" : "bg-earth-100 border border-earth-300 text-earth-800"
+              toast.type === "error" ? "bg-red-50 border border-red-200 text-red-800 animate-pulse" : "bg-earth-100 border border-earth-300 text-earth-800"
             }`}>
               <span>{toast.msg}</span>
             </div>
           )}
 
-          {/* Core Playground */}
+          {/* Playground Interface */}
           <div className="flex-1 flex flex-col lg:flex-row overflow-hidden max-h-[calc(100vh-73px)]">
             
-            {/* Left Side: Tasks & Curriculum Info (White and light Brown style) */}
+            {/* Left Column: Task Explorer (Detailed Project Tasks & Roster Guidelines) */}
             <aside className="w-full lg:w-[420px] bg-white border-r border-earth-200 p-6 flex flex-col justify-between overflow-y-auto animate-fadeIn">
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-xs font-extrabold text-earth-500 uppercase tracking-widest mb-1">Project Modules</h2>
-                  <p className="text-xs text-earth-400">Complete each milestone task below by updating `main.py` in the workspace.</p>
+                  <h2 className="text-xs font-extrabold text-earth-500 uppercase tracking-widest mb-1">Your Project Dashboard</h2>
+                  <h3 className="font-extrabold text-base text-earth-800 leading-tight mt-1">{studentProject ? studentProject.projectName : "Dynamic Assignment"}</h3>
+                  <p className="text-[10px] text-earth-400 mt-0.5">Enrolled Student: <strong>{studentProject ? studentProject.studentName : "Host"}</strong></p>
                 </div>
 
-                {/* Vertical Task Milestones List */}
+                {/* Vertical Task Checklist cards */}
                 <div className="space-y-3">
-                  {CURRICULUM_TASKS.map((t, idx) => {
+                  {studentProject && studentProject.tasks.map((t, idx) => {
                     const active = activeTaskIdx === idx;
                     const done = completedTaskIds.includes(t.id);
                     return (
@@ -477,7 +1229,7 @@
                         className={`p-4 rounded-xl border text-left cursor-pointer transition ${
                           active
                             ? "bg-earth-100 border-earth-300 shadow-sm"
-                            : "bg-earth-50/50 hover:bg-earth-50 border-earth-200"
+                            : "bg-earth-50/50 hover:bg-earth-100/50 border-earth-200"
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1.5">
@@ -487,12 +1239,12 @@
                           {done && (
                             <span className="flex items-center space-x-0.5 text-xs text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">
                               <Icons.CheckCircle />
-                              <span className="text-[10px]">Verified</span>
+                              <span className="text-[9px]">Verified</span>
                             </span>
                           )}
                         </div>
 
-                        <h3 className="font-bold text-sm text-earth-800 mb-2">{t.title}</h3>
+                        <h3 className="font-bold text-sm text-earth-800 mb-2 truncate">{t.title}</h3>
 
                         {/* Local progress bar for this specific task */}
                         <div className="space-y-1">
@@ -512,90 +1264,91 @@
                   })}
                 </div>
 
-                {/* Selected Active Task Documentation */}
-                <div className="border-t border-earth-200 pt-6 space-y-4">
-                  <div>
-                    <h3 className="text-xs font-extrabold text-earth-500 uppercase tracking-widest">Active Task Guide</h3>
-                    <h4 className="font-extrabold text-base text-earth-800 mt-1">{activeTask.title}</h4>
-                    <p className="text-xs text-earth-500 mt-2 leading-relaxed italic">
-                      "Use case: {activeTask.useCase}"
-                    </p>
-                  </div>
+                {/* Selected Active Task Documentation and info */}
+                {activeTask && (
+                  <div className="border-t border-earth-200 pt-6 space-y-4">
+                    <div>
+                      <h3 className="text-xs font-extrabold text-earth-500 uppercase tracking-widest">Active Task Info</h3>
+                      <h4 className="font-extrabold text-base text-earth-800 mt-1">{activeTask.title}</h4>
+                      <p className="text-xs text-earth-500 mt-2 leading-relaxed italic">
+                        "Use case: {activeTask.useCase}"
+                      </p>
+                    </div>
 
-                  <div className="space-y-1.5">
-                    <span className="text-[10px] font-extrabold text-earth-400 uppercase tracking-widest">Library Information</span>
-                    <p className="text-xs text-earth-600 leading-relaxed bg-earth-50 p-3 rounded-lg border border-earth-100 font-medium">
-                      {activeTask.info}
-                    </p>
-                  </div>
+                    <div className="space-y-1.5">
+                      <span className="text-[10px] font-extrabold text-earth-400 uppercase tracking-widest">Technical Guidelines</span>
+                      <p className="text-xs text-earth-600 leading-relaxed bg-earth-50 p-3.5 rounded-xl border border-earth-100 font-medium">
+                        {activeTask.info}
+                      </p>
+                    </div>
 
-                  <div className="space-y-2">
-                    <span className="text-[10px] font-extrabold text-earth-400 uppercase tracking-widest">Verification Criteria</span>
-                    <ul className="list-disc pl-4 space-y-1">
-                      {activeTask.requirements.map((req, i) => (
-                        <li key={i} className="text-xs text-earth-600 leading-relaxed">
-                          {req}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-extrabold text-earth-400 uppercase tracking-widest">Checklist Criteria</span>
+                      <ul className="list-disc pl-4 space-y-1">
+                        {activeTask.requirements.map((req, i) => (
+                          <li key={i} className="text-xs text-earth-600 leading-relaxed">
+                            {req}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
-                  <div className="space-y-2">
-                    <span className="text-[10px] font-extrabold text-earth-400 uppercase tracking-widest">Syntax Assistant Snippet</span>
-                    <pre className="p-3 bg-earth-100 rounded-lg text-xs monospace text-earth-800 select-all border border-earth-200 whitespace-pre-wrap leading-relaxed">
-                      {activeTask.syntaxGuide}
-                    </pre>
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-extrabold text-earth-400 uppercase tracking-widest">Syntax Assistant Snippet</span>
+                      <pre className="p-3 bg-earth-100 rounded-lg text-xs monospace text-earth-800 select-all border border-earth-200 whitespace-pre-wrap leading-relaxed">
+                        {activeTask.syntaxGuide}
+                      </pre>
+                    </div>
                   </div>
-                </div>
-              </div>
-
-              {/* Reset progress and help tools */}
-              <div className="border-t border-earth-200 pt-6 mt-6 flex flex-col space-y-2">
-                <button
-                  onClick={() => {
-                    setCompletedTaskIds([]);
-                    setTerminalLogs(["Workspace reset. Starting from Task 1!"]);
-                    setWorkspaceFiles(prev => ({
-                      ...prev,
-                      "README.md": "# PythonVerse Workspace\nSelect tasks from the left panel to begin working.\n"
-                    }));
-                    triggerToast("Reset all task completions.");
-                  }}
-                  className="w-full text-center text-xs font-semibold text-earth-500 hover:text-earth-700 py-1"
-                >
-                  Clear Progress & Restart Course
-                </button>
+                )}
               </div>
             </aside>
 
-            {/* Right Side: IDE Editor, Interactive Terminal & Celebratory Completeness Check */}
+            {/* Right Column: Code Editor workspace, Terminal & Visual Output Previews */}
             <div className="flex-1 flex flex-col bg-earth-100 p-6 space-y-4 overflow-y-auto">
               
-              {/* Celeb completion message */}
+              {/* Project completion celebration banner */}
               {isAllProjectCompleted && (
-                <div className="bg-earth-100 border-2 border-earth-500 rounded-2xl p-6 text-center animate-bounce shadow-md">
+                <div className="bg-[#fbf9f4] border-2 border-earth-500 rounded-2xl p-6 text-center animate-bounce shadow-md">
                   <span className="text-3xl">🎉</span>
                   <h2 className="text-lg font-extrabold text-earth-800 mt-2">Congratulations! Your Project is Completed!</h2>
-                  <p className="text-xs text-earth-500 max-w-md mx-auto mt-1">
-                    You have verified and validated all curriculum matrices successfully. Check the automatically updated `README.md` file and download your package.
+                  <p className="text-xs text-earth-500 max-w-md mx-auto mt-1 leading-relaxed">
+                    You have verified and validated all 10 project milestones successfully. Check the automatically updated `README.md` file in the Explorer and download your workspace file bundle.
                   </p>
                 </div>
               )}
 
-              {/* Visual Split Panels (Editor Left, Terminal/Preview Right) */}
+              {/* Announcements panel block for students */}
+              {announcements.length > 0 && (
+                <div className="bg-[#fdfbf7] border border-earth-200 rounded-2xl p-4 shadow-sm">
+                  <div className="flex items-center space-x-2 text-xs font-bold text-earth-500 uppercase tracking-wider mb-2">
+                    <span>📢 Platform Notice Broadcast</span>
+                  </div>
+                  <div className="space-y-2">
+                    {announcements.slice(0, 1).map(ann => (
+                      <div key={ann.id} className="text-xs">
+                        <strong className="text-earth-800 block">{ann.title} ({ann.date})</strong>
+                        <span className="text-earth-600 block mt-0.5 leading-relaxed">{ann.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Workspace Split layouts */}
               <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4">
                 
-                {/* Left: Code Workspace */}
+                {/* Left Area: Code workspace block */}
                 <div className="lg:col-span-7 bg-white border border-earth-200 rounded-2xl flex flex-col justify-between overflow-hidden min-h-[420px] shadow-sm">
                   
-                  {/* File Workspace Header */}
+                  {/* File Workspace Header tabs */}
                   <div className="bg-earth-50 border-b border-earth-200 flex items-center justify-between px-4 py-2">
                     <div className="flex items-center space-x-1 overflow-x-auto">
                       {Object.keys(workspaceFiles).map(name => (
                         <button
                           key={name}
                           onClick={() => setActiveFile(name)}
-                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1 ${
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 ${
                             activeFile === name
                               ? "bg-white border border-earth-200 text-earth-800 shadow-sm"
                               : "text-earth-400 hover:text-earth-600"
@@ -634,9 +1387,9 @@
                     </button>
                   </div>
 
-                  {/* Sand/Parchment text editor area */}
+                  {/* Sand styled light editor canvas area */}
                   <div className="flex-1 flex overflow-hidden bg-[#faf8f5]">
-                    {/* Line Numbers column */}
+                    {/* Line numbers Column */}
                     <div className="w-10 bg-earth-100 text-earth-400 text-right pr-2 py-4 select-none border-r border-earth-200 monospace text-xs leading-relaxed space-y-0.5">
                       {Array.from({ length: 25 }).map((_, i) => (
                         <div key={i}>{i + 1}</div>
@@ -657,7 +1410,7 @@
 
                   {/* Execution footer controls */}
                   <div className="bg-earth-50 border-t border-earth-200 px-4 py-3 flex justify-between items-center">
-                    <span className="text-[10px] font-semibold text-earth-400">Sandbox Code Compiler v1.5</span>
+                    <span className="text-[10px] font-semibold text-earth-400">Sandbox Code Compiler v1.6</span>
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={handleRunCode}
@@ -678,7 +1431,7 @@
 
                 </div>
 
-                {/* Right: Terminal Console logs & Visualization elements */}
+                {/* Right Area: Terminal emulator & Output visualization panels */}
                 <div className="lg:col-span-5 bg-[#faf8f5] border border-earth-200 rounded-2xl flex flex-col justify-between overflow-hidden min-h-[420px] shadow-sm">
                   
                   {/* Selector tabs */}
@@ -705,7 +1458,7 @@
                   <div className="flex-1 p-4 overflow-y-auto monospace text-xs text-earth-800">
                     {viewMode === "terminal" ? (
                       <div className="space-y-2 h-full flex flex-col justify-between">
-                        <pre className="whitespace-pre-wrap leading-relaxed">
+                        <pre className="whitespace-pre-wrap leading-relaxed select-text">
                           {terminalLogs.join("\n")}
                         </pre>
                         <div className="flex items-center border-t border-earth-200 pt-2 text-[10px] text-earth-400">
@@ -743,8 +1496,8 @@
                                   <span className="bg-earth-100 text-earth-700 text-[9px] font-bold px-2 py-0.5 rounded-full">ACTIVE DB</span>
                                 </div>
                                 <div className="bg-earth-50 border p-3 rounded-lg text-xs space-y-1">
-                                  <div className="font-bold">TABLE: users</div>
-                                  <div className="text-[10px] font-mono text-earth-500">Columns: [id (INTEGER), score (INTEGER)]</div>
+                                  <div className="font-bold">TABLE: active_reservations</div>
+                                  <div className="text-[10px] font-mono text-earth-500">Columns: [id (INTEGER), status (TEXT)]</div>
                                 </div>
                               </div>
                             )}
@@ -756,7 +1509,7 @@
                                   <span className="bg-emerald-100 text-emerald-800 text-[9px] font-bold px-2 py-0.5 rounded-full">HTTP OK</span>
                                 </div>
                                 <div className="bg-emerald-50 border border-emerald-100 p-2.5 rounded-lg flex items-center justify-between text-xs text-emerald-800 font-semibold">
-                                  <span>GET /</span>
+                                  <span>GET /health</span>
                                   <span className="text-[10px]">Read Home</span>
                                 </div>
                                 <pre className="p-3 bg-earth-50 rounded-lg text-[10px] text-earth-500 font-mono">
@@ -786,8 +1539,8 @@
 
           {/* New File Creation Modal Dialog */}
           {showFileModal && (
-            <div className="fixed inset-0 bg-[#3e2920]/40 z-50 flex items-center justify-center p-4">
-              <div className="bg-white border border-earth-200 rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-xl">
+            <div className="fixed inset-0 bg-[#3e2920]/40 z-50 flex items-center justify-center p-4 animate-fadeIn">
+              <div className="bg-white border border-earth-200 rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-xl animate-scaleUp">
                 <h3 className="font-extrabold text-sm text-earth-800">Add Workspace File</h3>
                 <form onSubmit={handleCreateFile} className="space-y-4">
                   <input
