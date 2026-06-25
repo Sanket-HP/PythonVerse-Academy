@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,6 +38,8 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
+      background-color: #fdfbf7;
+      color: #3e2920;
     }
     .monospace {
       font-family: 'Fira Code', monospace;
@@ -75,7 +77,7 @@
 
   <!-- Application Source Code -->
   <script type="text/babel">
-    const { useState, useEffect, useMemo } = React;
+    const { useState, useEffect, useMemo, useRef } = React;
 
     // --- SECURED SEED USER DATABASE ---
     const USER_ROSTER = [
@@ -104,7 +106,8 @@
       Shield: () => <svg className="w-4 h-4 text-amber-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
     };
 
-    // --- 5 DISTINCT STUDENT PROJECTS (10 DETAILED TASKS PER PROJECT) ---
+    // --- 5 DISTINCT STUDENT PROJECTS (10 DETAILED STEP-BY-STEP TASKS PER PROJECT) ---
+    // Core rule: The templates do *not* contain the finalized solution code. The user writes it.
     const PROJECTS_DATABASE = {
       "KD001": {
         studentName: "Kedar Chougale",
@@ -117,7 +120,19 @@
             useCase: "Setting up mathematical vector foundations for student grading systems",
             info: "NumPy vectors are used to carry statistical arrays in memory for fast element-wise operations.",
             requirements: ["Import numpy as 'np'", "Define a grades variable using 'np.array([85, 90, 78])'"],
-            codeTemplate: "import numpy as np\n\n# Initialize vector metrics\ngrades = np.array([85, 90, 78])\nprint('Grades Loaded Successfully')",
+            steps: [
+              "1. Open your code workspace and click on the 'main.py' file tab.",
+              "2. Declare a standard import statement targeting NumPy using the conventional alias 'np'.",
+              "3. Initialize a clean Python list containing integer marks: 85, 90, and 78.",
+              "4. Pass the Python list argument inside the `np.array()` vector construction command.",
+              "5. Save the output of the array construction into a local variable named `grades`.",
+              "6. Write a print invocation displaying the constructed grades vector cleanly.",
+              "7. Add an auxiliary print statement to display the standard NumPy datatype using `grades.dtype`.",
+              "8. Ensure there are no hanging indented blocks or syntax errors in the file.",
+              "9. Run the file first with the compilation controls to test visual feedback.",
+              "10. Execute the program logic completely and click the 'Check My Progress' checker button."
+            ],
+            codeTemplate: "# Write your NumPy Matrix script here to verify Task 1...\n",
             verify: (code) => code.includes("import numpy as np") && code.includes("np.array") && code.includes("85")
           },
           {
@@ -127,7 +142,19 @@
             useCase: "Loading offline spreadsheet data logs into reactive in-memory structures",
             info: "Pandas provides data structuring tools like DataFrames to cleanly manage student enrollment records.",
             requirements: ["Import pandas as 'pd'", "Create a dataframe from a dictionary containing 'Students' and 'Grades'"],
-            codeTemplate: "import pandas as pd\n\ndata = {'Students': ['A', 'B'], 'Grades': [85, 90]}\ndf = pd.DataFrame(data)\nprint(df)",
+            steps: [
+              "1. Retain the NumPy import or add a new header importing Pandas library with standard reference 'pd'.",
+              "2. Construct a local Python dictionary holding system records.",
+              "3. Inside the dictionary, specify key 'Students' pointing to ['A', 'B'].",
+              "4. Map key 'Grades' targeting elements [85, 90].",
+              "5. Instantiate your Pandas dataframe variable using the constructor: `pd.DataFrame(data)`.",
+              "6. Assign this newly created structural object into local variable `df`.",
+              "7. Output the structural contents using the `print(df)` command.",
+              "8. Avoid hardcoding index margins or manually indexing rows.",
+              "9. Test-compile your script utilizing the 'Run Code' control.",
+              "10. Click the progress validation module to unlock the next assignment."
+            ],
+            codeTemplate: "# Task 2: Build and structure your Pandas DataFrame ledger here...\n",
             verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
           },
           {
@@ -137,7 +164,19 @@
             useCase: "Locating and cleansing invalid data cells in academic registers",
             info: "Cleaning dirty rows ensures calculations are accurate before committing back to persistent ledgers.",
             requirements: ["Verify use of 'dropna()' or 'fillna(0)' to parse empty cells"],
-            codeTemplate: "import pandas as pd\nimport numpy as np\n\ndata = {'Grades': [85, np.nan, 90]}\ndf = pd.DataFrame(data)\nclean_df = df.fillna(0)\nprint(clean_df)",
+            steps: [
+              "1. Keep your Pandas structure initialized safely at the head of the file.",
+              "2. Introduce empty cell placeholders using the NaN constant from NumPy or raw Python parameters.",
+              "3. Construct a dataframe variable holding values list containing `np.nan` metrics.",
+              "4. Implement the Pandas `.fillna(0)` cleanup routine to automatically convert NaN cells into zeroes.",
+              "5. Alternatively, invoke the `.dropna()` method to purge missing records entirely.",
+              "6. Assign this sanitized result output to a fresh dataframe reference.",
+              "7. Print the cleaned dataframe columns directly to standard output.",
+              "8. Confirm the original contaminated rows no longer contain invalid fields.",
+              "9. Click compile to watch standard output evaluate.",
+              "10. Trigger the 'Check My Progress' verification rule."
+            ],
+            codeTemplate: "# Task 3: Implement Data Cleansing routines inside your DataFrame here...\n",
             verify: (code) => code.includes("fillna") || code.includes("dropna")
           },
           {
@@ -147,7 +186,19 @@
             useCase: "Spinning up a localized SQL ledger to hold persistent records",
             info: "SQLite creates quick, light data structures without the burden of external database installation.",
             requirements: ["Import sqlite3 library", "Establish a database connection file 'academy.db'"],
-            codeTemplate: "import sqlite3\n\nconn = sqlite3.connect('academy.db')\nprint('Database active')",
+            steps: [
+              "1. Write an import statement referencing the built-in relational driver `sqlite3`.",
+              "2. Open a persistent connection using the driver's interface: `sqlite3.connect('academy.db')`.",
+              "3. Set the returned connector object reference to a variable named `conn`.",
+              "4. Ensure database files are loaded locally without hardcoded path dependencies.",
+              "5. Log a custom verification output message such as 'Database Connection Active'.",
+              "6. Implement a standard safe close action calling `conn.close()`.",
+              "7. Guard your script logic with a try-except structure to handle lock exceptions.",
+              "8. Cleanly format transaction parameters and double-check spacing.",
+              "9. Run the code block to guarantee no database operational errors arise.",
+              "10. Select the progressive tracker validation tab to test and proceed."
+            ],
+            codeTemplate: "# Task 4: Connect database structures and establish localized ledgers here...\n",
             verify: (code) => code.includes("import sqlite3") && code.includes("sqlite3.connect")
           },
           {
@@ -157,7 +208,19 @@
             useCase: "Executing SQL commands to structure student data tables",
             info: "Transactional parameters create local tables to keep roster entries aligned relational database rules.",
             requirements: ["Execute 'CREATE TABLE IF NOT EXISTS student_records' statement"],
-            codeTemplate: "import sqlite3\n\nconn = sqlite3.connect('academy.db')\nconn.execute('CREATE TABLE IF NOT EXISTS student_records (id INTEGER PRIMARY KEY, name TEXT, score INTEGER)')\nconn.close()",
+            steps: [
+              "1. Retain your established `sqlite3` module imports at the script head.",
+              "2. Open the transactional connection file named 'academy.db'.",
+              "3. Declare the SQL target schema: 'CREATE TABLE IF NOT EXISTS student_records...'.",
+              "4. Include basic relational field properties like (id INTEGER, name TEXT, score INTEGER).",
+              "5. Execute the database transaction leveraging your active connection calling `conn.execute()`.",
+              "6. Always trigger `conn.commit()` after completing schema transactions.",
+              "7. Safely close database connection instances using `.close()`.",
+              "8. Double check table string syntax structure for sqlite parameters syntax rules.",
+              "9. Execute local compilation and inspect terminal logging outputs.",
+              "10. Click 'Check My Progress' to evaluate script validation parameters."
+            ],
+            codeTemplate: "# Task 5: Execute SQLite tables construction schema transactions...\n",
             verify: (code) => code.includes("CREATE TABLE") && code.includes("student_records")
           },
           {
@@ -167,7 +230,19 @@
             useCase: "Extracting specific registry entries matching target performance scores",
             info: "Using SQL SELECT commands helps to isolate top performers efficiently.",
             requirements: ["Incorporate standard SQL 'SELECT' inside transaction call"],
-            codeTemplate: "import sqlite3\n\nconn = sqlite3.connect('academy.db')\ncursor = conn.cursor()\ncursor.execute('SELECT * FROM student_records')\nrows = cursor.fetchall()\nconn.close()",
+            steps: [
+              "1. Open connection pipelines targeting 'academy.db' safely.",
+              "2. Instantiate a dynamic cursor driver calling the connection `.cursor()` method.",
+              "3. Write a standard data queries format string: 'SELECT * FROM student_records'.",
+              "4. Fetch execution record arrays invoking `cursor.fetchall()`.",
+              "5. Loop through the rows to display matches onto the shell outputs console.",
+              "6. Cleanly release transactional assets on complete.",
+              "7. Manage error parameters using local exception handlers.",
+              "8. Confirm query syntax aligns with SQLite rules.",
+              "9. Validate terminal feedback by executing the local compilation.",
+              "10. Push the Check My Progress action check."
+            ],
+            codeTemplate: "# Task 6: Implement database query structures and loop outputs here...\n",
             verify: (code) => code.includes("SELECT")
           },
           {
@@ -177,7 +252,19 @@
             useCase: "Generating mean calculations from dynamic row structures",
             info: "Aggregate operations allow automatic score calculations on complex arrays.",
             requirements: ["Compute score aggregates with Pandas 'mean()' on data cells"],
-            codeTemplate: "import pandas as pd\ndf = pd.DataFrame({'scores': [85, 90, 78]})\navg = df['scores'].mean()\nprint(avg)",
+            steps: [
+              "1. Bring in the Pandas analytical namespace under typical 'pd' naming.",
+              "2. Construct a multi-element dataframe holding integer score columns.",
+              "3. Access the target column elements safely utilizing pandas array indexing rules.",
+              "4. Call the Pandas aggregate computation function: `.mean()` on the target list.",
+              "5. Assign the computed numerical class average value into a local variable.",
+              "6. Build a print statement display showing the processed averages clearly.",
+              "7. Guard operations against empty dataframe sizes to avoid division zero bugs.",
+              "8. Format all trailing float digits beautifully.",
+              "9. Evaluate outputs utilizing the run-scripts panel.",
+              "10. Complete task validation checks utilizing 'Check My Progress'."
+            ],
+            codeTemplate: "# Task 7: Execute class metrics aggregation utilizing Pandas libraries...\n",
             verify: (code) => code.includes("mean()")
           },
           {
@@ -187,7 +274,19 @@
             useCase: "Plotting visual distribution charts of academic parameters",
             info: "Plot layouts provide insights into structural classroom achievements.",
             requirements: ["Import 'matplotlib.pyplot as plt'", "Call standard 'plt.plot()' or 'plt.bar()' to render vectors"],
-            codeTemplate: "import matplotlib.pyplot as plt\n\nplt.bar(['Kedar', 'Pranav'], [85, 90])\nprint('Plotting executed successfully')",
+            steps: [
+              "1. Write standard import directive targeting Matplotlib: `import matplotlib.pyplot as plt`.",
+              "2. Build numerical vectors representing student identities and grades respectively.",
+              "3. Trigger standard plotting function bindings calling `plt.bar()` or `plt.plot()`.",
+              "4. Bind coordinate axes parameter metrics safely.",
+              "5. Label visual plotting configurations beautifully utilizing `plt.xlabel` and `plt.ylabel`.",
+              "6. Render structural plots to stdout using simulated `plt.show()` commands.",
+              "7. Double check data arrays are equal-length to prevent shape mismatch bugs.",
+              "8. Keep coordinates positive and balanced.",
+              "9. Run compilation checks and inspect active outputs.",
+              "10. Process verification metrics on the task checklist."
+            ],
+            codeTemplate: "# Task 8: Generate visual bar charts utilizing Matplotlib libraries...\n",
             verify: (code) => code.includes("import matplotlib.pyplot as plt") && (code.includes("plot") || code.includes("bar"))
           },
           {
@@ -197,7 +296,19 @@
             useCase: "Spinning up RESTful server gateways to query academic systems",
             info: "FastAPI creates standardized RESTful pathways using Python syntax decorators.",
             requirements: ["Import FastAPI", "Construct a global server variable using 'app = FastAPI()'"],
-            codeTemplate: "from fastapi import FastAPI\n\napp = FastAPI()\n@app.get('/')\ndef index():\n    return {'status': 'active'}",
+            steps: [
+              "1. Declare microservice imports using `from fastapi import FastAPI`.",
+              "2. Establish main service application engines: `app = FastAPI()`.",
+              "3. Bind home gateway paths utilizing REST route rules decorators: `@app.get('/')`.",
+              "4. Define entry definitions returning dictionary objects containing status metrics.",
+              "5. Avoid declaring dynamic positional arguments on basic index endpoints.",
+              "6. Check spelling of fastapi modules carefully.",
+              "7. Organize variables beautifully and keep scopes local.",
+              "8. Set default schemas properties cleanly.",
+              "9. Compile to evaluate ASGI runner simulations in the preview container.",
+              "10. Verify progress using the check criteria trigger."
+            ],
+            codeTemplate: "# Task 9: Initialize FastAPI service application schemas here...\n",
             verify: (code) => code.includes("from fastapi import FastAPI") && code.includes("app = FastAPI()")
           },
           {
@@ -207,7 +318,19 @@
             useCase: "Deploying high-performance server runners to process external requests",
             info: "Asynchronous servers map variables, parse data nodes, and respond dynamically under Starlette.",
             requirements: ["Setup asynchronous GET router path mapping '@app.get(\"/student\")'"],
-            codeTemplate: "from fastapi import FastAPI\n\napp = FastAPI()\n@app.get('/student')\ndef retrieve_student():\n    return {'name': 'Kedar', 'score': 95}",
+            steps: [
+              "1. Open active FastAPI router configuration layouts in main code workspace.",
+              "2. Structure endpoint routers targeting student listings: `@app.get('/student')`.",
+              "3. Declare structural async definitions mapping returned academic lists.",
+              "4. Match dictionaries properties containing names and grading scores metrics.",
+              "5. Confirm return structures map correctly inside REST gateway parameters.",
+              "6. Double check syntax matching of decorator rules.",
+              "7. Ensure path queries align with standards specifications.",
+              "8. Safely dispose duplicate routes in the file.",
+              "9. Execute ASGI simulation compile checks.",
+              "10. Finalize the student module pathway. Validate 100% completion metrics."
+            ],
+            codeTemplate: "# Task 10: Setup production async route structures on FastAPI here...\n",
             verify: (code) => code.includes("@app.get") && code.includes("student")
           }
         ]
@@ -223,7 +346,19 @@
             useCase: "Constructing matrix layouts for weather analytics across distinct grids",
             info: "Using high-performance arrays lets you manipulate multi-zone sensor logs at microsecond speed.",
             requirements: ["Import numpy as 'np'", "Generate temperature metrics with 'np.array([28.4, 31.2, 29.5])'"],
-            codeTemplate: "import numpy as np\ntemps = np.array([28.4, 31.2, 29.5])\nprint('Weather vectors active')",
+            steps: [
+              "1. Target 'main.py' file buffer structures inside workspace area.",
+              "2. Put the numerical calculations module import: `import numpy as np`.",
+              "3. Declare float lists containing climate parameters: 28.4, 31.2, 29.5.",
+              "4. Construct matrix grids utilizing standard arrays wrappers: `np.array()`.",
+              "5. Save values outputs inside variable references named `temps`.",
+              "6. Add a logging check mapping metrics directly to stdout.",
+              "7. Validate precision levels using typical NumPy shape parameters.",
+              "8. Check there are no compilation errors in indentation headers.",
+              "9. Compile code to see logs output values.",
+              "10. Trigger progress checks dynamically to unlock subsequent phases."
+            ],
+            codeTemplate: "# Task 1: Initialize NumPy float arrays for temperature matrices...\n",
             verify: (code) => code.includes("import numpy as np") && code.includes("np.array") && code.includes("28.4")
           },
           {
@@ -233,7 +368,19 @@
             useCase: "Extracting historical climate registers from file records",
             info: "DataFrames let you categorize tabular logs representing humidity, rain metrics, and wind vectors easily.",
             requirements: ["Import pandas as 'pd'", "Structure wind speed rows using 'pd.DataFrame()'"],
-            codeTemplate: "import pandas as pd\nwind_data = {'Day': ['Mon', 'Tue'], 'Wind': [12, 15]}\ndf = pd.DataFrame(wind_data)\nprint(df)",
+            steps: [
+              "1. Implement analytical pandas module calling standard alias reference 'pd'.",
+              "2. Construct weather listings holding Day parameters and Wind variables.",
+              "3. Initialize tabular frames utilizing standard parameters: `pd.DataFrame(wind_data)`.",
+              "4. Set structural results inside variable named `df`.",
+              "5. Output columns contents onto active console logs panel.",
+              "6. Double-check there are no structural leaks inside nested lists.",
+              "7. Keep datatypes cohesive to avoid parsing warnings.",
+              "8. Add comments verifying the active module segment.",
+              "9. Run files using the shell compiler to inspect telemetry logs.",
+              "10. Push the progress verification checklist rules."
+            ],
+            codeTemplate: "# Task 2: Build tabular Pandas DataFrame structure for climate records...\n",
             verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
           },
           {
@@ -243,7 +390,19 @@
             useCase: "Filtering meteorological record arrays to isolate extreme thermal peaks",
             info: "Conditional checks help screen dataset registers for warnings.",
             requirements: ["Apply row filter constraints on Pandas Dataframe (e.g. df[df['temp'] > 30])"],
-            codeTemplate: "import pandas as pd\ndf = pd.DataFrame({'temp': [28, 32, 35]})\nhot_days = df[df['temp'] > 30]\nprint(hot_days)",
+            steps: [
+              "1. Maintain DataFrame structure references on the workspace code.",
+              "2. Isolate thermal records values using condition indices: `df['temp'] > 30`.",
+              "3. Assign filtered subset results onto a localized variables reference.",
+              "4. Display matching elements cleanly onto screen logs.",
+              "5. Ensure boundaries values match requirement bounds precisely.",
+              "6. Verify index coordinates match row listings perfectly.",
+              "7. Clean up duplicates to avoid parsing data collisions.",
+              "8. Add informational comments validating logic details.",
+              "9. Compile script execution blocks safely.",
+              "10. Execute check criteria to verify progress."
+            ],
+            codeTemplate: "# Task 3: Implement conditional filtering algorithms on data frames...\n",
             verify: (code) => code.includes("df['temp']") || code.includes('df["temp"]')
           },
           {
@@ -253,7 +412,19 @@
             useCase: "Setting up lightweight SQLite databases to store threshold parameters",
             info: "Local ledgers store warning configurations across restarts.",
             requirements: ["Initialize SQLite engine connection", "Create local table 'weather_alerts'"],
-            codeTemplate: "import sqlite3\nconn = sqlite3.connect('alerts.db')\nconn.execute('CREATE TABLE IF NOT EXISTS weather_alerts (id INTEGER, message TEXT)')\nconn.close()",
+            steps: [
+              "1. Call built-in persistent database driver utilizing `import sqlite3`.",
+              "2. Configure localized connection instances using file named 'alerts.db'.",
+              "3. Trigger execution statements using sql queries: 'CREATE TABLE IF NOT EXISTS weather_alerts...'.",
+              "4. Map columns fields cleanly matching alert ID and status message variables.",
+              "5. Commit transactional state safely using the active connection.",
+              "6. Safely dispose structural cursor handles.",
+              "7. Implement standard database closure rules calling `.close()`.",
+              "8. Ensure query string is free from sql syntax errors.",
+              "9. Run compilation scripts to verify local files construction.",
+              "10. Click 'Check My Progress' to complete."
+            ],
+            codeTemplate: "# Task 4: Setup SQLite schema connections and local tables here...\n",
             verify: (code) => code.includes("sqlite3.connect") && code.includes("weather_alerts")
           },
           {
@@ -263,7 +434,19 @@
             useCase: "Executing structured insert transactions to log anomalies",
             info: "SQL transactions commit critical security events safely to SQLite databases.",
             requirements: ["Incorporate SQL 'INSERT' parameters inside execution statement"],
-            codeTemplate: "import sqlite3\nconn = sqlite3.connect('alerts.db')\nconn.execute(\"INSERT INTO weather_alerts VALUES (1, 'Storm Warning')\")\nconn.commit()\nconn.close()",
+            steps: [
+              "1. Keep database structures connected safely targeting 'alerts.db'.",
+              "2. Formulate database INSERT command strings.",
+              "3. Bind dynamic warning parameters within SQL statements securely.",
+              "4. Run update query calling database connection execute layers.",
+              "5. Confirm updates are written persistently invoking `conn.commit()`.",
+              "6. Free up db assets upon execution completion.",
+              "7. Guard sql statements from syntax parsing locks.",
+              "8. Add log strings showing success updates.",
+              "9. Verify console output results using execution controls.",
+              "10. Finalize milestone checking metrics on this task."
+            ],
+            codeTemplate: "# Task 5: Execute database record insertions and commit states...\n",
             verify: (code) => code.includes("INSERT") && code.includes("weather_alerts")
           },
           {
@@ -273,7 +456,19 @@
             useCase: "Scraping emergency warnings and advisory listings from weather bureaus",
             info: "BeautifulSoup parses complex HTML node configurations into clean variables arrays.",
             requirements: ["Import BeautifulSoup from bs4", "Instantiate parser object using 'html.parser'"],
-            codeTemplate: "from bs4 import BeautifulSoup\nhtml = '<html><div class=\"alert\">Cyclone Alert</div></html>'\nsoup = BeautifulSoup(html, 'html.parser')\nprint(soup.find(class_='alert').text)",
+            steps: [
+              "1. Put parsing libraries declaration: `from bs4 import BeautifulSoup`.",
+              "2. Supply raw HTML input mock configurations containing alert element strings.",
+              "3. Instantiate standard BeautifulSoup object: `BeautifulSoup(html, 'html.parser')`.",
+              "4. Fetch specific tags using class mapping parameters.",
+              "5. Write printed logs verifying string elements parser logic outputs.",
+              "6. Confirm parser types match requirements properties.",
+              "7. Double check imports are clean and correct.",
+              "8. Protect scraping modules from empty network targets.",
+              "9. Compile code script and verify output responses.",
+              "10. Trigger check criteria validation checks."
+            ],
+            codeTemplate: "# Task 6: Implement parsing engines using BeautifulSoup layouts...\n",
             verify: (code) => code.includes("BeautifulSoup") && code.includes("html.parser")
           },
           {
@@ -283,7 +478,19 @@
             useCase: "Calling external weather APIs to pull current meteorological conditions",
             info: "Requests manages HTTP network call blocks asynchronously.",
             requirements: ["Import 'requests'", "Formulate dummy target GET call using 'requests.get()'"],
-            codeTemplate: "import requests\n# Query simulated REST endpoint\nresponse = requests.get('https://api.weather.com/v1/mock', params={'city': 'Mumbai'})\nprint('REST Weather Loaded')",
+            steps: [
+              "1. Import standard requests execution libraries using `import requests`.",
+              "2. Set target mock REST interface endpoints values.",
+              "3. Execute standard REST requests calling `requests.get()`.",
+              "4. Check returned payload details or HTTP status variables.",
+              "5. Verify connection logic handles timeout metrics safely.",
+              "6. Handle communication boundaries carefully inside code block.",
+              "7. Avoid hardcoding confidential authorization keys.",
+              "8. Output response logs details directly to console stream.",
+              "9. Run the script compilation to test endpoint integrations.",
+              "10. Trigger progress validation checkers."
+            ],
+            codeTemplate: "# Task 7: Build API query clients using requests tools...\n",
             verify: (code) => code.includes("import requests") && code.includes("requests.get")
           },
           {
@@ -293,6 +500,18 @@
             useCase: "Rendering rich graphical plots depicting temperature fluctuations",
             info: "Plotly enables responsive graphic charts within HTML viewports.",
             requirements: ["Import 'plotly.graph_objects as go' or 'plotly.express as px'"],
+            steps: [
+              "1. Put standard interactive graphics module: `import plotly.graph_objects as go`.",
+              "2. Construct scatter or trace models using coordinate parameters.",
+              "3. Create chart figures invoking constructor `go.Figure()`.",
+              "4. Keep structural coordinate indices mapped properly.",
+              "5. Write printed validation outputs on successful configuration.",
+              "6. Double check chart definitions are aligned with parameters.",
+              "7. Add documentation to outline plotting attributes.",
+              "8. Maintain clear boundaries for layout scaling metrics.",
+              "9. Compile code to see interactive console outcomes.",
+              "10. Verify charts loaded correctly under preview panels."
+            ],
             codeTemplate: "import plotly.graph_objects as go\nfig = go.Figure(data=go.Scatter(x=[1,2], y=[28, 32]))\nprint('Plotly active')",
             verify: (code) => code.includes("plotly")
           },
@@ -303,6 +522,18 @@
             useCase: "Constructing responsive Flask routes to serve warning pages",
             info: "Flask leverages clean routes to serve dashboards over standard TCP/IP gateways.",
             requirements: ["Import Flask", "Initialize app with 'app = Flask(__name__)'"],
+            steps: [
+              "1. Declare micro WSGI backend layouts importing Flask.",
+              "2. Initialize app instances: `app = Flask(__name__)`.",
+              "3. Construct route mappings decorator targets: `@app.route('/')`.",
+              "4. Build standard return responses indicating system status values.",
+              "5. Prevent port allocation conflicts within local setup.",
+              "6. Double check syntax matching of decorators details.",
+              "7. Format response payloads beautifully.",
+              "8. Safely dispose duplicated router references.",
+              "9. Test server simulation layouts inside standard workspace compiler.",
+              "10. Confirm and clear console warnings before continuing."
+            ],
             codeTemplate: "from flask import Flask\napp = Flask(__name__)\n@app.route('/')\ndef weather():\n    return 'Weather OK'",
             verify: (code) => code.includes("from flask import Flask") && code.includes("app = Flask")
           },
@@ -313,6 +544,18 @@
             useCase: "Registering server parameters to listen for client triggers",
             info: "Running Flask servers lets external clients inspect telemetry metrics instantly.",
             requirements: ["Establish Flask route for endpoint '/alerts'"],
+            steps: [
+              "1. Open dynamic routing layouts in workspace.",
+              "2. Setup target alerting route path: `@app.route('/alerts')`.",
+              "3. Declare functions returning dictionary structures cleanly.",
+              "4. Return warning parameters like 'Cyclone Alert' details.",
+              "5. Protect endpoints parameters using standard schema validations.",
+              "6. Check capitalization of keywords inside path selectors.",
+              "7. Release server configuration assets upon completion.",
+              "8. Document active path details cleanly inside code blocks.",
+              "9. Run compilation checks and review server simulation results.",
+              "10. Push verification checker module. Track total project completion!"
+            ],
             codeTemplate: "from flask import Flask\napp = Flask(__name__)\n@app.route('/alerts')\ndef get_alerts():\n    return {'alert': 'Severe Rainfall Alert'}",
             verify: (code) => code.includes("route('/alerts')") || code.includes('route("/alerts")')
           }
@@ -329,7 +572,19 @@
             useCase: "Configuring vector matrices to store transactional expenses",
             info: "Array vectors handle complex numerical balances without float precision leaks.",
             requirements: ["Import numpy as 'np'", "Define transaction vector elements utilizing 'np.array'"],
-            codeTemplate: "import numpy as np\nbalances = np.array([-150.50, 2000.00, -45.00])\nprint('Finance Arrays active')",
+            steps: [
+              "1. Ensure 'main.py' file tab is selected in active workspace.",
+              "2. Enter standard array module import statement: `import numpy as np`.",
+              "3. Declare transaction ledger float inputs: -150.50, 2000.00, -45.00.",
+              "4. Assemble high speed vector structures: `np.array()`.",
+              "5. Save computed vector elements inside variable named `balances`.",
+              "6. Print vector parameters details cleanly onto standard shell.",
+              "7. Call basic NumPy operations validating totals metrics.",
+              "8. Clean up syntax formatting issues inside main block.",
+              "9. Execute script execution checking code correctness.",
+              "10. Click verification progress checking trigger."
+            ],
+            codeTemplate: "# Task 1: Build NumPy vectors containing financial ledger arrays...\n",
             verify: (code) => code.includes("import numpy as np") && code.includes("np.array")
           },
           {
@@ -339,7 +594,19 @@
             useCase: "Aggregating monthly income and tax matrices inside DataFrames",
             info: "Pandas formats unstructured logs into tidy tabular columns.",
             requirements: ["Import pandas as 'pd'", "Create transactional columns within standard DataFrame wrapper"],
-            codeTemplate: "import pandas as pd\ndf = pd.DataFrame({'Expenses': [120, 45], 'Category': ['Food', 'SaaS']})\nprint(df)",
+            steps: [
+              "1. Add tabular processing module: `import pandas as pd`.",
+              "2. Construct dictionary holdings containing Categories and Expenses properties.",
+              "3. Load elements into pandas frame constructs: `pd.DataFrame()`.",
+              "4. Print output columns onto active terminal panel.",
+              "5. Set correct naming parameters across dataframe columns.",
+              "6. Double check data consistency constraints across all lists.",
+              "7. Guard dataframe parsing logic from empty rows structures.",
+              "8. Comment code block segment validations clearly.",
+              "9. Run compile validation scripts inside sandboxed shell.",
+              "10. Click 'Check My Progress' to complete this milestone."
+            ],
+            codeTemplate: "# Task 2: Build tabular Pandas DataFrame structure for ledger records...\n",
             verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
           },
           {
@@ -349,7 +616,19 @@
             useCase: "Grouping transactions to identify expense patterns",
             info: "Aggregation metrics consolidate large arrays into structured budgets.",
             requirements: ["Incorporate Pandas DataFrame 'groupby()' to sum transaction records"],
-            codeTemplate: "import pandas as pd\ndf = pd.DataFrame({'Cost': [50, 150, 45], 'Category': ['Food', 'Utilities', 'Food']})\npivot = df.groupby('Category').sum()\nprint(pivot)",
+            steps: [
+              "1. Bring in the established dataframe configurations.",
+              "2. Apply pandas aggregations logic on columns: `df.groupby('Category')`.",
+              "3. Map values calculation summation calling standard `.sum()`.",
+              "4. Assign aggregated outcomes inside local variables cleanly.",
+              "5. Output matching pivot blocks onto active shell terminal.",
+              "6. Protect script logic from column spelling mismatch errors.",
+              "7. Verify datatype compatibility metrics across outputs.",
+              "8. Double check logic structures align with requirements.",
+              "9. Run code scripts to review output results.",
+              "10. Trigger checklist checking action."
+            ],
+            codeTemplate: "# Task 3: Execute groupby pivot metrics aggregation on ledgers...\n",
             verify: (code) => code.includes("groupby")
           },
           {
@@ -359,7 +638,19 @@
             useCase: "Creating local SQL tables to securely store sensitive financial ledgers",
             info: "Lightweight local database storage structures transaction history safely.",
             requirements: ["Define SQLite ledger schema with 'CREATE TABLE IF NOT EXISTS ledger'"],
-            codeTemplate: "import sqlite3\nconn = sqlite3.connect('finance.db')\nconn.execute('CREATE TABLE IF NOT EXISTS ledger (id INTEGER, amount REAL, category TEXT)')\nconn.close()",
+            steps: [
+              "1. Write database imports line: `import sqlite3`.",
+              "2. Map local file connection streams: `sqlite3.connect('finance.db')`.",
+              "3. Declare schema queries: 'CREATE TABLE IF NOT EXISTS ledger...'.",
+              "4. Match fields containing category tags and numeric amount floats.",
+              "5. Open transaction executions pipelines inside connection cursor.",
+              "6. Commit SQL tables structural metrics safely on exit.",
+              "7. Call connection close wrapper function cleanly.",
+              "8. Confirm sql variables spelling checks are correct.",
+              "9. Check local terminal output values using compile panel.",
+              "10. Process milestone checker criteria."
+            ],
+            codeTemplate: "# Task 4: Configure SQLite schema pipelines and local databases...\n",
             verify: (code) => code.includes("sqlite3.connect") && code.includes("ledger")
           },
           {
@@ -369,7 +660,19 @@
             useCase: "Committing transaction records to SQLite storage",
             info: "Standard database cursor executions update ledger records correctly.",
             requirements: ["Execute SQL 'INSERT' into financial ledger tables"],
-            codeTemplate: "import sqlite3\nconn = sqlite3.connect('finance.db')\nconn.execute(\"INSERT INTO ledger VALUES (1, -45.0, 'SaaS Subscriptions')\")\nconn.commit()\nconn.close()",
+            steps: [
+              "1. Open connection pipelines targeting 'finance.db'.",
+              "2. Prepare insert command structure: 'INSERT INTO ledger VALUES...'.",
+              "3. Run transactional sql command calls using active cursors.",
+              "4. Secure modifications persistently calling `conn.commit()`.",
+              "5. Close operational connection properties completely.",
+              "6. Catch transactional write locks cleanly inside exception wrapper.",
+              "7. Validate variables mapping alignments inside query parameters.",
+              "8. Standardize variables formats across code structures.",
+              "9. Run compilation checks and review standard logs output.",
+              "10. Select 'Check My Progress' to proceed."
+            ],
+            codeTemplate: "# Task 5: Execute database transactions inserting ledger elements...\n",
             verify: (code) => code.includes("INSERT") && code.includes("ledger")
           },
           {
@@ -379,7 +682,19 @@
             useCase: "Exporting cleaned budgets directly into Excel files",
             info: "OpenPyXL generates standardized spreadsheet files with styling controls.",
             requirements: ["Import 'openpyxl'", "Call 'openpyxl.Workbook()' method"],
-            codeTemplate: "import openpyxl\nwb = openpyxl.Workbook()\nws = wb.active\nws['A1'] = 'Expense Report'\nwb.save('Ledger_Report.xlsx')",
+            steps: [
+              "1. Put standard Excel generation module: `import openpyxl`.",
+              "2. Construct active worksheets calling `openpyxl.Workbook()`.",
+              "3. Write target balance parameters onto worksheet cells indices.",
+              "4. Save Excel workbook structures into disk files cleanly.",
+              "5. Secure calculations streams from index out of range bugs.",
+              "6. Confirm workspace directory references match system rules.",
+              "7. Clean up unreferenced variable entities inside block.",
+              "8. Print custom success validation notifications on save.",
+              "9. Run scripts to review standard logs feedback.",
+              "10. Select the progressive tracker validation tab."
+            ],
+            codeTemplate: "# Task 6: Build Excel sheet generation operations using openpyxl...\n",
             verify: (code) => code.includes("import openpyxl") && code.includes("Workbook()")
           },
           {
@@ -389,7 +704,19 @@
             useCase: "Generating dynamic PDF bank statement documents automatically",
             info: "ReportLab creates professional financial documents programmatically.",
             requirements: ["Import 'reportlab' module assets (e.g. from reportlab.pdfgen import canvas)"],
-            codeTemplate: "from reportlab.pdfgen import canvas\nc = canvas.Canvas('Statement.pdf')\nc.drawString(100, 750, 'Monthly Balance Statement')\nc.save()",
+            steps: [
+              "1. Include reportlab pdfgen modules inside main import blocks.",
+              "2. Construct canvas drivers targeting PDF output files cleanly.",
+              "3. Call text coordinates mapping methods: `canvas.drawString()`.",
+              "4. Finalize PDF document layouts calling `.save()` method.",
+              "5. Ensure coordinate margins values stay within PDF page limits.",
+              "6. Formulate clean statement output headers text parameters.",
+              "7. Protect PDF write routines from file write access blocks.",
+              "8. Double check reportlab module namespaces spellings.",
+              "9. Compile code to see execution log status results.",
+              "10. Push task progress verification action rules."
+            ],
+            codeTemplate: "# Task 7: Generate statement documents using reportlab canvas...\n",
             verify: (code) => code.includes("reportlab") || code.includes("Canvas")
           },
           {
@@ -399,7 +726,19 @@
             useCase: "Generating charts to show category spending distributions",
             info: "Plotting spending visualizes where money is allocated.",
             requirements: ["Use Matplotlib 'plt.pie()' to render spending percentages"],
-            codeTemplate: "import matplotlib.pyplot as plt\nplt.pie([45, 120, 250], labels=['Books', 'Cloud', 'Hardware'])\nprint('Pie chart compiled')",
+            steps: [
+              "1. Retain Matplotlib imports on the workspace file.",
+              "2. Construct expense data arrays matching category classifications.",
+              "3. Execute circular plotting structures calling `plt.pie()` function.",
+              "4. Bind chart label names parameters list cleanly.",
+              "5. Render layout to stdout using standard plot show calls.",
+              "6. Eliminate chart overlaps by defining proper layout sizing.",
+              "7. Confirm data percentages total up correctly.",
+              "8. Maintain high contrast colors across chart segments.",
+              "9. Run compile validation checks in active console.",
+              "10. Push the progress check verification."
+            ],
+            codeTemplate: "# Task 8: Generate visual pie charts using Matplotlib libraries...\n",
             verify: (code) => code.includes("pie")
           },
           {
@@ -409,7 +748,19 @@
             useCase: "Constructing secure REST servers to handle expense uploads",
             info: "Asynchronous APIs provide structured integration paths for finance apps.",
             requirements: ["Setup FastAPI router with 'app = FastAPI()'"],
-            codeTemplate: "from fastapi import FastAPI\napp = FastAPI()\n@app.post('/upload')\ndef upload():\n    return {'status': 'processed'}",
+            steps: [
+              "1. Put FastAPI service declarations inside import workspace block.",
+              "2. Establish REST application engine references: `app = FastAPI()`.",
+              "3. Bind custom post route rules decorators targeting `/upload`.",
+              "4. Map return definitions validating input transactions state.",
+              "5. Protect application routines from structural path duplicates.",
+              "6. Format returned status messages beautifully inside standard JSON.",
+              "7. Standardize variable mappings inside decorator configurations.",
+              "8. Organize dependencies cleanly on top framework levels.",
+              "9. Compile script check to verify ASGI servers execution.",
+              "10. Click 'Check My Progress' to complete."
+            ],
+            codeTemplate: "# Task 9: Initialize FastAPI router layouts inside workspace...\n",
             verify: (code) => code.includes("FastAPI") && code.includes("upload")
           },
           {
@@ -419,7 +770,19 @@
             useCase: "Validating transaction payloads to prevent format errors",
             info: "Pydantic enforces data types before processing API inputs.",
             requirements: ["Import 'BaseModel' from pydantic", "Define a schema subclass"],
-            codeTemplate: "from pydantic import BaseModel\n\nclass Transaction(BaseModel):\n    id: int\n    amount: float\n    category: str",
+            steps: [
+              "1. Open active schema definitions section inside workspace.",
+              "2. Put standard Pydantic models import: `from pydantic import BaseModel`.",
+              "3. Construct customized transaction data model subclassing `BaseModel`.",
+              "4. Specify typed fields containing transaction amount and string category.",
+              "5. Ensure properties names align with client payload models.",
+              "6. Prevent typing conflicts within database record layers.",
+              "7. Clean up unreferenced class parameters inside namespace.",
+              "8. Format all subclass rules with clean indentation spaces.",
+              "9. Compile script to guarantee zero execution syntax errors.",
+              "10. Finalize the finance tracking pipeline. Click Check My Progress to verify!"
+            ],
+            codeTemplate: "# Task 10: Setup Pydantic data schema models for incoming payloads...\n",
             verify: (code) => code.includes("BaseModel") && code.includes("pydantic")
           }
         ]
@@ -435,7 +798,19 @@
             useCase: "Building raw dimensional matrices representing image arrays",
             info: "NumPy arrays form the raw dimensional matrices that represent pixels in memory.",
             requirements: ["Import numpy as 'np'", "Generate pixel matrix utilizing 'np.zeros()' or similar initialization"],
-            codeTemplate: "import numpy as np\npixels = np.zeros((100, 100, 3), dtype=np.uint8)\nprint('Pixel Matrix Initialized')",
+            steps: [
+              "1. Ensure 'main.py' file buffer is active in code IDE workspace.",
+              "2. Declare standard numerical multidimensional arrays module: `import numpy as np`.",
+              "3. Construct zero-initialized array maps mimicking pixel coordinates: `np.zeros()`.",
+              "4. Define height, width, and color channels parameters: (100, 100, 3).",
+              "5. Save computed array dimensions output into local variable named `pixels`.",
+              "6. Render diagnostic print checks checking matrix datatype formats.",
+              "7. Verify grid shape matching rules are correct.",
+              "8. Avoid code indentation bugs in main script structure.",
+              "9. Compile code to see logs output values.",
+              "10. Trigger progress check validation checkpoints."
+            ],
+            codeTemplate: "# Task 1: Generate zero-initialized pixel coordinate grids with NumPy...\n",
             verify: (code) => code.includes("import numpy as np") && (code.includes("zeros") || code.includes("array"))
           },
           {
@@ -445,7 +820,19 @@
             useCase: "Manipulating dimensional structures via linear scaling transformations",
             info: "Math transforms process scale grids across channels smoothly.",
             requirements: ["Perform pixel vector multiplication by a scaling scalar"],
-            codeTemplate: "import numpy as np\npixels = np.array([10, 20, 30])\nscaled = pixels * 2.5\nprint(scaled)",
+            steps: [
+              "1. Keep NumPy matrices active on workspace scripts.",
+              "2. Formulate numeric scaler multiplications factors (e.g. 2.5).",
+              "3. Multiply matrices arrays with scaler factor cleanly.",
+              "4. Store transformed scale results back to vector variables.",
+              "5. Output array calculation summaries onto system terminal.",
+              "6. Double check multiplication operations are element-wise.",
+              "7. Keep coordinates positive to preserve color scales rules.",
+              "8. Standardize datatype ranges inside variable constructs.",
+              "9. Run scripts compiling local calculations check.",
+              "10. Process milestone checking parameters."
+            ],
+            codeTemplate: "# Task 2: Implement scalar matrix transformations using NumPy...\n",
             verify: (code) => code.includes("pixels *") || code.includes("scaled")
           },
           {
@@ -455,7 +842,19 @@
             useCase: "Analyzing image metadata attributes across grids",
             info: "DataFrames organize image data like metadata, colors, and resolution tables.",
             requirements: ["Load image dimensions data utilizing 'pd.DataFrame'"],
-            codeTemplate: "import pandas as pd\nmetadata = pd.DataFrame({'file': ['img1.jpg'], 'resolution': ['1080p']})\nprint(metadata)",
+            steps: [
+              "1. Declare Pandas analytics module using `import pandas as pd`.",
+              "2. Construct dictionary databases mapping metadata properties.",
+              "3. Construct frame templates calling constructor `pd.DataFrame()`.",
+              "4. Display matching elements cleanly onto screen logs.",
+              "5. Ensure properties indices match image dimension metrics.",
+              "6. Check datatypes values format before printing.",
+              "7. Remove duplicates from structured metadata inputs.",
+              "8. Comment target sections logic beautifully inside code.",
+              "9. Run compilation checks and review standard logs feedback.",
+              "10. Trigger checklist checking action."
+            ],
+            codeTemplate: "# Task 3: Build DataFrame metadata schemas using Pandas tools...\n",
             verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
           },
           {
@@ -465,7 +864,19 @@
             useCase: "Logging filter usage history into structured database ledgers",
             info: "SQLite catalogs image metrics for reference across processing tasks.",
             requirements: ["Define sqlite engine connection", "Create schema 'image_metadata'"],
-            codeTemplate: "import sqlite3\nconn = sqlite3.connect('studio.db')\nconn.execute('CREATE TABLE IF NOT EXISTS image_metadata (id INTEGER, path TEXT)')\nconn.close()",
+            steps: [
+              "1. Put built-in database drive module: `import sqlite3`.",
+              "2. Establish file connection target to 'studio.db'.",
+              "3. Formulate table schema: 'CREATE TABLE IF NOT EXISTS image_metadata...'.",
+              "4. Map columns fields for image file path and filter names.",
+              "5. Trigger transactional statement connections safely on execute.",
+              "6. Commit SQL schema configurations cleanly to database connection.",
+              "7. Close file cursor assets safely on exit.",
+              "8. Maintain standard SQLite datatypes formats.",
+              "9. Run local compile validations to inspect output.",
+              "10. Process milestone checker criteria."
+            ],
+            codeTemplate: "# Task 4: Setup SQLite database configurations and schemas...\n",
             verify: (code) => code.includes("sqlite3.connect") && code.includes("image_metadata")
           },
           {
@@ -475,7 +886,19 @@
             useCase: "Loading and scaling offline binary image streams",
             info: "Pillow opens, modifies, and converts static image files securely.",
             requirements: ["Import 'Image' from PIL"],
-            codeTemplate: "from PIL import Image\n# Open and configure virtual file buffers\nprint('Pillow modules initialized safely')",
+            steps: [
+              "1. Write import directive: `from PIL import Image`.",
+              "2. Construct virtual file placeholder targets for input images.",
+              "3. Document operational methods calling Pillow configurations.",
+              "4. Keep binary loading handlers organized cleanly inside block.",
+              "5. Log success indicators on successful file load operations.",
+              "6. Support try-catch boundaries on loading binary assets.",
+              "7. Verify directory mapping logic aligns with target workspaces.",
+              "8. Clean up unused imports references inside python code.",
+              "9. Run code scripts to review output results.",
+              "10. Select 'Check My Progress' to proceed."
+            ],
+            codeTemplate: "# Task 5: Configure Pillow modules and image file loading logic...\n",
             verify: (code) => code.includes("PIL") && code.includes("Image")
           },
           {
@@ -485,7 +908,19 @@
             useCase: "Applying grayscaling matrices using color filters",
             info: "OpenCV applies grayscaling transforms to matrices representing pixels in memory.",
             requirements: ["Import 'cv2' library parameters", "Reference 'cv2.cvtColor()' conversion call"],
-            codeTemplate: "import cv2\nimport numpy as np\n# Simulated grayscaling transformation\nprint('cv2 grayscaling layers mapped')",
+            steps: [
+              "1. Put advanced image processor library import: `import cv2`.",
+              "2. Document simulated target variables representing pixel elements.",
+              "3. Mention standard conversion rules calling `cv2.cvtColor()` method.",
+              "4. Pass color channel targets correctly inside transform configurations.",
+              "5. Output diagnostics success verification lines directly to console.",
+              "6. Double check cv2 module spelling structure.",
+              "7. Ensure input parameters match OpenCV arrays specs.",
+              "8. Prevent missing arrays bounds exceptions inside transforms.",
+              "9. Compile script check to evaluate logs outputs.",
+              "10. Select the progressive tracker validation tab."
+            ],
+            codeTemplate: "# Task 6: Implement OpenCV image matrix grayscale transformations...\n",
             verify: (code) => code.includes("import cv2")
           },
           {
@@ -495,7 +930,19 @@
             useCase: "Executing contour and edge detection across image arrays",
             info: "Edge mapping helps isolate structures within the image matrix.",
             requirements: ["Reference the OpenCV 'cv2.Canny()' structural algorithm method"],
-            codeTemplate: "import cv2\n# Call edge detector algorithm on pixels\nprint('Canny contour parameters analyzed')",
+            steps: [
+              "1. Maintain cv2 modules configurations on the workspace code.",
+              "2. Reference edge detection algorithms calling `cv2.Canny()` method.",
+              "3. Bind upper and lower threshold metrics variables list safely.",
+              "4. Render diagnostics outputs showing success calculations.",
+              "5. Check arrays index bounds targeting edge mappings.",
+              "6. Standardize coordinate limits in parameter calculations.",
+              "7. Format image dimension parameters clearly inside comments.",
+              "8. double check parameter namespaces spelling constraints.",
+              "9. Compile script check to verify algorithms correctness.",
+              "10. Push task progress verification action rules."
+            ],
+            codeTemplate: "# Task 7: Execute edge mapping transforms using Canny filters...\n",
             verify: (code) => code.includes("cv2")
           },
           {
@@ -505,7 +952,19 @@
             useCase: "Rendering bounding box overlays over face matrices",
             info: "Drawing bounding boxes highlights detected structures in the image.",
             requirements: ["Reference standard OpenCV 'cv2.rectangle()' plotting call"],
-            codeTemplate: "import cv2\n# Add bounding box to coordinate channels\nprint('Bounding box drawn')",
+            steps: [
+              "1. Retain OpenCV functions configurations in python scripts.",
+              "2. Map bounding limits calling coordinate draw: `cv2.rectangle()`.",
+              "3. Supply coordinate indices parameters matching overlay coordinates.",
+              "4. Choose line colors parameters and width boundaries cleanly.",
+              "5. Build printed checks validating bounding properties.",
+              "6. Confirm bounding dimensions stay within pixel limits.",
+              "7. Minimize visual overlay offsets by using proper coordinates.",
+              "8. Maintain clean structures throughout code block layouts.",
+              "9. Compile code to see execution log status results.",
+              "10. Push the progress check verification."
+            ],
+            codeTemplate: "# Task 8: Generate visual overlays bounding matrices via cv2...\n",
             verify: (code) => code.includes("cv2")
           },
           {
@@ -515,7 +974,19 @@
             useCase: "Exposing API routing endpoints for remote filter uploads",
             info: "Flask routes process remote requests to apply image transformations.",
             requirements: ["Spin up Flask server", "Add router mapping decorator for route '/apply_filter'"],
-            codeTemplate: "from flask import Flask\napp = Flask(__name__)\n@app.route('/apply_filter')\ndef filter_route():\n    return 'Filter applied'",
+            steps: [
+              "1. Put Flask framework modules inside code imports block.",
+              "2. Construct web service engine calling constructor: `Flask(__name__)`.",
+              "3. Establish endpoint decorators targeting `/apply_filter` route.",
+              "4. Map return values showing matrix filter status results.",
+              "5. Ensure routing paths match requirements guidelines.",
+              "6. Clean up nested port allocations to prevent duplicate server locks.",
+              "7. Standardize variable properties in returned response objects.",
+              "8. Separate application logic from path routing decs.",
+              "9. Run compilation checks and review server simulation results.",
+              "10. Click 'Check My Progress' to complete."
+            ],
+            codeTemplate: "# Task 9: Initialize Flask routing server layouts inside code...\n",
             verify: (code) => code.includes("apply_filter")
           },
           {
@@ -525,7 +996,19 @@
             useCase: "Building lightweight web dashboard interfaces for real-time visualization",
             info: "Streamlit translates code parameters into interactive slider, tab, and image components.",
             requirements: ["Import 'streamlit as st' module"],
-            codeTemplate: "import streamlit as st\nst.title('Visual Studio Dashboard')\nst.write('Scale Factor:')",
+            steps: [
+              "1. Open active dashboard configuration layers in workspace.",
+              "2. Put standard Streamlit tool: `import streamlit as st`.",
+              "3. Set application headings using `st.title()` method.",
+              "4. Construct visual parameters slider interfaces using `st.slider()`.",
+              "5. Validate sliders values are mapped correctly inside layouts.",
+              "6. Prevent workspace directory conflicts in execution setups.",
+              "7. Dispose duplicated component configurations in dashboard sections.",
+              "8. Format structural details with neat layout spacing.",
+              "9. Run compile diagnostics to review Streamlit simulations.",
+              "10. Finalize the computer vision pipeline. Click Check My Progress to verify!"
+            ],
+            codeTemplate: "# Task 10: Setup Streamlit dashboards for user parameter controls...\n",
             verify: (code) => code.includes("import streamlit as st")
           }
         ]
@@ -541,7 +1024,19 @@
             useCase: "Configuring multi-zone matrices to model room availability slots",
             info: "High performance vectors track availability states across zones.",
             requirements: ["Import numpy as 'np'", "Define room availability vectors with 'np.array()'"],
-            codeTemplate: "import numpy as np\nrooms = np.array([101, 102, 201, 202])\nprint('Room grids initialized')",
+            steps: [
+              "1. Select 'main.py' file tab in the active workspace view.",
+              "2. Put standard arrays computation import: `import numpy as np`.",
+              "3. Declare integer room codes: 101, 102, 201, 202.",
+              "4. Construct high speed vectors calling `np.array()`.",
+              "5. Store room indices data output in variable named `rooms`.",
+              "6. Write a print command displaying vector elements cleanly.",
+              "7. Test index mappings using standard array properties.",
+              "8. Ensure there are no code indentation warnings in python block.",
+              "9. Compile code to see logs output values.",
+              "10. Click progress checker validation to unlock next."
+            ],
+            codeTemplate: "# Task 1: Generate high performance room vectors using NumPy...\n",
             verify: (code) => code.includes("import numpy as np") && code.includes("np.array")
           },
           {
@@ -551,7 +1046,19 @@
             useCase: "Loading offline reservation lists into structured dataframes",
             info: "Dataframe columns organize guest check-in parameters clearly.",
             requirements: ["Import pandas as 'pd'", "Create guest roster with 'pd.DataFrame'"],
-            codeTemplate: "import pandas as pd\nguests = pd.DataFrame({'Name': ['Kalyani'], 'Room': [101]})\nprint(guests)",
+            steps: [
+              "1. Put pandas library declaration: `import pandas as pd`.",
+              "2. Construct dictionary mappings for Names and Room indexes.",
+              "3. Initialize tabular layouts: `pd.DataFrame(guests)`.",
+              "4. Print table structure onto system output console.",
+              "5. Match row coordinates cleanly with client records.",
+              "6. Ensure indices match guest registrations perfectly.",
+              "7. Avoid hardcoding row bounds inside dataframe pipelines.",
+              "8. Log success checks verifying file execution flow.",
+              "9. Run compilation checks and review standard logs feedback.",
+              "10. Trigger checklist checking action."
+            ],
+            codeTemplate: "# Task 2: Build tabular Pandas DataFrame structure for reservation rosters...\n",
             verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
           },
           {
@@ -561,7 +1068,19 @@
             useCase: "Cleansing booking registers of duplicate reservation entries",
             info: "Removing redundant check-in records prevents double-booking errors.",
             requirements: ["Utilize the Pandas dataframe 'drop_duplicates()' optimization call"],
-            codeTemplate: "import pandas as pd\ndf = pd.DataFrame({'Guest': ['Alice', 'Alice'], 'Room': [101, 101]})\ncleaned = df.drop_duplicates()\nprint(cleaned)",
+            steps: [
+              "1. Keep dataframe variables active inside python script.",
+              "2. Trigger cleansing logic calling: `df.drop_duplicates()`.",
+              "3. Set processed clean dataframe onto local variable reference.",
+              "4. Output cleaned rows directly to system shell.",
+              "5. Confirm duplicated items are completely purged on execution.",
+              "6. Guard columns references from typing errors.",
+              "7. Formulate code blocks cleanly with proper formatting styles.",
+              "8. Check variables properties match target dataframes fields.",
+              "9. Run compile checks on script logic to evaluate outcomes.",
+              "10. Trigger progress check verification criteria."
+            ],
+            codeTemplate: "# Task 3: Implement data deduplication algorithms on dataframes...\n",
             verify: (code) => code.includes("drop_duplicates")
           },
           {
@@ -571,7 +1090,19 @@
             useCase: "Creating local SQL tables to securely store active bookings",
             info: "Local SQLite databases organize guest check-in histories efficiently.",
             requirements: ["Establish SQLite database connection file", "Create table 'reservations'"],
-            codeTemplate: "import sqlite3\nconn = sqlite3.connect('hotel.db')\nconn.execute('CREATE TABLE IF NOT EXISTS reservations (id INTEGER, name TEXT, room_num INTEGER)')\nconn.close()",
+            steps: [
+              "1. Put built-in database drive module: `import sqlite3`.",
+              "2. Setup relational file pipeline targeting 'hotel.db'.",
+              "3. Declare sql queries: 'CREATE TABLE IF NOT EXISTS reservations...'.",
+              "4. Specify database fields matching guest details and room properties.",
+              "5. Open transaction executions inside sql connection schema.",
+              "6. Commit schema state safely to the relational file database.",
+              "7. Call connection close properties safely on system exit.",
+              "8. Ensure SQL syntax strings match standard SQL protocols.",
+              "9. Run code scripts to see database local setups.",
+              "10. Process milestone checker criteria."
+            ],
+            codeTemplate: "# Task 4: Configure SQLite file pipelines and schema structures...\n",
             verify: (code) => code.includes("sqlite3.connect") && code.includes("reservations")
           },
           {
@@ -581,7 +1112,19 @@
             useCase: "Inserting and committing reservation entries in transaction logs",
             info: "Database cursors commit critical reservation actions safely to SQLite databases.",
             requirements: ["Incorporate SQL 'INSERT' into reservation transaction logs"],
-            codeTemplate: "import sqlite3\nconn = sqlite3.connect('hotel.db')\nconn.execute(\"INSERT INTO reservations VALUES (1, 'Kalyani', 101)\")\nconn.commit()\nconn.close()",
+            steps: [
+              "1. Connect database streams targeting 'hotel.db' safely.",
+              "2. Formulate sql queries: 'INSERT INTO reservations VALUES...'.",
+              "3. Execute insert command using active cursor execute handlers.",
+              "4. Save table updates persistently calling connection commit.",
+              "5. Dispose active database connectors and cursor instances cleanly.",
+              "6. Protect transactional workflows using standard error handlings.",
+              "7. Map variables cleanly inside execution queries parameters.",
+              "8. Organize coding blocks cleanly with structured comments.",
+              "9. Run compilation checks and review standard logs feedback.",
+              "10. Select 'Check My Progress' to proceed."
+            ],
+            codeTemplate: "# Task 5: Execute SQLite database record insertion transactions...\n",
             verify: (code) => code.includes("INSERT") && code.includes("reservations")
           },
           {
@@ -591,7 +1134,19 @@
             useCase: "Enforcing validation rules on check-in objects to prevent data errors",
             info: "Pydantic validates API input fields automatically.",
             requirements: ["Import 'BaseModel' from pydantic", "Define reservation schema subclass"],
-            codeTemplate: "from pydantic import BaseModel\n\nclass BookingSchema(BaseModel):\n    guest_name: str\n    room_num: int",
+            steps: [
+              "1. Declare pydantic module references: `from pydantic import BaseModel`.",
+              "2. Construct customized payload model extending `BaseModel` class.",
+              "3. Setup fields templates for guest name and room numbers.",
+              "4. Ensure parameters are strongly typed using python standards.",
+              "5. Guard incoming dataset mappings from invalid datatypes properties.",
+              "6. Structure validation schemas with clean spacing formats.",
+              "7. Remove unneeded variables from module namespaces.",
+              "8. Log validation checks execution flow directly in terminal.",
+              "9. Run compile diagnostics to inspect schema compliance.",
+              "10. Select the progressive tracker validation tab."
+            ],
+            codeTemplate: "# Task 6: Build validation data schemas using pydantic models...\n",
             verify: (code) => code.includes("BaseModel") && code.includes("pydantic")
           },
           {
@@ -611,6 +1166,18 @@
             useCase: "Constructing FastAPI routers to receive reservation requests",
             info: "FastAPI creates standardized RESTful pathways using Python syntax decorators.",
             requirements: ["Define FastAPI REST endpoint mapping '@app.post(\"/booking\")'"],
+            steps: [
+              "1. Setup FastAPI REST routing service imports in main script.",
+              "2. Instantiate application gateway: `app = FastAPI()`.",
+              "3. Build target endpoint routes: `@app.post('/booking')`.",
+              "4. Define router handlers returning booking confirmed variables.",
+              "5. Protect endpoint parameters from path duplicates in server setup.",
+              "6. Format JSON responses matching standard parameters schemas.",
+              "7. Guard active routing rules decorators from compilation bugs.",
+              "8. Standardize path routing definitions on top framework levels.",
+              "9. Compile script check to verify ASGI servers execution.",
+              "10. Click 'Check My Progress' to complete."
+            ],
             codeTemplate: "from fastapi import FastAPI\napp = FastAPI()\n@app.post('/booking')\ndef book():\n    return {'status': 'confirmed'}",
             verify: (code) => code.includes("app.post") && code.includes("booking")
           },
@@ -621,6 +1188,18 @@
             useCase: "Managing database transaction sessions via route dependencies",
             info: "Session dependencies ensure secure database transactions for reservations.",
             requirements: ["Reference FastAPI dependency parameters: 'Depends'"],
+            steps: [
+              "1. Retain FastAPI routing setups on the workspace code.",
+              "2. Declare dependency elements using FastAPI `Depends` imports.",
+              "3. Structure database session parameters mapping routes injects.",
+              "4. Validate route injections processes calling dependency handlers.",
+              "5. Secure operations using transaction session bounds.",
+              "6. Formulate clean session injections comments inside block.",
+              "7. Standardize parameter mappings across dependencies frameworks.",
+              "8. Keep code layout organized with neat functional spacing.",
+              "9. Compile code to see interactive console outcomes.",
+              "10. Click progress checker validation to proceed."
+            ],
             codeTemplate: "from fastapi import FastAPI, Depends\napp = FastAPI()\n# Setup dependency injections\nprint('Dependencies configured')",
             verify: (code) => code.includes("Depends")
           },
@@ -631,6 +1210,18 @@
             useCase: "Deploying high-performance ASGI servers to run the booking API",
             info: "Running FastAPI APIs lets external clients inspect telemetry metrics instantly.",
             requirements: ["Setup asynchronous GET router path mapping '@app.get(\"/health\")'"],
+            steps: [
+              "1. Retain FastAPI configurations inside workspace files.",
+              "2. Bind server health route decorators: `@app.get('/health')`.",
+              "3. Create dynamic async method return status mappings.",
+              "4. Map parameters representing app wellness cleanly in JSON dict.",
+              "5. Double-check syntax accuracy of endpoint routes naming.",
+              "6. Avoid duplicated routes layouts across active scripts.",
+              "7. Remove unreferenced imports references from local block.",
+              "8. Standardize variables parameters inside response bodies.",
+              "9. Run compilation checks and review server simulation results.",
+              "10. Finalize booking REST system. Click Check My Progress to verify!"
+            ],
             codeTemplate: "from fastapi import FastAPI\napp = FastAPI()\n@app.get('/health')\ndef health():\n    return {'health': 'ok'}",
             verify: (code) => code.includes("health") && code.includes("@app.get")
           }
@@ -828,7 +1419,7 @@
             triggerToast(`🎉 Task Complete: "${activeTask.title}" verified!`, "success");
             setTerminalLogs(prev => [...prev, `\n[SYSTEM]: Successfully verified task: "${activeTask.title}"`]);
 
-            // Update README.md dynamically
+            // Update README.md dynamically (no solution code spoiled)
             const autoReadme = `# ${studentProject.projectName} Portfolio\n\n## Roster Owner\n- **Student Name**: ${studentProject.studentName}\n- **Classroom ID**: ${currentUser.id}\n\n## Tasks Completed Matrix\n${nextCompleted.map((id, index) => {
               const matching = studentProject.tasks.find(t => t.id === id);
               return `- **[x] Task ${index + 1}: ${matching.title}** utilizing *${matching.library}* (Use case: ${matching.useCase})`;
@@ -847,7 +1438,7 @@
         }
       };
 
-      // Automatically generate a complete README on active request
+      // Automatically generate a complete README on active request (no solution codes leaked)
       const forceAutoReadme = () => {
         if (!studentProject) return;
         const total = studentProject.tasks.length;
@@ -1291,6 +1882,18 @@
                           </li>
                         ))}
                       </ul>
+                    </div>
+
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-extrabold text-earth-400 uppercase tracking-widest font-semibold block">Step-By-Step Interactive Guide (10 Steps)</span>
+                      <div className="bg-earth-100/50 p-3 rounded-xl border border-earth-200/60 space-y-2.5 text-xs text-earth-700 leading-relaxed max-h-72 overflow-y-auto">
+                        {activeTask.steps.map((step, idx) => (
+                          <div key={idx} className="flex gap-2">
+                            <span className="text-earth-600 font-bold block min-w-[20px]">{idx + 1}.</span>
+                            <span>{step.substring(3)}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
                     <div className="space-y-2">
