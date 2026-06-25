@@ -38,7 +38,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght=400;500;600&family=Inter:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     body {
@@ -72,10 +72,10 @@
   <!-- React Mount Point -->
   <div id="root" class="min-h-screen flex flex-col"></div>
 
-  <!-- React and Babel CDNs -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Ultra-Reliable jsDelivr CDNs for High Uptime on GitHub Pages & Sandboxed Previews -->
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.5/babel.min.js" crossorigin></script>
 
   <!-- Application Source Code -->
   <script type="text/babel">
@@ -98,7 +98,7 @@
         difficulty: "Medium",
         time: "6 Hours",
         reqs: "1. Create SQLite database tables for student details and course grades.\n2. Add console-based/Python scripts to add, update, and search students.\n3. Utilize Pandas to generate statistical summaries (average grades per class).\n4. Plot a bar graph using Matplotlib depicting grade distributions.",
-        codeTemplate: `import pandas as pd\nimport sqlite3\nimport matplotlib.pyplot as plt\n\n# Step 1: Connect to SQLite Database\nconn = sqlite3.connect('students.db')\ncursor = conn.cursor()\n\n# Create Student table\ncursor.execute('''CREATE TABLE IF NOT EXISTS students \n                  (id INTEGER PRIMARY KEY, name TEXT, grade REAL)''')\n\n# Seed Mock Data\nstudents_data = [('Kedar', 88.5), ('Pranav', 92.0), ('Rajlakshmi', 95.0), ('Samruddhi', 89.0), ('Kalyani', 91.5)]\ncursor.executemany("INSERT OR IGNORE INTO students (id, name, grade) VALUES (NULL, ?, ?)", students_data)\nconn.commit()\n\n# Step 2: Query using Pandas\ndf = pd.read_sql_query("SELECT * FROM students", conn)\nprint("--- Student Dataset Summary ---")\nprint(df.describe())\n\n# Step 3: Draw Distribution\nplt.figure(figsize=(6,4))\nplt.bar(df['name'], df['grade'], color='skyblue')\nplt.title('Student Grade Distribution')\nplt.xlabel('Student Name')\nplt.ylabel('Grades')\nplt.grid(axis='y', linestyle='--')\nplt.show()\n\nprint("\\nSystem execution complete. Graph plotted in output preview!")\nconn.close()`
+        codeTemplate: `import pandas as pd\nimport sqlite3\nimport matplotlib.pyplot as plt\n\n# Step 1: Connect to SQLite Database\nconn = sqlite3.connect('students.db')\ncursor = conn.cursor()\n\n# Create Student table\ncursor.execute('''CREATE TABLE IF NOT EXISTS students \\n                  (id INTEGER PRIMARY KEY, name TEXT, grade REAL)''')\n\n# Seed Mock Data\nstudents_data = [('Kedar', 88.5), ('Pranav', 92.0), ('Rajlakshmi', 95.0), ('Samruddhi', 89.0), ('Kalyani', 91.5)]\ncursor.executemany("INSERT OR IGNORE INTO students (id, name, grade) VALUES (NULL, ?, ?)", students_data)\nconn.commit()\n\n# Step 2: Query using Pandas\ndf = pd.read_sql_query("SELECT * FROM students", conn)\nprint("--- Student Dataset Summary ---")\nprint(df.describe())\n\n# Step 3: Draw Distribution\nplt.figure(figsize=(6,4))\nplt.bar(df['name'], df['grade'], color='skyblue')\nplt.title('Student Grade Distribution')\nplt.xlabel('Student Name')\nplt.ylabel('Grades')\nplt.grid(axis='y', linestyle='--')\nplt.show()\n\nprint("\\nSystem execution complete. Graph plotted in output preview!")\nconn.close()`
       },
       "PJ002": {
         title: "Interactive Weather Dashboard",
@@ -199,17 +199,33 @@
 
     // --- MAIN REACT COMPONENT ---
     function App() {
-      const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
-      const [currentUser, setCurrentUser] = useState(() => {
-        const saved = localStorage.getItem("user");
-        return saved ? JSON.parse(saved) : null;
+      const [theme, setTheme] = useState(() => {
+        try {
+          return localStorage.getItem("theme") || "dark";
+        } catch (e) {
+          return "dark";
+        }
       });
+
+      const [currentUser, setCurrentUser] = useState(() => {
+        try {
+          const saved = localStorage.getItem("user");
+          return saved ? JSON.parse(saved) : null;
+        } catch (e) {
+          return null;
+        }
+      });
+
       const [activeTab, setActiveTab] = useState("dashboard");
 
       // Shared Global Announcements
       const [announcements, setAnnouncements] = useState(() => {
-        const saved = localStorage.getItem("announcements");
-        return saved ? JSON.parse(saved) : [
+        try {
+          const saved = localStorage.getItem("announcements");
+          if (saved) return JSON.parse(saved);
+        } catch (e) {}
+        
+        return [
           { id: 1, title: "Welcome to PythonVerse!", date: "June 25, 2026", text: "Welcome to the Pythonverse! Check out your assigned milestone tasks in the Project Task tab and run code dynamically in the browser environment." },
           { id: 2, title: "FastAPI Routing Live Support", date: "June 23, 2026", text: "You can now execute simulated FastAPI endpoints using standard GET decorators in the IDE preview." }
         ];
@@ -217,8 +233,10 @@
 
       // Seeding and synchronizing student parameters
       const [studentData, setStudentData] = useState(() => {
-        const saved = localStorage.getItem("student_data");
-        if (saved) return JSON.parse(saved);
+        try {
+          const saved = localStorage.getItem("student_data");
+          if (saved) return JSON.parse(saved);
+        } catch (e) {}
 
         const initial = {};
         STUDENTS.filter(s => s.role === "student").forEach(s => {
@@ -243,11 +261,15 @@
 
       // Browser Workspace State (Multiple files with direct selection support)
       const [workspaceFiles, setWorkspaceFiles] = useState(() => {
-        const saved = localStorage.getItem("workspace_files");
-        return saved ? JSON.parse(saved) : {
-          "main.py": `import pandas as pd\nimport sqlite3\n\nprint("Welcome to PythonVerse IDE sandbox!")\n# Modify your script parameters and execute\n`,
-          "data.csv": `id,name,grade,completed\n1,Kedar,88,True\n2,Pranav,92,True\n3,Rajlakshmi,95,False\n`,
-          "README.md": `# PythonVerse Project Workspace\n\nRun files using the green execute button.\n`
+        try {
+          const saved = localStorage.getItem("workspace_files");
+          if (saved) return JSON.parse(saved);
+        } catch (e) {}
+
+        return {
+          "main.py": "import pandas as pd\nimport sqlite3\n\nprint(\"Welcome to PythonVerse IDE sandbox!\")\n# Modify your script parameters and execute\n",
+          "data.csv": "id,name,grade,completed\n1,Kedar,88,True\n2,Pranav,92,True\n3,Rajlakshmi,95,False\n",
+          "README.md": "# PythonVerse Project Workspace\n\nRun files using the green execute button.\n"
         };
       });
 
@@ -256,7 +278,9 @@
 
       // Save application states dynamically
       useEffect(() => {
-        localStorage.setItem("theme", theme);
+        try {
+          localStorage.setItem("theme", theme);
+        } catch (e) {}
         if (theme === "dark") {
           document.documentElement.classList.add("dark");
         } else {
@@ -265,19 +289,31 @@
       }, [theme]);
 
       useEffect(() => {
-        localStorage.setItem("user", currentUser ? JSON.stringify(currentUser) : "");
+        try {
+          if (currentUser) {
+            localStorage.setItem("user", JSON.stringify(currentUser));
+          } else {
+            localStorage.removeItem("user");
+          }
+        } catch (e) {}
       }, [currentUser]);
 
       useEffect(() => {
-        localStorage.setItem("student_data", JSON.stringify(studentData));
+        try {
+          localStorage.setItem("student_data", JSON.stringify(studentData));
+        } catch (e) {}
       }, [studentData]);
 
       useEffect(() => {
-        localStorage.setItem("workspace_files", JSON.stringify(workspaceFiles));
+        try {
+          localStorage.setItem("workspace_files", JSON.stringify(workspaceFiles));
+        } catch (e) {}
       }, [workspaceFiles]);
 
       useEffect(() => {
-        localStorage.setItem("announcements", JSON.stringify(announcements));
+        try {
+          localStorage.setItem("announcements", JSON.stringify(announcements));
+        } catch (e) {}
       }, [announcements]);
 
       const triggerToast = (msg, type = "success") => {
@@ -292,7 +328,7 @@
           setActiveTab("dashboard");
           triggerToast(`Successfully authenticated as ${match.name}!`);
         } else {
-          triggerToast("Invalid credentials. Try PJ002 or ADMIN001.", "error");
+          triggerToast("Invalid credentials. Please verify your Predefined ID and Password.", "error");
         }
       };
 
@@ -443,11 +479,11 @@
                             activeTab === "assignments"
                               ? "bg-brand-600 text-white shadow-md shadow-brand-600/10"
                               : "hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300"
-                          }`}
-                        >
-                          <Icons.Award />
-                          <span>Assigned Project Task</span>
-                        </button>
+                        }`}
+                      >
+                        <Icons.Award />
+                        <span>Assigned Project Task</span>
+                      </button>
                       )}
 
                       {currentUser.role === "admin" && (
@@ -472,7 +508,7 @@
                     </div>
                     <div className="overflow-hidden">
                       <div className="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">{currentUser.name}</div>
-                      <div className="text-[10px] text-slate-500 truncate font-semibold uppercase">{currentUser.role === "admin" ? "Academic Host" : `Student Portal`}</div>
+                      <div className="text-[10px] text-slate-500 truncate font-semibold uppercase">{currentUser.role === "admin" ? "Academic Host" : "Student Portal"}</div>
                     </div>
                   </div>
                 </aside>
@@ -563,7 +599,7 @@
                 <label className="block text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">Assigned Student / Admin ID</label>
                 <input
                   type="text"
-                  placeholder="e.g. PJ002 or ADMIN001"
+                  placeholder="Predefined ID (e.g. PJ002)"
                   value={id}
                   onChange={e => setId(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:ring-2 focus:ring-brand-500 focus:outline-none text-slate-800 dark:text-slate-100 text-xs font-medium"
@@ -590,33 +626,6 @@
                 Sign In to Platform
               </button>
             </form>
-
-            <div className="mt-6 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/80 rounded-xl p-4 text-xs text-slate-600 dark:text-slate-300">
-              <div className="font-bold text-blue-600 dark:text-blue-400 mb-2 flex items-center justify-between">
-                <span>🔐 RECONSTRUCTED USER DATABASE</span>
-              </div>
-              <div className="grid grid-cols-2 gap-2 font-mono text-[10px]">
-                <div>
-                  <span className="font-sans font-bold text-slate-400">Student Profiles:</span>
-                  <ul className="list-disc pl-3 mt-1 space-y-0.5">
-                    <li>KD001 (Kedar)</li>
-                    <li>PJ002 (Pranav)</li>
-                    <li>RK003 (Rajlakshmi)</li>
-                    <li>SP004 (Samruddhi)</li>
-                    <li>KK005 (Kalyani)</li>
-                  </ul>
-                </div>
-                <div>
-                  <span className="font-sans font-bold text-slate-400">Admin Account:</span>
-                  <ul className="list-disc pl-3 mt-1 space-y-0.5">
-                    <li>ADMIN001</li>
-                  </ul>
-                </div>
-              </div>
-              <div className="mt-3 text-[10px] text-slate-400 italic">
-                Note: Standard password format is "Name@2026" (e.g. Kedar@2026) or "Admin@Python2026".
-              </div>
-            </div>
           </div>
         </div>
       );
@@ -1593,7 +1602,7 @@
                               <span className="text-[9px] font-bold text-slate-500">Query Records</span>
                             </div>
                             <div className="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg text-[9px] font-mono leading-relaxed max-h-28 overflow-y-auto">
-                              {"[\n  { \"id\": 1, \"title\": \"Clean Code\", \"author\": \"Robert C. Martin\" },\n  { \"id\": 2, \"title\": \"Fluent Python\", \"author\": \"Luciano Ramalho\" }\n]"}
+                              {`[\n  { "id": 1, "title": "Clean Code", "author": "Robert C. Martin" },\n  { "id": 2, "title": "Fluent Python", "author": "Luciano Ramalho" }\n]`}
                             </div>
                           </div>
                         )}
