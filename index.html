@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PythonVerse Academy - LMS, Browser IDE & Project Platform</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a',
+            },
+            vscode: {
+              bg: '#1e1e1e',
+              sidebar: '#252526',
+              tab: '#2d2d2d',
+              tabActive: '#1e1e1e',
+              border: '#3c3c3c',
+              terminal: '#141414'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .monospace {
+      font-family: 'Fira Code', monospace;
+    }
+    /* Custom Scrollbar for VS Code Theme */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: #1e1e1e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.4);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+  <!-- React Mount Point -->
+  <div id="root" class="min-h-screen flex flex-col"></div>
+
+  <!-- React and Babel CDNs -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Application Source Code -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useMemo } = React;
+
+    // --- SEED DATA & CONSTANTS ---
+    const STUDENTS = [
+      { id: "KD001", name: "Kedar Chougale", password: "Kedar@2026", role: "student" },
+      { id: "PJ002", name: "Pranav Jadhav", password: "Pranav@2026", role: "student" },
+      { id: "RK003", name: "Rajlakshmi Khot", password: "Raj@2026", role: "student" },
+      { id: "SP004", name: "Samruddhi Patil", password: "Sam@2026", role: "student" },
+      { id: "KK005", name: "Kalyani Kamble", password: "Kalyani@2026", role: "student" },
+      { id: "ADMIN001", name: "Administrator", password: "Admin@Python2026", role: "admin" }
+    ];
+
+    const STUDENT_TASKS = {
+      "KD001": {
+        title: "Student Management System",
+        libraries: ["Pandas", "SQLite3", "Matplotlib"],
+        difficulty: "Medium",
+        time: "6 Hours",
+        reqs: "1. Create SQLite database tables for student details and course grades.\n2. Add console-based/Python scripts to add, update, and search students.\n3. Utilize Pandas to generate statistical summaries (average grades per class).\n4. Plot a bar graph using Matplotlib depicting grade distributions.",
+        codeTemplate: `import pandas as pd\nimport sqlite3\nimport matplotlib.pyplot as plt\n\n# Step 1: Connect to SQLite Database\nconn = sqlite3.connect('students.db')\ncursor = conn.cursor()\n\n# Create Student table\ncursor.execute('''CREATE TABLE IF NOT EXISTS students \n                  (id INTEGER PRIMARY KEY, name TEXT, grade REAL)''')\n\n# Seed Mock Data\nstudents_data = [('Kedar', 88.5), ('Pranav', 92.0), ('Rajlakshmi', 95.0), ('Samruddhi', 89.0), ('Kalyani', 91.5)]\ncursor.executemany("INSERT OR IGNORE INTO students (id, name, grade) VALUES (NULL, ?, ?)", students_data)\nconn.commit()\n\n# Step 2: Query using Pandas\ndf = pd.read_sql_query("SELECT * FROM students", conn)\nprint("--- Student Dataset Summary ---")\nprint(df.describe())\n\n# Step 3: Draw Distribution\nplt.figure(figsize=(6,4))\nplt.bar(df['name'], df['grade'], color='skyblue')\nplt.title('Student Grade Distribution')\nplt.xlabel('Student Name')\nplt.ylabel('Grades')\nplt.grid(axis='y', linestyle='--')\nplt.show()\n\nprint("\\nSystem execution complete. Graph plotted in output preview!")\nconn.close()`
+      },
+      "PJ002": {
+        title: "Interactive Weather Dashboard",
+        libraries: ["Requests", "Plotly", "JSON"],
+        difficulty: "Medium",
+        time: "4 Hours",
+        reqs: "1. Consume a public API or mock local weather JSON payload.\n2. Structure dynamic responses showing temperature, wind velocity, and humidity.\n3. Implement a timeline chart showing a 5-day forecasted temperature curve using Plotly.",
+        codeTemplate: `import json\nimport plotly.graph_objects as go\n\n# Mocking JSON API Response payload\nweather_json = """\n{\n  "city": "Mumbai",\n  "forecast": [\n    {"day": "Mon", "temp": 31, "humidity": 80},\n    {"day": "Tue", "temp": 32, "humidity": 78},\n    {"day": "Wed", "temp": 29, "humidity": 85},\n    {"day": "Thu", "temp": 30, "humidity": 82},\n    {"day": "Fri", "temp": 33, "humidity": 75}\n  ]\n}\n"""\n\ndata = json.loads(weather_json)\nprint(f"Loaded weather forecast for: {data['city']}")\n\ndays = [item['day'] for item in data['forecast']]\ntemps = [item['temp'] for item in data['forecast']]\nhumidity = [item['humidity'] for item in data['forecast']]\n\n# Create Multi-axis Interactive Chart\nprint("Plotting live dashboard chart...")\nfig = go.Figure()\nfig.add_trace(go.Bar(x=days, y=temps, name='Temperature (°C)', marker_color='orange'))\nfig.add_trace(go.Scatter(x=days, y=humidity, name='Humidity (%)', line=dict(color='blue', width=2)))\nfig.show()\n`
+      },
+      "RK003": {
+        title: "Dynamic Expense Tracker",
+        libraries: ["SQLite3", "Tkinter", "OpenPyXL"],
+        difficulty: "Hard",
+        time: "8 Hours",
+        reqs: "1. Store expense items (Category, Amount, Date) inside an SQLite store.\n2. Render simple data views and user dashboard inputs.\n3. Build an automated background task to export the tables beautifully formatted to Excel workbook formats utilizing OpenPyXL.",
+        codeTemplate: `import sqlite3\nimport openpyxl\n\n# Initialize Expense database\nconn = sqlite3.connect('expenses.db')\nc = conn.cursor()\nc.execute('CREATE TABLE IF NOT EXISTS expenses (id INTEGER PRIMARY KEY, category TEXT, amount REAL, date TEXT)')\n\n# Insert mock data\nc.execute("INSERT INTO expenses VALUES (NULL, 'Cloud Servers', 120.50, '2026-06-01')")\nc.execute("INSERT INTO expenses VALUES (NULL, 'SaaS Subscriptions', 45.00, '2026-06-12')")\nc.execute("INSERT INTO expenses VALUES (NULL, 'Hardware Dev Kit', 250.00, '2026-06-20')")\nconn.commit()\n\n# Load spreadsheet exporter\nwb = openpyxl.Workbook()\nws = wb.active\nws.title = "June 2026 Expenses"\nws.append(["ID", "Category", "Amount", "Date"])\n\nc.execute("SELECT * FROM expenses")\nfor row in c.fetchall():\n    ws.append(row)\n\nwb.save("June_Expense_Report.xlsx")\nprint("SUCCESS: SQLite rows written and June_Expense_Report.xlsx exported!")\nconn.close()`
+      },
+      "SP004": {
+        title: "Adaptive Image Matrix Processor",
+        libraries: ["OpenCV", "Pillow", "NumPy"],
+        difficulty: "Hard",
+        time: "10 Hours",
+        reqs: "1. Accept standard image pixel matric arrays (using NumPy).\n2. Apply matrix manipulations: crop regions, apply custom convolutional Gaussian blurring grids, and inverse channels.\n3. Output both numerical representations and final image buffers dynamically.",
+        codeTemplate: `import cv2\nimport numpy as np\nfrom PIL import Image\n\nprint("Initializing pixel grid values using NumPy...")\n# Create a 400x400 synthetic RGB color gradient image matrix\ngrid = np.zeros((400, 400, 3), dtype=np.uint8)\nfor y in range(400):\n    for x in range(400):\n        grid[y, x] = [x % 256, y % 256, (x+y) % 256]\n\n# Convert to Pillow & Apply OpenCV transformations\npil_image = Image.fromarray(grid)\nprint(f"Base PIL Image structured: {pil_image.size} pixels")\n\n# Simulate facial recognition edge highlighting / grayscale converter\ngray = cv2.cvtColor(grid, cv2.COLOR_RGB2GRAY)\nedges = cv2.Canny(gray, 50, 150)\n\nprint(f"NumPy Gradient Matrix Mean Value: {np.mean(grid)}")\nprint("Grayscale edge-map matrices produced and loaded in visual buffer.")\n`
+      },
+      "KK005": {
+        title: "Enterprise Library Engine API",
+        libraries: ["FastAPI", "SQLAlchemy", "Pydantic"],
+        difficulty: "Hard",
+        time: "9 Hours",
+        reqs: "1. Build structural endpoints utilizing FastAPI decorators (GET, POST, DELETE).\n2. Create data-validation and serializing schemas using Pydantic models.\n3. Establish direct ORM connections mapping data fields smoothly to SQLite backends via SQLAlchemy.",
+        codeTemplate: `from fastapi import FastAPI\nfrom pydantic import BaseModel\nfrom typing import List\n\napp = FastAPI(title="Library Engine System")\n\n# Pydantic schema validation\nclass Book(BaseModel):\n    id: int\n    title: str\n    author: str\n    available: bool = True\n\n# Simple DB simulation array\nbooks_db = [\n    {"id": 1, "title": "Clean Code", "author": "Robert C. Martin", "available": True},\n    {"id": 2, "title": "Fluent Python", "author": "Luciano Ramalho", "available": False}\n]\n\n@app.get("/books", response_model=List[Book])\ndef read_books():\n    print("Executing database fetch query via SQLAlchemy pipeline...")\n    return books_db\n\nprint("Running FastAPI ASGI server loop...")\nprint("INFO:     Started server process [127.0.0.1:8000]")\n`
+      }
+    };
+
+    const ROADMAP = [
+      {
+        id: "basics",
+        title: "Python Fundamentals",
+        description: "Master essential programming primitives, variables, loops, objects, exceptions, and files.",
+        topics: [
+          { name: "Variables & Datatypes", install: "N/A (Built-in)", syntax: "x = 10\nname = \"PythonVerse\"\nmy_list = [1, 2, 3]", theory: "Variables are reserved memory locations to store values. In Python, variables are dynamically typed, meaning you do not need to declare their type explicitly before use.", project: "Syntax Validator" },
+          { name: "Loops & Conditions", install: "N/A (Built-in)", syntax: "if x > 5:\n    print('Greater')\nfor i in range(3):\n    print(i)", theory: "Conditional statements (if-elif-else) control program execution flow based on boolean statements. Loops (for/while) iterate over structures or repeat codes.", project: "Pattern Generator" },
+          { name: "Functions & Scope", install: "N/A (Built-in)", syntax: "def calculate_xp(streak_days):\n    return streak_days * 10", theory: "Functions are modular blocks of code designed to perform single, related actions. Local vs Global scopes govern variable access parameters.", project: "Recursive Calculator" },
+          { name: "OOP (Classes & Objects)", install: "N/A (Built-in)", syntax: "class Student:\n    def __init__(self, name):\n        self.name = name", theory: "Object-oriented programming maps software structures to real-world objects using blueprints (classes) representing parameters and actions.", project: "School System Simulator" }
+        ]
+      },
+      {
+        id: "libraries",
+        title: "Data Science & Utilities",
+        description: "Explore analytical computation engines, database connectors, and graphical output generators.",
+        topics: [
+          { name: "NumPy", install: "pip install numpy", syntax: "import numpy as np\narr = np.array([1, 2, 3])\nmean = np.mean(arr)", theory: "NumPy provides high-performance multidimensional array structures and mathematical tools, acting as the fundamental scientific block.", project: "Image Grid Filter" },
+          { name: "Pandas", install: "pip install pandas", syntax: "import pandas as pd\ndf = pd.DataFrame({'XP': [100, 250], 'User': ['KD', 'PJ']})\nprint(df.describe())", theory: "Pandas brings robust tabular DataFrames to load data arrays, evaluate missing rows, aggregate rows, and export CSV/Excel sheets seamlessly.", project: "Sales Report Compiler" },
+          { name: "Matplotlib & Seaborn", install: "pip install matplotlib seaborn", syntax: "import matplotlib.pyplot as plt\nplt.plot([1, 2, 3], [10, 50, 100])\nplt.show()", theory: "Visualize dry matrix values using fully customizable bar charts, lines curves, histograms, and heatmaps.", project: "Interactive Graph Studio" },
+          { name: "OpenCV", install: "pip install opencv-python", syntax: "import cv2\nimage = cv2.imread('profile.jpg')\ngray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)", theory: "Perform automated real-time computer vision operations. Read images, transform color matrices, and track elements.", project: "Face Recognition Pipeline" },
+          { name: "BeautifulSoup & Requests", install: "pip install beautifulsoup4 requests", syntax: "import requests\nfrom bs4 import BeautifulSoup\nr = requests.get('https://example.com')\nsoup = BeautifulSoup(r.text, 'html.parser')", theory: "Requests communicates safely with standard HTTP protocols. Combine with BeautifulSoup to isolate and extract HTML nodes.", project: "Market Scraper Bot" },
+          { name: "SQLite3", install: "N/A (Built-in)", syntax: "import sqlite3\nconn = sqlite3.connect('records.db')\nc = conn.cursor()", theory: "Provides a lightweight disk-based relational database system that requires no standalone installation processes.", project: "LMS Database Core" }
+        ]
+      },
+      {
+        id: "frameworks",
+        title: "Enterprise Frameworks",
+        description: "Develop robust enterprise backends, web servers, and visual analytical front-ends.",
+        topics: [
+          { name: "FastAPI", install: "pip install fastapi uvicorn", syntax: "from fastapi import FastAPI\napp = FastAPI()\n@app.get('/')\ndef index():\n    return {'status': 'healthy'}", theory: "A high-performance ASGI framework built for developing clean API routes with seamless type validation through standard Pydantic parameters.", project: "Todo Management REST API" },
+          { name: "Flask", install: "pip install flask", syntax: "from flask import Flask\napp = Flask(__name__)\n@app.route('/')\ndef home():\n    return 'Hello PythonVerse!'", theory: "A micro WSGI web framework suited for spinning up routing controllers, templates, and swift API responses easily.", project: "Micro Blog Platform" },
+          { name: "Streamlit", install: "pip install streamlit", syntax: "import streamlit as st\nst.title('My App')\nst.slider('Pick a value', 0, 100)", theory: "Renders analytical dashboards immediately. Maps Python parameters directly to clean, styled HTML slider widgets, tabs, and plots.", project: "Data Analytics Hub" }
+        ]
+      }
+    ];
+
+    // --- BULLETPROOF SVG ICONS ---
+    const Icons = {
+      BookOpen: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>,
+      Code: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>,
+      CheckCircle: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+      Clock: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+      Terminal: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>,
+      Database: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75" /></svg>,
+      User: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>,
+      Layout: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>,
+      LogOut: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" /></svg>,
+      Play: () => <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>,
+      Plus: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>,
+      Trash: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>,
+      Download: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>,
+      Award: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-6.75a1.125 1.125 0 00-1.125 1.125v3.375m9 0h-9m9-11.25a3 3 0 01-3 3h-3a3 3 0 01-3-3V6.75a3 3 0 013-3h3a3 3 0 013 3v3.75z" /></svg>,
+      FileText: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>,
+      Bell: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" /></svg>,
+      Moon: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg>,
+      Sun: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m0 13.5V21m8.975-8.975h-2.25m-13.5 0H3m16.025-6.025l-1.59 1.59M6.136 17.864l-1.59 1.59m12.338 0l-1.59-1.59M6.136 6.136l-1.59-1.59M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" /></svg>,
+      Search: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.604 10.604z" /></svg>,
+      Edit: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>,
+      FileZip: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg>,
+      Sparkles: () => <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 21l-.813-5.096L3 15l5.096-.813L9 9l.813 5.187L15 15l-5.187.813z" /></svg>
+    };
+
+    // --- MAIN REACT COMPONENT ---
+    function App() {
+      const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
+      const [currentUser, setCurrentUser] = useState(() => {
+        const saved = localStorage.getItem("user");
+        return saved ? JSON.parse(saved) : null;
+      });
+      const [activeTab, setActiveTab] = useState("dashboard");
+
+      // Shared Global Announcements
+      const [announcements, setAnnouncements] = useState(() => {
+        const saved = localStorage.getItem("announcements");
+        return saved ? JSON.parse(saved) : [
+          { id: 1, title: "Welcome to PythonVerse!", date: "June 25, 2026", text: "Welcome to the Pythonverse! Check out your assigned milestone tasks in the Project Task tab and run code dynamically in the browser environment." },
+          { id: 2, title: "FastAPI Routing Live Support", date: "June 23, 2026", text: "You can now execute simulated FastAPI endpoints using standard GET decorators in the IDE preview." }
+        ];
+      });
+
+      // Seeding and synchronizing student parameters
+      const [studentData, setStudentData] = useState(() => {
+        const saved = localStorage.getItem("student_data");
+        if (saved) return JSON.parse(saved);
+
+        const initial = {};
+        STUDENTS.filter(s => s.role === "student").forEach(s => {
+          initial[s.id] = {
+            id: s.id,
+            name: s.name,
+            xp: 320,
+            streak: 7,
+            completedLessons: ["Variables & Datatypes", "Loops & Conditions"],
+            notes: "Focused on getting SQLite integrations working in local main.py file soon.",
+            taskSubmission: {
+              status: "Pending", // Pending, Submitted, Approved, Revision Needed
+              code: "",
+              rating: 0,
+              feedback: "",
+              submittedAt: ""
+            }
+          };
+        });
+        return initial;
+      });
+
+      // Browser Workspace State (Multiple files with direct selection support)
+      const [workspaceFiles, setWorkspaceFiles] = useState(() => {
+        const saved = localStorage.getItem("workspace_files");
+        return saved ? JSON.parse(saved) : {
+          "main.py": `import pandas as pd\nimport sqlite3\n\nprint("Welcome to PythonVerse IDE sandbox!")\n# Modify your script parameters and execute\n`,
+          "data.csv": `id,name,grade,completed\n1,Kedar,88,True\n2,Pranav,92,True\n3,Rajlakshmi,95,False\n`,
+          "README.md": `# PythonVerse Project Workspace\n\nRun files using the green execute button.\n`
+        };
+      });
+
+      const [activeFile, setActiveFile] = useState("main.py");
+      const [toast, setToast] = useState(null);
+
+      // Save application states dynamically
+      useEffect(() => {
+        localStorage.setItem("theme", theme);
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      }, [theme]);
+
+      useEffect(() => {
+        localStorage.setItem("user", currentUser ? JSON.stringify(currentUser) : "");
+      }, [currentUser]);
+
+      useEffect(() => {
+        localStorage.setItem("student_data", JSON.stringify(studentData));
+      }, [studentData]);
+
+      useEffect(() => {
+        localStorage.setItem("workspace_files", JSON.stringify(workspaceFiles));
+      }, [workspaceFiles]);
+
+      useEffect(() => {
+        localStorage.setItem("announcements", JSON.stringify(announcements));
+      }, [announcements]);
+
+      const triggerToast = (msg, type = "success") => {
+        setToast({ msg, type });
+        setTimeout(() => setToast(null), 3000);
+      };
+
+      const handleLogin = (id, password) => {
+        const match = STUDENTS.find(u => u.id === id && u.password === password);
+        if (match) {
+          setCurrentUser(match);
+          setActiveTab("dashboard");
+          triggerToast(`Successfully authenticated as ${match.name}!`);
+        } else {
+          triggerToast("Invalid credentials. Try PJ002 or ADMIN001.", "error");
+        }
+      };
+
+      const handleLogout = () => {
+        setCurrentUser(null);
+        setActiveTab("dashboard");
+        triggerToast("Session terminated.");
+      };
+
+      const handleResetProgress = (studentId) => {
+        setStudentData(prev => ({
+          ...prev,
+          [studentId]: {
+            ...prev[studentId],
+            xp: 0,
+            streak: 1,
+            completedLessons: [],
+            taskSubmission: { status: "Pending", code: "", rating: 0, feedback: "", submittedAt: "" }
+          }
+        }));
+        triggerToast("Reset student progress parameters.");
+      };
+
+      const loadTaskTemplate = (code) => {
+        setWorkspaceFiles(prev => ({ ...prev, "main.py": code }));
+        setActiveFile("main.py");
+        setActiveTab("ide");
+        triggerToast("Template loaded into Editor workspace!");
+      };
+
+      return (
+        <div className="flex flex-col min-h-screen">
+          
+          {/* Header */}
+          <header className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-4 flex items-center justify-between z-20">
+            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveTab("dashboard")}>
+              <div className="bg-gradient-to-tr from-brand-600 to-blue-500 p-2 rounded-lg text-white">
+                <Icons.Code />
+              </div>
+              <div>
+                <h1 className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-blue-600 to-sky-400 bg-clip-text text-transparent dark:from-blue-400 dark:to-sky-300">
+                  PythonVerse <span className="text-slate-700 dark:text-slate-300 font-light">Academy</span>
+                </h1>
+                <p className="text-[10px] text-slate-500 font-semibold tracking-wider uppercase">LMS + Browser IDE Sandbox</p>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-4">
+              {currentUser && (
+                <div className="hidden md:flex items-center space-x-3 text-xs">
+                  {currentUser.role === "student" && (
+                    <>
+                      <span className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400 px-3 py-1 rounded-full font-bold flex items-center gap-1">
+                        <Icons.Sparkles /> {studentData[currentUser.id]?.xp || 0} XP
+                      </span>
+                      <span className="bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-400 px-3 py-1 rounded-full font-bold">
+                        🔥 {studentData[currentUser.id]?.streak || 0} Day Streak
+                      </span>
+                    </>
+                  )}
+                  <span className="text-slate-300 dark:text-slate-700">|</span>
+                  <span className="font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">
+                    {currentUser.name} ({currentUser.id})
+                  </span>
+                </div>
+              )}
+
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition"
+                title="Toggle Theme"
+              >
+                {theme === "dark" ? <Icons.Sun /> : <Icons.Moon />}
+              </button>
+
+              {currentUser ? (
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center space-x-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 dark:bg-rose-950/30 dark:hover:bg-rose-950/60 dark:text-rose-400 px-3 py-1.5 rounded-lg text-xs font-bold transition"
+                >
+                  <Icons.LogOut />
+                  <span className="hidden sm:inline">Sign Out</span>
+                </button>
+              ) : (
+                <span className="text-xs font-semibold text-slate-400">Secure Access Active</span>
+              )}
+            </div>
+          </header>
+
+          {/* Toast Alert Banner */}
+          {toast && (
+            <div className={`fixed top-5 right-5 z-50 flex items-center space-x-2 px-5 py-3 rounded-xl shadow-xl text-white font-semibold text-xs transition-all transform duration-300 ${
+              toast.type === "error" ? "bg-rose-600" : "bg-emerald-600"
+            }`}>
+              <span>{toast.msg}</span>
+            </div>
+          )}
+
+          {/* Core App Layout */}
+          <div className="flex-1 flex flex-col md:flex-row">
+            {currentUser ? (
+              <>
+                {/* Navigation Sidebar */}
+                <aside className="w-full md:w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 flex flex-col justify-between">
+                  <div className="space-y-6">
+                    <div className="text-[10px] font-extrabold text-slate-400 dark:text-slate-500 tracking-widest uppercase">Academy Map</div>
+                    <nav className="space-y-1.5">
+                      <button
+                        onClick={() => setActiveTab("dashboard")}
+                        className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-bold transition ${
+                          activeTab === "dashboard"
+                            ? "bg-brand-600 text-white shadow-md shadow-brand-600/10"
+                            : "hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300"
+                        }`}
+                      >
+                        <Icons.Layout />
+                        <span>Dashboard Home</span>
+                      </button>
+
+                      <button
+                        onClick={() => setActiveTab("roadmap")}
+                        className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-bold transition ${
+                          activeTab === "roadmap"
+                            ? "bg-brand-600 text-white shadow-md shadow-brand-600/10"
+                            : "hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300"
+                        }`}
+                      >
+                        <Icons.BookOpen />
+                        <span>Roadmaps & Modules</span>
+                      </button>
+
+                      <button
+                        onClick={() => setActiveTab("ide")}
+                        className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-bold transition ${
+                          activeTab === "ide"
+                            ? "bg-brand-600 text-white shadow-md shadow-brand-600/10"
+                            : "hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300"
+                        }`}
+                      >
+                        <Icons.Terminal />
+                        <span>VS Code Playground</span>
+                      </button>
+
+                      {currentUser.role === "student" && (
+                        <button
+                          onClick={() => setActiveTab("assignments")}
+                          className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-bold transition ${
+                            activeTab === "assignments"
+                              ? "bg-brand-600 text-white shadow-md shadow-brand-600/10"
+                              : "hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300"
+                          }`}
+                        >
+                          <Icons.Award />
+                          <span>Assigned Project Task</span>
+                        </button>
+                      )}
+
+                      {currentUser.role === "admin" && (
+                        <button
+                          onClick={() => setActiveTab("admin")}
+                          className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-bold transition ${
+                            activeTab === "admin"
+                              ? "bg-brand-600 text-white shadow-md shadow-brand-600/10"
+                              : "hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300"
+                          }`}
+                        >
+                          <Icons.Database />
+                          <span>Admin Control Panel</span>
+                        </button>
+                      )}
+                    </nav>
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-100 dark:border-slate-800 mt-6 flex items-center space-x-3">
+                    <div className="bg-slate-100 dark:bg-slate-800 p-2 rounded-full text-slate-600 dark:text-slate-300">
+                      <Icons.User />
+                    </div>
+                    <div className="overflow-hidden">
+                      <div className="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">{currentUser.name}</div>
+                      <div className="text-[10px] text-slate-500 truncate font-semibold uppercase">{currentUser.role === "admin" ? "Academic Host" : `Student Portal`}</div>
+                    </div>
+                  </div>
+                </aside>
+
+                {/* Primary Content Window */}
+                <main className="flex-1 p-6 md:p-8 overflow-y-auto max-h-[calc(100vh-73px)]">
+                  {activeTab === "dashboard" && (
+                    <DashboardView
+                      currentUser={currentUser}
+                      studentData={studentData}
+                      announcements={announcements}
+                      loadTaskTemplate={loadTaskTemplate}
+                    />
+                  )}
+                  {activeTab === "roadmap" && (
+                    <RoadmapView
+                      studentData={studentData}
+                      setStudentData={setStudentData}
+                      currentUser={currentUser}
+                      loadTaskTemplate={loadTaskTemplate}
+                    />
+                  )}
+                  {activeTab === "ide" && (
+                    <BrowserIDE
+                      files={workspaceFiles}
+                      setFiles={setWorkspaceFiles}
+                      activeFile={activeFile}
+                      setActiveFile={setActiveFile}
+                      triggerToast={triggerToast}
+                      currentUser={currentUser}
+                      studentData={studentData}
+                      setStudentData={setStudentData}
+                    />
+                  )}
+                  {activeTab === "assignments" && (
+                    <AssignmentsView
+                      currentUser={currentUser}
+                      studentData={studentData}
+                      setStudentData={setStudentData}
+                      triggerToast={triggerToast}
+                      loadTaskTemplate={loadTaskTemplate}
+                    />
+                  )}
+                  {activeTab === "admin" && (
+                    <AdminPanel
+                      studentData={studentData}
+                      setStudentData={setStudentData}
+                      announcements={announcements}
+                      setAnnouncements={setAnnouncements}
+                      handleResetProgress={handleResetProgress}
+                      triggerToast={triggerToast}
+                    />
+                  )}
+                </main>
+              </>
+            ) : (
+              <LoginView onLogin={handleLogin} />
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // --- LOGIN VIEW ---
+    function LoginView({ onLogin }) {
+      const [id, setId] = useState("");
+      const [password, setPassword] = useState("");
+
+      const submit = (e) => {
+        e.preventDefault();
+        onLogin(id.trim(), password);
+      };
+
+      return (
+        <div className="flex-1 flex flex-col justify-center items-center p-6 bg-slate-100 dark:bg-slate-950">
+          <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-8">
+            
+            <div className="text-center mb-6">
+              <div className="inline-flex bg-brand-600 text-white p-3 rounded-2xl mb-3 shadow-lg shadow-brand-500/20">
+                <Icons.Code />
+              </div>
+              <h2 className="text-2xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight">PythonVerse Academy</h2>
+              <p className="text-xs text-slate-500 mt-1">LMS Platform & Code Sandbox</p>
+            </div>
+
+            <form onSubmit={submit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">Assigned Student / Admin ID</label>
+                <input
+                  type="text"
+                  placeholder="e.g. PJ002 or ADMIN001"
+                  value={id}
+                  onChange={e => setId(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:ring-2 focus:ring-brand-500 focus:outline-none text-slate-800 dark:text-slate-100 text-xs font-medium"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">Secure Password</label>
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:ring-2 focus:ring-brand-500 focus:outline-none text-slate-800 dark:text-slate-100 text-xs font-medium"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-brand-600/15"
+              >
+                Sign In to Platform
+              </button>
+            </form>
+
+            <div className="mt-6 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/80 rounded-xl p-4 text-xs text-slate-600 dark:text-slate-300">
+              <div className="font-bold text-blue-600 dark:text-blue-400 mb-2 flex items-center justify-between">
+                <span>🔐 RECONSTRUCTED USER DATABASE</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 font-mono text-[10px]">
+                <div>
+                  <span className="font-sans font-bold text-slate-400">Student Profiles:</span>
+                  <ul className="list-disc pl-3 mt-1 space-y-0.5">
+                    <li>KD001 (Kedar)</li>
+                    <li>PJ002 (Pranav)</li>
+                    <li>RK003 (Rajlakshmi)</li>
+                    <li>SP004 (Samruddhi)</li>
+                    <li>KK005 (Kalyani)</li>
+                  </ul>
+                </div>
+                <div>
+                  <span className="font-sans font-bold text-slate-400">Admin Account:</span>
+                  <ul className="list-disc pl-3 mt-1 space-y-0.5">
+                    <li>ADMIN001</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="mt-3 text-[10px] text-slate-400 italic">
+                Note: Standard password format is "Name@2026" (e.g. Kedar@2026) or "Admin@Python2026".
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- DASHBOARD HOME VIEW ---
+    function DashboardView({ currentUser, studentData, announcements, loadTaskTemplate }) {
+      const isStudent = currentUser.role === "student";
+      const sInfo = isStudent ? studentData[currentUser.id] : null;
+
+      const totalLessonsCount = ROADMAP.reduce((acc, cat) => acc + cat.topics.length, 0);
+      const completedCount = sInfo ? sInfo.completedLessons.length : 0;
+      const progressPercent = totalLessonsCount > 0 ? Math.round((completedCount / totalLessonsCount) * 100) : 0;
+
+      return (
+        <div className="space-y-6 animate-fadeIn">
+          <div>
+            <h1 className="text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
+              Welcome back, {currentUser.name}!
+            </h1>
+            <p className="text-sm text-slate-500 mt-1">
+              {isStudent ? "Track variables, clear modules, inspect framework structures, and write live code loops." : "LMS Administrator Console. Review submissions, configure syllabus locks, and download stats."}
+            </p>
+          </div>
+
+          {/* Metric KPI Widgets */}
+          {isStudent && sInfo && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 flex items-center space-x-4">
+                <div className="p-3 rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
+                  <Icons.BookOpen />
+                </div>
+                <div>
+                  <div className="text-[10px] uppercase font-bold text-slate-400">Roadmap Progress</div>
+                  <div className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{progressPercent}% Completed</div>
+                  <div className="text-xs text-slate-500 mt-0.5">{completedCount} of {totalLessonsCount} steps checked</div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 flex items-center space-x-4">
+                <div className="p-3 rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
+                  <Icons.Sparkles />
+                </div>
+                <div>
+                  <div className="text-[10px] uppercase font-bold text-slate-400">Platform Rewards</div>
+                  <div className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{sInfo.xp} Cumulative XP</div>
+                  <div className="text-xs text-slate-500 mt-0.5">Solve quizzes to gain more XP</div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 flex items-center space-x-4">
+                <div className="p-3 rounded-lg bg-amber-100 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400">
+                  <Icons.Clock />
+                </div>
+                <div>
+                  <div className="text-[10px] uppercase font-bold text-slate-400">Streak Tracker</div>
+                  <div className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{sInfo.streak} Days Running</div>
+                  <div className="text-xs text-slate-500 mt-0.5">Commit code loops daily</div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 flex items-center space-x-4">
+                <div className="p-3 rounded-lg bg-indigo-100 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400">
+                  <Icons.Award />
+                </div>
+                <div>
+                  <div className="text-[10px] uppercase font-bold text-slate-400">Submission Status</div>
+                  <div className={`text-sm font-extrabold mt-0.5 ${
+                    sInfo.taskSubmission.status === "Approved" ? "text-emerald-600" :
+                    sInfo.taskSubmission.status === "Submitted" ? "text-amber-500" : "text-slate-400"
+                  }`}>
+                    {sInfo.taskSubmission.status}
+                  </div>
+                  <div className="text-xs text-slate-500 mt-0.5">
+                    {sInfo.taskSubmission.status === "Approved" ? `Score: ${sInfo.taskSubmission.rating}/10` : "Assigned project pending"}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {/* Quick Launch Jumbotron */}
+          {isStudent && sInfo && (
+            <div className="bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-900 text-white p-6 rounded-2xl relative overflow-hidden shadow-lg">
+              <div className="relative z-10 max-w-2xl">
+                <h3 className="text-xl font-bold mb-1">Assigned Milestone Project</h3>
+                <p className="text-sm text-blue-100 mb-4 font-semibold">
+                  🎯 Task: {STUDENT_TASKS[currentUser.id]?.title} ({STUDENT_TASKS[currentUser.id]?.difficulty})
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => loadTaskTemplate(STUDENT_TASKS[currentUser.id].codeTemplate)}
+                    className="bg-white text-blue-800 hover:bg-slate-50 px-4 py-2 rounded-xl text-xs font-bold transition shadow"
+                  >
+                    🚀 Load Project in Code IDE
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Content Grids */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <div className="lg:col-span-2 space-y-6">
+              
+              {/* Notifications */}
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5">
+                <div className="flex items-center space-x-2 mb-4">
+                  <Icons.Bell />
+                  <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100">Broadcast Bulletins</h3>
+                </div>
+                <div className="space-y-3">
+                  {announcements.map((ann) => (
+                    <div key={ann.id} className="p-4 border-l-4 border-brand-500 bg-slate-50 dark:bg-slate-950/40 rounded-r-xl">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="font-bold text-xs text-slate-800 dark:text-slate-200">{ann.title}</span>
+                        <span className="text-[10px] text-slate-400">{ann.date}</span>
+                      </div>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{ann.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Roadmaps Directory */}
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5">
+                <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100 mb-4">Syllabus Overview</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {ROADMAP.map((mod) => (
+                    <div key={mod.id} className="border border-slate-100 dark:border-slate-800 p-4 rounded-xl hover:border-brand-500 transition duration-200">
+                      <div className="text-[9px] font-bold text-brand-600 uppercase tracking-widest mb-1">Roadmap Segment</div>
+                      <h4 className="font-bold text-xs text-slate-800 dark:text-slate-200 mb-1.5 truncate">{mod.title}</h4>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-3">{mod.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            <div className="space-y-6">
+              {/* Profile Milestones */}
+              {isStudent && sInfo && (
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5">
+                  <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100 mb-4">Earned Medals</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3 p-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-950/40 rounded-xl">
+                      <span className="text-lg">🎓</span>
+                      <div>
+                        <div className="text-xs font-bold text-slate-800 dark:text-slate-200">Matrix Pioneer</div>
+                        <div className="text-[10px] text-slate-500">Initiated custom libraries</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3 p-3 bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-950/40 rounded-xl">
+                      <span className="text-lg">🛡️</span>
+                      <div>
+                        <div className="text-xs font-bold text-slate-800 dark:text-slate-200">Execution Specialist</div>
+                        <div className="text-[10px] text-slate-500">Cleared initial datatypes quiz</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Developer Environment Overview */}
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 space-y-3">
+                <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100">Virtual Environment</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  The IDE offers a simulated virtual Python shell. Install modules dynamically with pip, manage mock SQLite records, and map variables.
+                </p>
+                <div className="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg flex justify-between items-center text-[10px] font-mono border dark:border-slate-800">
+                  <span className="text-slate-600 dark:text-slate-400">Environment: active_sandbox</span>
+                  <span className="text-emerald-500 font-bold">ONLINE</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      );
+    }
+
+    // --- ROADMAP & SYLLABUS LESSONS ---
+    function RoadmapView({ studentData, setStudentData, currentUser, loadTaskTemplate }) {
+      const [searchQuery, setSearchQuery] = useState("");
+      const [selectedTopic, setSelectedTopic] = useState(null);
+      const [quizAnswers, setQuizAnswers] = useState({});
+      const [quizResult, setQuizResult] = useState(null);
+
+      const isStudent = currentUser.role === "student";
+
+      const filteredRoadmap = useMemo(() => {
+        if (!searchQuery) return ROADMAP;
+        return ROADMAP.map(category => {
+          const matched = category.topics.filter(topic =>
+            topic.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            topic.theory.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+          return { ...category, topics: matched };
+        }).filter(category => category.topics.length > 0);
+      }, [searchQuery]);
+
+      const isComplete = (topicName) => {
+        if (!isStudent) return false;
+        return studentData[currentUser.id]?.completedLessons.includes(topicName);
+      };
+
+      const toggleComplete = (topicName) => {
+        if (!isStudent) return;
+        const list = studentData[currentUser.id]?.completedLessons || [];
+        let updated;
+        if (list.includes(topicName)) {
+          updated = list.filter(x => x !== topicName);
+        } else {
+          updated = [...list, topicName];
+          setStudentData(prev => ({
+            ...prev,
+            [currentUser.id]: {
+              ...prev[currentUser.id],
+              xp: (prev[currentUser.id].xp || 0) + 30
+            }
+          }));
+        }
+        setStudentData(prev => ({
+          ...prev,
+          [currentUser.id]: {
+            ...prev[currentUser.id],
+            completedLessons: updated
+          }
+        }));
+      };
+
+      const handleQuizSubmit = (e) => {
+        e.preventDefault();
+        const correctAnswers = { q1: "A", q2: "B" };
+        let score = 0;
+        if (quizAnswers.q1 === correctAnswers.q1) score += 50;
+        if (quizAnswers.q2 === correctAnswers.q2) score += 50;
+
+        setQuizResult(score);
+        if (score === 100 && isStudent) {
+          setStudentData(prev => ({
+            ...prev,
+            [currentUser.id]: {
+              ...prev[currentUser.id],
+              xp: (prev[currentUser.id].xp || 0) + 50
+            }
+          }));
+        }
+      };
+
+      return (
+        <div className="space-y-6 animate-fadeIn">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-extrabold text-slate-800 dark:text-white">Roadmaps & Modules</h1>
+              <p className="text-xs text-slate-500 mt-0.5">Explore parameters, frameworks instructions, and validate quiz items.</p>
+            </div>
+
+            <div className="relative w-full sm:w-72">
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                <Icons.Search />
+              </span>
+              <input
+                type="text"
+                placeholder="Search modules..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-xs text-slate-700 dark:text-slate-300"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            {/* Sidebar List */}
+            <div className="space-y-4">
+              {filteredRoadmap.map((category) => (
+                <div key={category.id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm">
+                  <h3 className="font-extrabold text-[10px] text-brand-600 dark:text-brand-400 uppercase tracking-widest mb-2">{category.title}</h3>
+                  <div className="space-y-1">
+                    {category.topics.map((topic, i) => {
+                      const completed = isComplete(topic.name);
+                      return (
+                        <button
+                          key={i}
+                          onClick={() => {
+                            setSelectedTopic(topic);
+                            setQuizAnswers({});
+                            setQuizResult(null);
+                          }}
+                          className={`w-full flex items-center justify-between text-left px-3 py-2 rounded-lg text-xs font-semibold transition ${
+                            selectedTopic?.name === topic.name
+                              ? "bg-brand-50 text-brand-700 dark:bg-slate-800 dark:text-white"
+                              : "hover:bg-slate-50 dark:hover:bg-slate-800/40 text-slate-600 dark:text-slate-400"
+                          }`}
+                        >
+                          <span className="truncate">{topic.name}</span>
+                          <span className={`w-2.5 h-2.5 rounded-full ${completed ? "bg-emerald-500" : "bg-slate-200 dark:bg-slate-800"}`} />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Topic Details Window */}
+            <div className="lg:col-span-2">
+              {selectedTopic ? (
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 space-y-6 shadow-sm">
+                  
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-4 gap-3">
+                    <div>
+                      <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">{selectedTopic.name} Module</h2>
+                      <p className="text-xs text-slate-500 mt-1">Status: {isComplete(selectedTopic.name) ? "Cleared (+30 XP)" : "Pending Review"}</p>
+                    </div>
+
+                    {isStudent && (
+                      <button
+                        onClick={() => toggleComplete(selectedTopic.name)}
+                        className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+                          isComplete(selectedTopic.name)
+                            ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400"
+                            : "bg-brand-600 text-white hover:bg-brand-700"
+                        }`}
+                      >
+                        <Icons.CheckCircle />
+                        <span>{isComplete(selectedTopic.name) ? "Completed" : "Mark Cleared (+30 XP)"}</span>
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Concept Explanation</h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-950/40 p-4 rounded-xl border dark:border-slate-800">
+                      {selectedTopic.theory}
+                    </p>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Sample Syntax Output</h4>
+                      <button
+                        onClick={() => {
+                          const code = `# Library Simulator: ${selectedTopic.name}\n${selectedTopic.syntax}\n\nprint("Sandbox evaluated successfully!")`;
+                          loadTaskTemplate(code);
+                        }}
+                        className="text-[10px] text-brand-600 font-bold hover:underline"
+                      >
+                        ⚡ Run snippet in IDE editor
+                      </button>
+                    </div>
+                    <pre className="p-4 bg-vscode-bg text-slate-200 border border-vscode-border rounded-xl text-xs overflow-x-auto monospace leading-relaxed select-all">
+                      {selectedTopic.syntax}
+                    </pre>
+                  </div>
+
+                  <div className="p-4 bg-slate-50 dark:bg-slate-950/40 border dark:border-slate-800 rounded-xl flex items-center justify-between text-xs">
+                    <div>
+                      <div className="text-[9px] uppercase font-bold text-slate-400">Standard Installation</div>
+                      <code className="font-mono text-slate-700 dark:text-slate-300">{selectedTopic.install}</code>
+                    </div>
+                    <span className="text-[10px] bg-slate-200 dark:bg-slate-800 px-2.5 py-1 rounded font-bold uppercase text-slate-500">Bash Command</span>
+                  </div>
+
+                  {/* Micro Quiz Validation Block */}
+                  <div className="border-t dark:border-slate-800 pt-6">
+                    <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200 mb-3">Module Validation Quiz (+50 XP)</h3>
+                    <form onSubmit={handleQuizSubmit} className="space-y-4">
+                      
+                      <div className="space-y-1.5">
+                        <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                          1. What is the standard configuration process to import this structure?
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                          <label className="flex items-center space-x-2 border dark:border-slate-800 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-950/50 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="q1"
+                              value="A"
+                              checked={quizAnswers.q1 === "A"}
+                              onChange={e => setQuizAnswers(prev => ({ ...prev, q1: "A" }))}
+                              className="text-brand-600"
+                              required
+                            />
+                            <span>Standard top-level <code>import</code> syntax.</span>
+                          </label>
+                          <label className="flex items-center space-x-2 border dark:border-slate-800 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-950/50 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="q1"
+                              value="B"
+                              checked={quizAnswers.q1 === "B"}
+                              onChange={e => setQuizAnswers(prev => ({ ...prev, q1: "B" }))}
+                              className="text-brand-600"
+                            />
+                            <span>Execute direct binary parameters.</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                          2. Which module installs these external libraries?
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                          <label className="flex items-center space-x-2 border dark:border-slate-800 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-950/50 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="q2"
+                              value="A"
+                              checked={quizAnswers.q2 === "A"}
+                              onChange={e => setQuizAnswers(prev => ({ ...prev, q2: "A" }))}
+                              className="text-brand-600"
+                              required
+                            />
+                            <span>Standard <code>node package manager</code> commands.</span>
+                          </label>
+                          <label className="flex items-center space-x-2 border dark:border-slate-800 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-950/50 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="q2"
+                              value="B"
+                              checked={quizAnswers.q2 === "B"}
+                              onChange={e => setQuizAnswers(prev => ({ ...prev, q2: "B" }))}
+                              className="text-brand-600"
+                            />
+                            <span>Using <code>pip install</code> in bash terminal.</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2">
+                        <button
+                          type="submit"
+                          className="bg-brand-600 hover:bg-brand-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition"
+                        >
+                          Submit Answer Sheets
+                        </button>
+
+                        {quizResult !== null && (
+                          <span className={`text-xs font-bold ${quizResult === 100 ? "text-emerald-500" : "text-rose-500"}`}>
+                            {quizResult === 100 ? "💯 Perfect Score! +50 XP Awarded!" : "❌ Try again to locate correct options."}
+                          </span>
+                        )}
+                      </div>
+
+                    </form>
+                  </div>
+
+                </div>
+              ) : (
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center flex flex-col justify-center items-center min-h-[400px]">
+                  <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-full text-slate-400 mb-3">
+                    <Icons.BookOpen />
+                  </div>
+                  <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100">Select a Roadmap Topic</h3>
+                  <p className="text-xs text-slate-500 max-w-sm mt-1">Click any Python segment on the sidebar to inspect variables guides, installation structures, code templates, and quiz metrics.</p>
+                </div>
+              )}
+            </div>
+
+          </div>
+        </div>
+      );
+    }
+
+    // --- BROWSER PLAYGROUND IDE & SHELL ---
+    function BrowserIDE({ files, setFiles, activeFile, setActiveFile, triggerToast, currentUser, studentData, setStudentData }) {
+      const [newFileName, setNewFileName] = useState("");
+      const [showFileModal, setShowFileModal] = useState(false);
+      const [renameFileTarget, setRenameFileTarget] = useState(null);
+      const [renameValue, setRenameValue] = useState("");
+      
+      const [consoleLogs, setConsoleLogs] = useState(["PythonVerse Bash v1.6.0\nType 'help' or 'python main.py' to evaluate files.\n"]);
+      const [terminalInput, setTerminalInput] = useState("");
+      const [installedPackages, setInstalledPackages] = useState(["numpy", "pandas", "requests"]);
+      
+      const [viewMode, setViewMode] = useState("terminal"); // terminal or livePreview
+      const [previewContent, setPreviewContent] = useState(null);
+
+      const terminalBottomRef = useRef(null);
+
+      useEffect(() => {
+        if (terminalBottomRef.current) {
+          terminalBottomRef.current.scrollTop = terminalBottomRef.current.scrollHeight;
+        }
+      }, [consoleLogs]);
+
+      const handleCreateFile = (e) => {
+        e.preventDefault();
+        const fName = newFileName.trim();
+        if (!fName) return;
+        if (files[fName]) {
+          triggerToast("File already exists!", "error");
+          return;
+        }
+        setFiles(prev => ({
+          ...prev,
+          [fName]: `# Module: ${fName}\n# Begin writing programs here.\n`
+        }));
+        setActiveFile(fName);
+        setNewFileName("");
+        setShowFileModal(false);
+        triggerToast(`Created file: ${fName}`);
+      };
+
+      const handleDeleteFile = (fileName) => {
+        if (fileName === "main.py") {
+          triggerToast("Cannot delete core entrypoint 'main.py'!", "error");
+          return;
+        }
+        const cloned = { ...files };
+        delete cloned[fileName];
+        setFiles(cloned);
+        if (activeFile === fileName) {
+          setActiveFile("main.py");
+        }
+        triggerToast(`Removed: ${fileName}`);
+      };
+
+      const handleRenameFile = (e) => {
+        e.preventDefault();
+        const next = renameValue.trim();
+        if (!next || !renameFileTarget) return;
+        if (renameFileTarget === "main.py") {
+          triggerToast("Cannot rename main entrypoint!", "error");
+          return;
+        }
+        if (files[next]) {
+          triggerToast("File already exists!", "error");
+          return;
+        }
+
+        const cloned = { ...files };
+        cloned[next] = cloned[renameFileTarget];
+        delete cloned[renameFileTarget];
+        
+        setFiles(cloned);
+        if (activeFile === renameFileTarget) {
+          setActiveFile(next);
+        }
+        setRenameFileTarget(null);
+        setRenameValue("");
+        triggerToast("Renamed file module.");
+      };
+
+      // Auto-generates structured GitHub-style README.md based on student parameters
+      const autoGenerateReadme = () => {
+        const isStudent = currentUser.role === "student";
+        const title = isStudent ? STUDENT_TASKS[currentUser.id]?.title : "PythonVerse Code SandBox";
+        const libs = isStudent ? STUDENT_TASKS[currentUser.id]?.libraries.join(", ") : "NumPy, Pandas, Matplotlib";
+
+        const readmeTemplate = `# ${title}\n\n## Description\nAn analytical Python workspace project leveraging libraries like **${libs}** to parse rows, visualize arrays, and store data tables.\n\n## Requirements\n- Python 3.11\n- Packages: \`${libs}\`\n\n## Workspace Files\n${Object.keys(files).map(f => `- \`${f}\``).join("\n")}\n\n## How to Run\n\`\`\`bash\npython main.py\n\`\`\`\n\n*Document generated automatically inside PythonVerse LMS.*`;
+        
+        setFiles(prev => ({ ...prev, "README.md": readmeTemplate }));
+        setActiveFile("README.md");
+        triggerToast("Auto-generated README.md workspace parameters!");
+      };
+
+      // Simulates Downloading ZIP payload configuration containing all sandbox structures
+      const downloadZipSimulator = () => {
+        let manifest = `=== PythonVerse Sandbox Zip Export ===\nGenerated on: ${new Date().toLocaleDateString()}\n\n`;
+        Object.keys(files).forEach(f => {
+          manifest += `--- File: ${f} ---\n${files[f]}\n\n`;
+        });
+        
+        const blob = new Blob([manifest], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "pythonverse_project_workspace.zip.txt";
+        a.click();
+        URL.revokeObjectURL(url);
+        triggerToast("Downloaded simulated project structure package!");
+      };
+
+      // Intercept and allow Tab indentation within Monaco simulation textarea
+      const handleTabKeyIndentation = (e) => {
+        if (e.key === "Tab") {
+          e.preventDefault();
+          const { selectionStart, selectionEnd, value } = e.target;
+          const insertedText = "    ";
+          const updatedValue = value.substring(0, selectionStart) + insertedText + value.substring(selectionEnd);
+          
+          setFiles(prev => ({ ...prev, [activeFile]: updatedValue }));
+          
+          // Re-adjust cursor position
+          setTimeout(() => {
+            e.target.selectionStart = e.target.selectionEnd = selectionStart + insertedText.length;
+          }, 0);
+        }
+      };
+
+      const runPythonCode = () => {
+        const code = files["main.py"] || "";
+        setConsoleLogs(prev => [...prev, `\n$ python main.py`]);
+        setViewMode("terminal");
+
+        setTimeout(() => {
+          let output = [];
+
+          if (code.includes("sqlite3") && code.includes("pd.read_sql_query")) {
+            output.push("SQLite3: Establishing database connection to local system...");
+            output.push("Executing query parameters via Pandas compiler engine...");
+            output.push("\n--- Pandas DataFrame Summary ---");
+            output.push("         id       grade  completed");
+            output.push("count   5.0    5.000000        5.0");
+            output.push("mean    3.0   91.200000        0.8");
+            output.push("std     1.58   2.683281        0.4");
+            output.push("\nSuccess: Graph visualized. Loaded elements inside preview frame!");
+
+            setPreviewContent({
+              type: "chart",
+              labels: ["Kedar", "Pranav", "Rajlakshmi", "Samruddhi", "Kalyani"],
+              data: [88, 92, 95, 89, 91],
+              title: "Student Database Grade Summary"
+            });
+            setViewMode("livePreview");
+            triggerToast("Evaluation successful! Rendering visual charts.");
+          }
+          else if (code.includes("weather_json") && code.includes("plotly")) {
+            output.push("Requests: Fetching simulated JSON meteorological grids...");
+            output.push("Generating multi-trace line curves with Plotly layers...");
+            setPreviewContent({
+              type: "chart",
+              labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+              data: [31, 32, 29, 30, 33],
+              title: "Forecast Temperature Grids (°C)"
+            });
+            setViewMode("livePreview");
+            triggerToast("Plotly weather line trace compiled.");
+          }
+          else if (code.includes("PIL") && code.includes("cv2")) {
+            output.push("NumPy: Loading synthetic 400x400 RGB matrix vectors...");
+            output.push("Applying Gaussian noise blurs and edge maps via Canny filters...");
+            setPreviewContent({ type: "canvas_opencv" });
+            setViewMode("livePreview");
+            triggerToast("Matrix transform compiled.");
+          }
+          else if (code.includes("FastAPI") && code.includes("Book")) {
+            output.push("FastAPI ASGI: Launching server pipeline [127.0.0.1:8000]");
+            output.push("Uvicorn running on http://127.0.0.1:8000 (Press Ctrl+C to terminate)");
+            setPreviewContent({ type: "fastapi" });
+            setViewMode("livePreview");
+            triggerToast("ASGI FastAPI Server running!");
+          }
+          else if (code.includes("print(")) {
+            const printRegex = /print\s*\(\s*(['"])(.*?)\1\s*\)/g;
+            let match;
+            let captured = false;
+            while ((match = printRegex.exec(code)) !== null) {
+              output.push(match[2]);
+              captured = true;
+            }
+            if (!captured) {
+              output.push("Output evaluated: Standard return loop completed.");
+            }
+          }
+          else {
+            output.push("Evaluation successful. Main file exited with return code 0.");
+          }
+
+          setConsoleLogs(prev => [...prev, output.join("\n")]);
+        }, 600);
+      };
+
+      const executeTerminalInput = (e) => {
+        e.preventDefault();
+        const input = terminalInput.trim();
+        if (!input) return;
+
+        const parts = input.split(" ");
+        const base = parts[0].toLowerCase();
+        let feedback = "";
+
+        if (base === "clear") {
+          setConsoleLogs([]);
+          setTerminalInput("");
+          return;
+        }
+
+        switch(base) {
+          case "help":
+            feedback = "Interactive Bash commands:\n  ls            - List sandbox folder modules\n  cat [file]    - Inspect exact text layers\n  touch [file]  - Instantly create new files\n  mkdir [dir]   - Construct directories\n  python main.py- Run core scripts\n  pip install   - Register custom libraries\n  clear         - Wipe logs";
+            break;
+          case "ls":
+            feedback = Object.keys(files).join("     ");
+            break;
+          case "touch":
+            if (parts[1]) {
+              setFiles(prev => ({ ...prev, [parts[1]]: "# File parameters added" }));
+              feedback = `touch: Created empty module: ${parts[1]}`;
+            } else feedback = "Usage: touch [filename]";
+            break;
+          case "mkdir":
+            feedback = parts[1] ? `Created workspace directory: ${parts[1]}` : "Usage: mkdir [dirname]";
+            break;
+          case "cat":
+            const target = parts[1];
+            feedback = target && files[target] ? files[target] : `cat: ${target || 'file'} not found.`;
+            break;
+          case "pip":
+            if (parts[1] === "install" && parts[2]) {
+              const moduleName = parts[2];
+              if (installedPackages.includes(moduleName)) {
+                feedback = `Requirement already satisfied: ${moduleName} in python/site-packages`;
+              } else {
+                setInstalledPackages(prev => [...prev, moduleName]);
+                feedback = `Collecting ${moduleName}...\nInstalling collected packages...\nSuccessfully registered ${moduleName}-v1.4.0`;
+              }
+            } else feedback = "Usage: pip install [module_name]";
+            break;
+          case "python":
+            if (parts[1] === "main.py") {
+              runPythonCode();
+              setTerminalInput("");
+              return;
+            } else {
+              feedback = `python: evaluated ${parts[1] || 'target'}.`;
+            }
+            break;
+          default:
+            feedback = `bash: command not found: ${base}. Input 'help' to review available tags.`;
+        }
+
+        setConsoleLogs(prev => [...prev, `\n$ ${input}`, feedback]);
+        setTerminalInput("");
+      };
+
+      return (
+        <div className="space-y-6 animate-fadeIn">
+          
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b dark:border-slate-800 pb-4 gap-3">
+            <div>
+              <h1 className="text-2xl font-extrabold text-slate-800 dark:text-white">Workspace Code Sandbox</h1>
+              <p className="text-xs text-slate-500 mt-0.5">Edit active files on the middle board and execute using the green button.</p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={autoGenerateReadme}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition shadow-md flex items-center space-x-1"
+                title="Autogenerate standard README documentation based on your workspace"
+              >
+                <span>Generate README</span>
+              </button>
+              
+              <button
+                onClick={downloadZipSimulator}
+                className="bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1"
+                title="Download simulated zip pack"
+              >
+                <Icons.FileZip />
+                <span>Zip Bundle</span>
+              </button>
+
+              <button
+                onClick={runPythonCode}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 shadow-md shadow-emerald-600/10"
+              >
+                <Icons.Play />
+                <span>Execute Script</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            
+            {/* Sidebar Directory */}
+            <div className="lg:col-span-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-col justify-between min-h-[480px]">
+              <div>
+                <div className="flex items-center justify-between border-b dark:border-slate-800 pb-2.5 mb-3">
+                  <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Workspace Explorer</span>
+                  <button
+                    onClick={() => setShowFileModal(true)}
+                    className="p-1 text-slate-400 hover:text-brand-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                    title="Add file"
+                  >
+                    <Icons.Plus />
+                  </button>
+                </div>
+
+                <div className="space-y-1">
+                  {Object.keys(files).map((name) => (
+                    <div
+                      key={name}
+                      className={`group flex items-center justify-between p-2 rounded-lg text-xs font-semibold cursor-pointer transition ${
+                        activeFile === name
+                          ? "bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white"
+                          : "hover:bg-slate-50 dark:hover:bg-slate-800/40 text-slate-500 dark:text-slate-400"
+                      }`}
+                      onClick={() => setActiveFile(name)}
+                    >
+                      <div className="flex items-center space-x-2 truncate">
+                        <Icons.FileText />
+                        <span className="truncate">{name}</span>
+                      </div>
+                      
+                      {name !== "main.py" && (
+                        <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setRenameFileTarget(name);
+                              setRenameValue(name);
+                            }}
+                            className="text-slate-400 hover:text-blue-500 p-0.5"
+                            title="Rename"
+                          >
+                            <Icons.Edit />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteFile(name);
+                            }}
+                            className="text-slate-400 hover:text-rose-500 p-0.5"
+                            title="Remove"
+                          >
+                            <Icons.Trash />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border-t dark:border-slate-800 pt-4 mt-4 space-y-2">
+                <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block">Environment modules</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {installedPackages.map((pkg) => (
+                    <span key={pkg} className="bg-slate-50 dark:bg-slate-950/60 border dark:border-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded text-[10px] font-mono">
+                      {pkg}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Monaco Text Area Editor */}
+            <div className="lg:col-span-5 bg-vscode-bg border border-vscode-border rounded-2xl flex flex-col justify-between overflow-hidden min-h-[480px]">
+              
+              <div className="bg-vscode-sidebar border-b border-vscode-border flex items-center justify-between px-4 py-2 text-xs">
+                <div className="flex items-center space-x-1.5 text-slate-200 font-bold font-mono">
+                  <Icons.FileText />
+                  <span>{activeFile}</span>
+                </div>
+                <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Dynamic Sync</span>
+              </div>
+
+              <div className="flex-1 flex overflow-hidden relative">
+                {/* Line number rail */}
+                <div className="w-10 bg-vscode-sidebar text-slate-600 text-right pr-2 py-4 select-none border-r border-vscode-border monospace text-xs leading-relaxed space-y-0.5">
+                  {Array.from({ length: 30 }).map((_, i) => (
+                    <div key={i}>{i + 1}</div>
+                  ))}
+                </div>
+
+                <textarea
+                  value={files[activeFile] || ""}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFiles(prev => ({ ...prev, [activeFile]: value }));
+                  }}
+                  onKeyDown={handleTabKeyIndentation}
+                  className="flex-1 p-4 bg-vscode-bg text-slate-200 focus:outline-none monospace text-xs leading-relaxed resize-none h-full"
+                  spellCheck="false"
+                  placeholder="# Enter your Python workspace codes. Remember tab spacing!"
+                />
+              </div>
+
+              <div className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 py-2 flex justify-between items-center text-[10px] font-semibold text-slate-500">
+                <span>Kernel: Python 3.11 Standard Sandbox</span>
+                <span>UTF-8  |  Tab size: 4 spaces</span>
+              </div>
+
+            </div>
+
+            {/* Terminal Window / Graphics Frame */}
+            <div className="lg:col-span-4 bg-vscode-terminal border border-vscode-border rounded-2xl flex flex-col justify-between overflow-hidden min-h-[480px]">
+              
+              <div className="bg-[#181818] border-b border-vscode-border flex items-center text-xs">
+                <button
+                  onClick={() => setViewMode("terminal")}
+                  className={`px-4 py-3 font-bold transition border-b-2 ${
+                    viewMode === "terminal" ? "border-brand-500 text-white" : "border-transparent text-slate-400 hover:text-white"
+                  }`}
+                >
+                  Interactive Terminal
+                </button>
+                <button
+                  onClick={() => setViewMode("livePreview")}
+                  className={`px-4 py-3 font-bold transition border-b-2 ${
+                    viewMode === "livePreview" ? "border-brand-500 text-white" : "border-transparent text-slate-400 hover:text-white"
+                  }`}
+                >
+                  Output Preview Panel
+                </button>
+              </div>
+
+              <div className="flex-1 p-4 overflow-y-auto monospace text-xs leading-relaxed">
+                {viewMode === "terminal" ? (
+                  <div ref={terminalBottomRef} className="h-full flex flex-col justify-between">
+                    <pre className="text-slate-300 whitespace-pre-wrap">
+                      {consoleLogs.join("\n")}
+                    </pre>
+
+                    <form onSubmit={executeTerminalInput} className="flex items-center border-t border-slate-800 pt-2 mt-4">
+                      <span className="text-emerald-500 font-bold mr-1.5">$</span>
+                      <input
+                        type="text"
+                        value={terminalInput}
+                        onChange={e => setTerminalInput(e.target.value)}
+                        placeholder="Type 'help' and click run."
+                        className="flex-1 bg-transparent text-white focus:outline-none focus:ring-0 select-text font-mono"
+                      />
+                    </form>
+                  </div>
+                ) : (
+                  <div className="h-full flex flex-col items-center justify-center">
+                    {previewContent ? (
+                      <div className="w-full text-center space-y-4">
+                        
+                        {previewContent.type === "chart" && (
+                          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-xl text-slate-800 dark:text-slate-100 shadow-sm w-full">
+                            <div className="font-bold text-[10px] text-left text-slate-400 uppercase mb-2">RENDERED PREVIEW BLOCK</div>
+                            <h4 className="font-bold text-xs mb-4">{previewContent.title}</h4>
+                            <div className="flex items-end justify-between px-4 h-36 pt-4">
+                              {previewContent.data.map((val, i) => (
+                                <div key={i} className="flex flex-col items-center flex-1 mx-1 group cursor-pointer">
+                                  <span className="text-[9px] text-slate-400 mb-1 opacity-0 group-hover:opacity-100 transition">{val}</span>
+                                  <div
+                                    style={{ height: `${(val / 100) * 100}px` }}
+                                    className="w-full bg-brand-500 group-hover:bg-brand-600 rounded-t transition-all duration-300"
+                                  />
+                                  <span className="text-[9px] font-bold mt-2 rotate-12">{previewContent.labels[i]}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {previewContent.type === "canvas_opencv" && (
+                          <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl text-white space-y-4 text-center">
+                            <h4 className="font-bold text-[10px] text-slate-400 uppercase">CV2 BOUNDING BOX CO-ORDINATES</h4>
+                            <div className="relative w-40 h-40 mx-auto border-2 border-dashed border-emerald-500 rounded-lg flex items-center justify-center overflow-hidden">
+                              <div className="absolute top-1/4 left-1/4 right-1/4 bottom-1/4 border-2 border-emerald-500 bg-emerald-500/10 flex items-center justify-center">
+                                <span className="text-[9px] text-emerald-400 font-bold">FACE DETECTED 99.1%</span>
+                              </div>
+                              <span className="text-[9px] text-slate-500 uppercase">400x400 NumPy color matrix</span>
+                            </div>
+                            <div className="text-[9px] text-slate-400">Target identified dynamically on bounding layers.</div>
+                          </div>
+                        )}
+
+                        {previewContent.type === "fastapi" && (
+                          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-xl text-slate-800 dark:text-slate-100 shadow-sm text-left space-y-3">
+                            <div className="flex justify-between items-center border-b pb-2">
+                              <span className="text-[10px] font-bold text-slate-500 uppercase">FASTAPI SWAGGER DOCS</span>
+                              <span className="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded text-[9px] font-bold">SERVER LIVE</span>
+                            </div>
+                            <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 p-2.5 rounded-lg flex items-center justify-between text-xs">
+                              <div className="flex items-center space-x-2">
+                                <span className="bg-emerald-500 text-white font-bold px-1.5 py-0.5 rounded text-[9px]">GET</span>
+                                <span className="font-mono text-emerald-800 dark:text-emerald-400">/books</span>
+                              </div>
+                              <span className="text-[9px] font-bold text-slate-500">Query Records</span>
+                            </div>
+                            <div className="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg text-[9px] font-mono leading-relaxed max-h-28 overflow-y-auto">
+                              {"[\n  { \"id\": 1, \"title\": \"Clean Code\", \"author\": \"Robert C. Martin\" },\n  { \"id\": 2, \"title\": \"Fluent Python\", \"author\": \"Luciano Ramalho\" }\n]"}
+                            </div>
+                          </div>
+                        )}
+
+                      </div>
+                    ) : (
+                      <div className="text-center text-slate-500 py-12">
+                        <span className="text-3xl mb-2 block">🖥️</span>
+                        <div className="font-bold text-xs mb-1">No execution preview assets active.</div>
+                        <p className="text-[10px] max-w-xs mx-auto">Execute standard code using sqlite or Pandas dependencies to generate graphic metrics.</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* New File Modal */}
+          {showFileModal && (
+            <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-xl">
+                <h3 className="font-extrabold text-sm text-slate-800 dark:text-slate-100">Create New File</h3>
+                <form onSubmit={handleCreateFile} className="space-y-4">
+                  <input
+                    type="text"
+                    placeholder="e.g., config.py or weights.csv"
+                    value={newFileName}
+                    onChange={e => setNewFileName(e.target.value)}
+                    className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono"
+                    required
+                  />
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowFileModal(false)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition text-slate-500"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="bg-brand-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold transition"
+                    >
+                      Create
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* Rename File Modal */}
+          {renameFileTarget && (
+            <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-xl">
+                <h3 className="font-extrabold text-sm text-slate-800 dark:text-slate-100">Rename Module File</h3>
+                <form onSubmit={handleRenameFile} className="space-y-4">
+                  <input
+                    type="text"
+                    value={renameValue}
+                    onChange={e => setRenameValue(e.target.value)}
+                    className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono"
+                    required
+                  />
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => setRenameFileTarget(null)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition text-slate-500"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="bg-brand-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold transition"
+                    >
+                      Rename
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+        </div>
+      );
+    }
+
+    // --- ASSIGNED ASSIGNMENTS & PROJECT REVIEW VIEW ---
+    function AssignmentsView({ currentUser, studentData, setStudentData, triggerToast, loadTaskTemplate }) {
+      const task = STUDENT_TASKS[currentUser.id];
+      const sInfo = studentData[currentUser.id];
+
+      const [codeValue, setCodeValue] = useState("");
+      const [confirmSubmit, setConfirmSubmit] = useState(false);
+
+      if (!task || !sInfo) {
+        return (
+          <div className="text-center py-12 animate-fadeIn">
+            <h2 className="text-lg font-bold">No tasks assigned.</h2>
+          </div>
+        );
+      }
+
+      const submitTask = (e) => {
+        e.preventDefault();
+        if (!codeValue.trim()) {
+          triggerToast("Paste or write your solution before submitting!", "error");
+          return;
+        }
+
+        setStudentData(prev => ({
+          ...prev,
+          [currentUser.id]: {
+            ...prev[currentUser.id],
+            taskSubmission: {
+              status: "Submitted",
+              code: codeValue,
+              rating: 0,
+              feedback: "Awaiting administrator review and rating comments.",
+              submittedAt: new Date().toLocaleDateString()
+            }
+          }
+        }));
+
+        setConfirmSubmit(false);
+        triggerToast("Project solution submitted successfully!");
+      };
+
+      return (
+        <div className="space-y-6 max-w-5xl animate-fadeIn">
+          
+          <div className="border-b dark:border-slate-800 pb-4">
+            <h1 className="text-2xl font-extrabold text-slate-800 dark:text-white">Assigned Course Project</h1>
+            <p className="text-xs text-slate-500 mt-0.5">Every student is assigned a customizable analytical module to develop.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div className="md:col-span-1 space-y-4">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 space-y-4">
+                <div>
+                  <div className="text-[10px] font-extrabold text-brand-600 uppercase tracking-widest">Active Project Target</div>
+                  <h3 className="font-extrabold text-base text-slate-800 dark:text-white mt-1">{task.title}</h3>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 text-xs border-t dark:border-slate-800 pt-3">
+                  <div>
+                    <span className="text-slate-400 block font-semibold text-[10px] uppercase">Difficulty</span>
+                    <span className="font-bold text-slate-800 dark:text-slate-200">{task.difficulty}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block font-semibold text-[10px] uppercase">Est. Time</span>
+                    <span className="font-bold text-slate-800 dark:text-slate-200">{task.time}</span>
+                  </div>
+                </div>
+
+                <div className="border-t dark:border-slate-800 pt-3">
+                  <span className="text-[10px] text-slate-400 font-semibold uppercase block mb-1.5">Required Libraries</span>
+                  <div className="flex flex-wrap gap-1">
+                    {task.libraries.map(lib => (
+                      <span key={lib} className="bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400 px-2.5 py-0.5 rounded text-[9px] font-bold">
+                        {lib}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="border-t dark:border-slate-800 pt-3">
+                  <span className="text-[10px] text-slate-400 font-semibold uppercase block mb-1">Status</span>
+                  <span className={`text-xs font-bold ${
+                    sInfo.taskSubmission.status === "Approved" ? "text-emerald-500" :
+                    sInfo.taskSubmission.status === "Submitted" ? "text-amber-500" : "text-rose-500"
+                  }`}>
+                    ● {sInfo.taskSubmission.status}
+                  </span>
+                </div>
+              </div>
+
+              {sInfo.taskSubmission.feedback && (
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 space-y-2">
+                  <h4 className="font-bold text-[10px] text-slate-400 uppercase tracking-wider">Instructor Assessment</h4>
+                  <div className="p-3.5 bg-slate-50 dark:bg-slate-950/40 rounded-lg text-xs leading-relaxed border dark:border-slate-800">
+                    <p className="text-slate-600 dark:text-slate-300 italic">"{sInfo.taskSubmission.feedback}"</p>
+                    {sInfo.taskSubmission.rating > 0 && (
+                      <div className="font-extrabold text-brand-600 dark:text-brand-400 mt-2">
+                        Assigned Rating Score: {sInfo.taskSubmission.rating} / 10
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="md:col-span-2 space-y-4">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 space-y-4">
+                <div>
+                  <h3 className="font-bold text-xs text-slate-400 uppercase">Target Specifications</h3>
+                  <pre className="text-xs text-slate-600 dark:text-slate-300 whitespace-pre-wrap leading-relaxed mt-2 bg-slate-50 dark:bg-slate-950/50 p-4 rounded-xl border dark:border-slate-850">
+                    {task.reqs}
+                  </pre>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 text-xs">
+                  <span className="text-slate-500">Ready to edit? Push core logic into active editor.</span>
+                  <button
+                    onClick={() => loadTaskTemplate(task.codeTemplate)}
+                    className="text-brand-600 font-bold hover:underline"
+                  >
+                    🚀 Load Baseline Project Script
+                  </button>
+                </div>
+
+                <form onSubmit={(e) => { e.preventDefault(); setConfirmSubmit(true); }} className="space-y-4 pt-4 border-t dark:border-slate-800">
+                  <div className="space-y-2">
+                    <label className="block text-xs font-bold text-slate-400 uppercase">Submit Complete Project Script</label>
+                    <textarea
+                      placeholder="# Copy your code blocks directly from the IDE and paste here to submit."
+                      value={codeValue}
+                      onChange={e => setCodeValue(e.target.value)}
+                      className="w-full h-44 p-4 bg-vscode-bg text-slate-200 focus:outline-none monospace text-xs leading-relaxed border border-vscode-border rounded-xl"
+                      required
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="bg-brand-600 hover:bg-brand-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition"
+                  >
+                    Submit Project Submission
+                  </button>
+                </form>
+              </div>
+            </div>
+
+          </div>
+
+          {confirmSubmit && (
+            <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 max-w-sm w-full space-y-4">
+                <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100">Confirm Submission Sheets</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">Are you ready to commit your current solutions scripts? Doing so updates the progress metrics in the Admin panel.</p>
+                <div className="flex justify-end space-x-2">
+                  <button
+                    onClick={() => setConfirmSubmit(false)}
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition text-slate-500"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={submitTask}
+                    className="bg-brand-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold transition"
+                  >
+                    Confirm Submission
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+      );
+    }
+
+    // --- ADMINISTRATIVE PORTAL VIEW ---
+    function AdminPanel({ studentData, setStudentData, announcements, setAnnouncements, handleResetProgress, triggerToast }) {
+      const [selectedStudentId, setSelectedStudentId] = useState(null);
+      const [gradeRating, setGradeRating] = useState(10);
+      const [gradeFeedback, setGradeFeedback] = useState("");
+      
+      const [newAnnTitle, setNewAnnTitle] = useState("");
+      const [newAnnText, setNewAnnText] = useState("");
+
+      const activeStudent = selectedStudentId ? studentData[selectedStudentId] : null;
+
+      const handleGradeSubmit = (e) => {
+        e.preventDefault();
+        if (!activeStudent) return;
+
+        setStudentData(prev => ({
+          ...prev,
+          [selectedStudentId]: {
+            ...prev[selectedStudentId],
+            xp: (prev[selectedStudentId].xp || 0) + 150,
+            taskSubmission: {
+              ...prev[selectedStudentId].taskSubmission,
+              status: "Approved",
+              rating: Number(gradeRating),
+              feedback: gradeFeedback
+            }
+          }
+        }));
+
+        setGradeFeedback("");
+        triggerToast(`Grading applied successfully! +150 XP granted.`);
+      };
+
+      const handleRevisionSubmit = () => {
+        if (!activeStudent) return;
+
+        setStudentData(prev => ({
+          ...prev,
+          [selectedStudentId]: {
+            ...prev[selectedStudentId],
+            taskSubmission: {
+              ...prev[selectedStudentId].taskSubmission,
+              status: "Revision Needed",
+              feedback: gradeFeedback
+            }
+          }
+        }));
+
+        setGradeFeedback("");
+        triggerToast("Revision status notified to student.");
+      };
+
+      const addAnnouncement = (e) => {
+        e.preventDefault();
+        if (!newAnnTitle || !newAnnText) return;
+
+        const banner = {
+          id: Date.now(),
+          title: newAnnTitle,
+          text: newAnnText,
+          date: new Date().toLocaleDateString()
+        };
+
+        setAnnouncements(prev => [banner, ...prev]);
+        setNewAnnTitle("");
+        setNewAnnText("");
+        triggerToast("Broadcast published!");
+      };
+
+      // Auto-generates and triggers a CSV spreadsheet download of student progress logs
+      const exportProgressReport = () => {
+        let csv = "Student ID,Student Name,Streak Days,Accumulated XP,Completed Lessons,Task Status,Rating Score\n";
+        Object.values(studentData).forEach(s => {
+          csv += `"${s.id}","${s.name}",${s.streak || 0},${s.xp || 0},"${s.completedLessons.join(' | ')}","${s.taskSubmission?.status || 'Pending'}",${s.taskSubmission?.rating || 0}\n`;
+        });
+
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "PythonVerse_Progress_Report_2026.csv";
+        a.click();
+        URL.revokeObjectURL(url);
+        triggerToast("Downloaded complete progress spreadsheet CSV!");
+      };
+
+      return (
+        <div className="space-y-6 animate-fadeIn">
+          
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b dark:border-slate-800 pb-4 gap-3">
+            <div>
+              <h1 className="text-2xl font-extrabold text-slate-800 dark:text-white">Academic Host Console</h1>
+              <p className="text-xs text-slate-500 mt-0.5 font-semibold">Verify active files, grade code templates, and manage syllabus locks.</p>
+            </div>
+            
+            <button
+              onClick={exportProgressReport}
+              className="bg-brand-600 hover:bg-brand-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-1 shadow"
+            >
+              <Icons.Download />
+              <span>Export CSV Report</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <div className="lg:col-span-4 space-y-4">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm">
+                <h3 className="font-bold text-xs text-slate-400 uppercase tracking-wider mb-4">Enrollments Directory</h3>
+                <div className="space-y-2">
+                  {Object.values(studentData).map((student) => {
+                    const status = student.taskSubmission?.status;
+                    return (
+                      <button
+                        key={student.id}
+                        onClick={() => setSelectedStudentId(student.id)}
+                        className={`w-full flex items-center justify-between p-3.5 rounded-xl border text-left transition ${
+                          selectedStudentId === student.id
+                            ? "bg-brand-50 border-brand-500/50 dark:bg-slate-800 dark:border-brand-500/50"
+                            : "bg-slate-50 hover:bg-slate-100 border-transparent dark:bg-slate-950 dark:hover:bg-slate-900"
+                        }`}
+                      >
+                        <div>
+                          <div className="text-xs font-extrabold text-slate-800 dark:text-slate-100">{student.name}</div>
+                          <div className="text-[10px] text-slate-400">ID: {student.id}  |  {student.xp} Total XP</div>
+                        </div>
+
+                        <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                          status === "Approved" ? "bg-emerald-100 text-emerald-800" :
+                          status === "Submitted" ? "bg-amber-100 text-amber-800" : "bg-slate-200 text-slate-600"
+                        }`}>
+                          {status}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm">
+                <h3 className="font-bold text-xs text-slate-400 uppercase tracking-wider mb-3">Broadcast Announcement</h3>
+                <form onSubmit={addAnnouncement} className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Topic Title"
+                    value={newAnnTitle}
+                    onChange={e => setNewAnnTitle(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:ring-1 focus:ring-brand-500 focus:outline-none"
+                    required
+                  />
+                  <textarea
+                    placeholder="Content details..."
+                    value={newAnnText}
+                    onChange={e => setNewAnnText(e.target.value)}
+                    className="w-full h-16 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:ring-1 focus:ring-brand-500 focus:outline-none resize-none"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 rounded-lg text-[10px] uppercase transition"
+                  >
+                    Publish Post
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <div className="lg:col-span-8">
+              {activeStudent ? (
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 space-y-6 shadow-sm">
+                  
+                  <div className="flex justify-between items-center border-b dark:border-slate-800 pb-4">
+                    <div>
+                      <h3 className="text-base font-extrabold text-slate-800 dark:text-white">Review: {activeStudent.name}</h3>
+                      <p className="text-xs text-slate-400 mt-1">Assigned Task: <strong className="underline">{STUDENT_TASKS[activeStudent.id]?.title}</strong></p>
+                    </div>
+
+                    <button
+                      onClick={() => handleResetProgress(activeStudent.id)}
+                      className="border border-rose-200 text-rose-600 hover:bg-rose-50 dark:border-rose-950 dark:hover:bg-rose-950/40 dark:text-rose-400 px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase transition"
+                    >
+                      Reset Student Progress
+                    </button>
+                  </div>
+
+                  {activeStudent.taskSubmission?.code ? (
+                    <div className="space-y-2">
+                      <h4 className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Submitted Code Block</h4>
+                      <pre className="p-4 bg-vscode-bg text-slate-200 border border-vscode-border rounded-xl text-xs overflow-x-auto monospace leading-relaxed max-h-44 select-all">
+                        {activeStudent.taskSubmission.code}
+                      </pre>
+                    </div>
+                  ) : (
+                    <div className="p-4 bg-slate-50 dark:bg-slate-950 border dark:border-slate-800 rounded-xl text-center text-xs text-slate-400 italic">
+                      No script solutions submitted yet by this student.
+                    </div>
+                  )}
+
+                  <form onSubmit={handleGradeSubmit} className="space-y-4 border-t dark:border-slate-800 pt-6">
+                    <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200">Assessment Evaluation</h3>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-1.5">Numerical Score (1 - 10)</label>
+                        <select
+                          value={gradeRating}
+                          onChange={e => setGradeRating(e.target.value)}
+                          className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:outline-none"
+                        >
+                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
+                            <option key={n} value={n}>{n} Points</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-1.5">Suggestions & Comments</label>
+                        <textarea
+                          placeholder="Provide analytical code optimizations or parameters suggestions..."
+                          value={gradeFeedback}
+                          onChange={e => setGradeFeedback(e.target.value)}
+                          className="w-full h-20 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:ring-1 focus:ring-brand-500 focus:outline-none resize-none"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex space-x-2 pt-2">
+                      <button
+                        type="submit"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-lg text-xs transition"
+                      >
+                        Approve Solution (+150 XP)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleRevisionSubmit}
+                        className="bg-amber-500 hover:bg-amber-600 text-white font-bold px-4 py-2 rounded-lg text-xs transition"
+                      >
+                        Request Revision Changes
+                      </button>
+                    </div>
+                  </form>
+
+                </div>
+              ) : (
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center flex flex-col justify-center items-center min-h-[400px]">
+                  <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-full text-slate-400 mb-3">
+                    <Icons.Layout />
+                  </div>
+                  <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100">Grade Student Exercises</h3>
+                  <p className="text-xs text-slate-500 max-w-xs mt-1">Select any enrolled student on the sidebar list to grade uploaded assignments or reset active progress bars.</p>
+                </div>
+              )}
+            </div>
+
+          </div>
+
+        </div>
+      );
+    }
+
+    // --- RENDER ---
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
