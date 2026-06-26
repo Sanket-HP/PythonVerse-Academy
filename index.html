@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,6 +74,9 @@
   <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js" crossorigin></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.5/babel.min.js" crossorigin></script>
+  
+  <!-- High-uptime JSZip library to compile multiple sandbox files in memory into standard zip folders -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
   <!-- Application Source Code -->
   <script type="text/babel">
@@ -89,7 +92,7 @@
       { id: "ADMIN001", name: "Administrator", password: "Admin@Python2026", role: "admin" }
     ];
 
-    // --- BULLETPROOF SVG EARTH-THEMED ICONS ---
+    // --- STREAMING_CHUNK: Initializing Earth Icons configuration maps... ---
     const Icons = {
       BookOpen: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>,
       Code: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>,
@@ -106,8 +109,8 @@
       Shield: () => <svg className="w-4 h-4 text-amber-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
     };
 
-    // --- 5 DISTINCT STUDENT PROJECTS (10 DETAILED STEP-BY-STEP TASKS PER PROJECT) ---
-    // Core rule: The templates do *not* contain the finalized solution code. The user writes it.
+    // --- STREAMING_CHUNK: Declaring Student Projects & Tasks Map Database... ---
+    // All code templates start with instructive structures or skeleton files - no pre-filled solutions.
     const PROJECTS_DATABASE = {
       "KD001": {
         studentName: "Kedar Chougale",
@@ -121,16 +124,16 @@
             info: "NumPy vectors are used to carry statistical arrays in memory for fast element-wise operations.",
             requirements: ["Import numpy as 'np'", "Define a grades variable using 'np.array([85, 90, 78])'"],
             steps: [
-              "1. Open your code workspace and click on the 'main.py' file tab.",
-              "2. Declare a standard import statement targeting NumPy using the conventional alias 'np'.",
-              "3. Initialize a clean Python list containing integer marks: 85, 90, and 78.",
-              "4. Pass the Python list argument inside the `np.array()` vector construction command.",
-              "5. Save the output of the array construction into a local variable named `grades`.",
-              "6. Write a print invocation displaying the constructed grades vector cleanly.",
-              "7. Add an auxiliary print statement to display the standard NumPy datatype using `grades.dtype`.",
-              "8. Ensure there are no hanging indented blocks or syntax errors in the file.",
-              "9. Run the file first with the compilation controls to test visual feedback.",
-              "10. Execute the program logic completely and click the 'Check My Progress' checker button."
+              "Declare standard import statement targeting NumPy with standard reference 'np'.",
+              "Construct list holding grade parameters: 85, 90, 78.",
+              "Initialize your numpy grading elements using 'np.array([85, 90, 78])'.",
+              "Set this matrix reference inside a variable named 'grades'.",
+              "Print the constructed grades vector completely.",
+              "Output the dimensions shape array using grades.ndim metrics.",
+              "Output the grades elements count using grades.size parameters.",
+              "Check that no syntax leaks remain in variables declarations.",
+              "Select compiler commands run-logs to evaluate standard output streams.",
+              "Confirm task progress using standard progress checklist checkers."
             ],
             codeTemplate: "# Write your NumPy Matrix script here to verify Task 1...\n",
             verify: (code) => code.includes("import numpy as np") && code.includes("np.array") && code.includes("85")
@@ -143,16 +146,16 @@
             info: "Pandas provides data structuring tools like DataFrames to cleanly manage student enrollment records.",
             requirements: ["Import pandas as 'pd'", "Create a dataframe from a dictionary containing 'Students' and 'Grades'"],
             steps: [
-              "1. Retain the NumPy import or add a new header importing Pandas library with standard reference 'pd'.",
-              "2. Construct a local Python dictionary holding system records.",
-              "3. Inside the dictionary, specify key 'Students' pointing to ['A', 'B'].",
-              "4. Map key 'Grades' targeting elements [85, 90].",
-              "5. Instantiate your Pandas dataframe variable using the constructor: `pd.DataFrame(data)`.",
-              "6. Assign this newly created structural object into local variable `df`.",
-              "7. Output the structural contents using the `print(df)` command.",
-              "8. Avoid hardcoding index margins or manually indexing rows.",
-              "9. Test-compile your script utilizing the 'Run Code' control.",
-              "10. Click the progress validation module to unlock the next assignment."
+              "Retain NumPy import or add Pandas library with reference 'pd'.",
+              "Construct a standard Python dict containing registry keys.",
+              "Define map properties: 'Students' mapped to ['Kedar', 'Pranav'].",
+              "Define map properties: 'Grades' mapped to [85, 90].",
+              "Generate a new DataFrame calling constructor: pd.DataFrame(data).",
+              "Save results inside localized variable named 'df'.",
+              "Display the complete tabular frame cleanly using print(df).",
+              "Verify index headers matching rules.",
+              "Select code workspace compiler to examine terminal feedback log grids.",
+              "Confirm milestone completion using task validator control."
             ],
             codeTemplate: "# Task 2: Build and structure your Pandas DataFrame ledger here...\n",
             verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
@@ -165,16 +168,16 @@
             info: "Cleaning dirty rows ensures calculations are accurate before committing back to persistent ledgers.",
             requirements: ["Verify use of 'dropna()' or 'fillna(0)' to parse empty cells"],
             steps: [
-              "1. Keep your Pandas structure initialized safely at the head of the file.",
-              "2. Introduce empty cell placeholders using the NaN constant from NumPy or raw Python parameters.",
-              "3. Construct a dataframe variable holding values list containing `np.nan` metrics.",
-              "4. Implement the Pandas `.fillna(0)` cleanup routine to automatically convert NaN cells into zeroes.",
-              "5. Alternatively, invoke the `.dropna()` method to purge missing records entirely.",
-              "6. Assign this sanitized result output to a fresh dataframe reference.",
-              "7. Print the cleaned dataframe columns directly to standard output.",
-              "8. Confirm the original contaminated rows no longer contain invalid fields.",
-              "9. Click compile to watch standard output evaluate.",
-              "10. Trigger the 'Check My Progress' verification rule."
+              "Verify active pandas modules references.",
+              "Simulate missing cells using standard null markers.",
+              "Construct columns elements with empty rows placeholders.",
+              "Implement pandas cleaning logic using .fillna(0) commands.",
+              "Alternatively purge empty rows completely utilizing .dropna().",
+              "Save sanitized dataframes safely inside local variables.",
+              "Output processed cleaned table matrices directly into terminal.",
+              "Keep column spelling layouts fully matching definitions.",
+              "Execute shell scripts checks and log outcomes successfully.",
+              "Complete task progress criteria checks."
             ],
             codeTemplate: "# Task 3: Implement Data Cleansing routines inside your DataFrame here...\n",
             verify: (code) => code.includes("fillna") || code.includes("dropna")
@@ -187,16 +190,16 @@
             info: "SQLite creates quick, light data structures without the burden of external database installation.",
             requirements: ["Import sqlite3 library", "Establish a database connection file 'academy.db'"],
             steps: [
-              "1. Write an import statement referencing the built-in relational driver `sqlite3`.",
-              "2. Open a persistent connection using the driver's interface: `sqlite3.connect('academy.db')`.",
-              "3. Set the returned connector object reference to a variable named `conn`.",
-              "4. Ensure database files are loaded locally without hardcoded path dependencies.",
-              "5. Log a custom verification output message such as 'Database Connection Active'.",
-              "6. Implement a standard safe close action calling `conn.close()`.",
-              "7. Guard your script logic with a try-except structure to handle lock exceptions.",
-              "8. Cleanly format transaction parameters and double-check spacing.",
-              "9. Run the code block to guarantee no database operational errors arise.",
-              "10. Select the progressive tracker validation tab to test and proceed."
+              "Declare connection imports: import sqlite3.",
+              "Configure connection references: sqlite3.connect('academy.db').",
+              "Save connection descriptors inside a variable named 'conn'.",
+              "Ensure localized database file creation triggers in system folders.",
+              "Verify directory write permission parameters map safely.",
+              "Log system informational output: Connection active.",
+              "Ensure connection parameters release cleanly on script exit.",
+              "Structure SQL statements inside secure try-catch layers.",
+              "Run local script sandbox checks.",
+              "Clear milestones checklists validating targets metrics."
             ],
             codeTemplate: "# Task 4: Connect database structures and establish localized ledgers here...\n",
             verify: (code) => code.includes("import sqlite3") && code.includes("sqlite3.connect")
@@ -209,16 +212,16 @@
             info: "Transactional parameters create local tables to keep roster entries aligned relational database rules.",
             requirements: ["Execute 'CREATE TABLE IF NOT EXISTS student_records' statement"],
             steps: [
-              "1. Retain your established `sqlite3` module imports at the script head.",
-              "2. Open the transactional connection file named 'academy.db'.",
-              "3. Declare the SQL target schema: 'CREATE TABLE IF NOT EXISTS student_records...'.",
-              "4. Include basic relational field properties like (id INTEGER, name TEXT, score INTEGER).",
-              "5. Execute the database transaction leveraging your active connection calling `conn.execute()`.",
-              "6. Always trigger `conn.commit()` after completing schema transactions.",
-              "7. Safely close database connection instances using `.close()`.",
-              "8. Double check table string syntax structure for sqlite parameters syntax rules.",
-              "9. Execute local compilation and inspect terminal logging outputs.",
-              "10. Click 'Check My Progress' to evaluate script validation parameters."
+              "Retain sqlite3 modules imports inside workspace scripts.",
+              "Open operational connections to database target file 'academy.db'.",
+              "Create connection cursor targeting active transaction channels.",
+              "Write SQL table layouts: 'CREATE TABLE IF NOT EXISTS student_records...'.",
+              "Define columns types inside schema: (id INTEGER PRIMARY KEY, name TEXT, grade INTEGER).",
+              "Execute table transactions securely calling connection executes.",
+              "Commit transactional status calling conn.commit() securely.",
+              "Ensure database handles release cleanly on complete.",
+              "Review terminal logs ensuring no sqlite operational crashes exist.",
+              "Submit script details to progress checklist tracker."
             ],
             codeTemplate: "# Task 5: Execute SQLite tables construction schema transactions...\n",
             verify: (code) => code.includes("CREATE TABLE") && code.includes("student_records")
@@ -231,16 +234,16 @@
             info: "Using SQL SELECT commands helps to isolate top performers efficiently.",
             requirements: ["Incorporate standard SQL 'SELECT' inside transaction call"],
             steps: [
-              "1. Open connection pipelines targeting 'academy.db' safely.",
-              "2. Instantiate a dynamic cursor driver calling the connection `.cursor()` method.",
-              "3. Write a standard data queries format string: 'SELECT * FROM student_records'.",
-              "4. Fetch execution record arrays invoking `cursor.fetchall()`.",
-              "5. Loop through the rows to display matches onto the shell outputs console.",
-              "6. Cleanly release transactional assets on complete.",
-              "7. Manage error parameters using local exception handlers.",
-              "8. Confirm query syntax aligns with SQLite rules.",
-              "9. Validate terminal feedback by executing the local compilation.",
-              "10. Push the Check My Progress action check."
+              "Open target sqlite3 database connectors cleanly.",
+              "Initialize active query cursors calling conn.cursor() methods.",
+              "Structure filter queries string: 'SELECT * FROM student_records'.",
+              "Optionally append conditional logic clauses filtering scores thresholds.",
+              "Call output fetches executing cursor.fetchall() rules.",
+              "Loop rows array printing records variables directly to console.",
+              "Safely close databases and cursors links.",
+              "Double-check columns index mapping formats.",
+              "Execute main.py scripts inside terminal compiler.",
+              "Trigger checklist verification criteria checks."
             ],
             codeTemplate: "# Task 6: Implement database query structures and loop outputs here...\n",
             verify: (code) => code.includes("SELECT")
@@ -253,16 +256,16 @@
             info: "Aggregate operations allow automatic score calculations on complex arrays.",
             requirements: ["Compute score aggregates with Pandas 'mean()' on data cells"],
             steps: [
-              "1. Bring in the Pandas analytical namespace under typical 'pd' naming.",
-              "2. Construct a multi-element dataframe holding integer score columns.",
-              "3. Access the target column elements safely utilizing pandas array indexing rules.",
-              "4. Call the Pandas aggregate computation function: `.mean()` on the target list.",
-              "5. Assign the computed numerical class average value into a local variable.",
-              "6. Build a print statement display showing the processed averages clearly.",
-              "7. Guard operations against empty dataframe sizes to avoid division zero bugs.",
-              "8. Format all trailing float digits beautifully.",
-              "9. Evaluate outputs utilizing the run-scripts panel.",
-              "10. Complete task validation checks utilizing 'Check My Progress'."
+              "Import pandas analytical tools into workspace scripts.",
+              "Build multi-element data listings containing numbers vectors.",
+              "Load variables inside standard pandas DataFrames.",
+              "Access specific grades columns using index tags.",
+              "Call aggregate calculations methods: .mean() directly.",
+              "Store average float parameters in local variable.",
+              "Build printed terminal logs showcasing the calculated class averages.",
+              "Verify numeric lists are filled to prevent division by zero.",
+              "Run local workspace compiling engines checks.",
+              "Confirm milestone verification checking parameters."
             ],
             codeTemplate: "# Task 7: Execute class metrics aggregation utilizing Pandas libraries...\n",
             verify: (code) => code.includes("mean()")
@@ -275,16 +278,16 @@
             info: "Plot layouts provide insights into structural classroom achievements.",
             requirements: ["Import 'matplotlib.pyplot as plt'", "Call standard 'plt.plot()' or 'plt.bar()' to render vectors"],
             steps: [
-              "1. Write standard import directive targeting Matplotlib: `import matplotlib.pyplot as plt`.",
-              "2. Build numerical vectors representing student identities and grades respectively.",
-              "3. Trigger standard plotting function bindings calling `plt.bar()` or `plt.plot()`.",
-              "4. Bind coordinate axes parameter metrics safely.",
-              "5. Label visual plotting configurations beautifully utilizing `plt.xlabel` and `plt.ylabel`.",
-              "6. Render structural plots to stdout using simulated `plt.show()` commands.",
-              "7. Double check data arrays are equal-length to prevent shape mismatch bugs.",
-              "8. Keep coordinates positive and balanced.",
-              "9. Run compilation checks and inspect active outputs.",
-              "10. Process verification metrics on the task checklist."
+              "Declare standard data visualization imports: import matplotlib.pyplot as plt.",
+              "Prepare coordinate metrics vectors for student labels and grades.",
+              "Initialize bars or line trace shapes calling plt.bar() or plt.plot().",
+              "Define layout title parameters using plt.title() helper methods.",
+              "Label coordinate parameters using plt.xlabel() and plt.ylabel() functions.",
+              "Simulate plot drawing outputs calling plt.show().",
+              "Check that coordinate vector matrices match length perfectly.",
+              "Verify spacing and color themes look highly professional.",
+              "Compile workspace to review output distributions chart preview.",
+              "Complete task progress tracking checking rules."
             ],
             codeTemplate: "# Task 8: Generate visual bar charts utilizing Matplotlib libraries...\n",
             verify: (code) => code.includes("import matplotlib.pyplot as plt") && (code.includes("plot") || code.includes("bar"))
@@ -297,16 +300,16 @@
             info: "FastAPI creates standardized RESTful pathways using Python syntax decorators.",
             requirements: ["Import FastAPI", "Construct a global server variable using 'app = FastAPI()'"],
             steps: [
-              "1. Declare microservice imports using `from fastapi import FastAPI`.",
-              "2. Establish main service application engines: `app = FastAPI()`.",
-              "3. Bind home gateway paths utilizing REST route rules decorators: `@app.get('/')`.",
-              "4. Define entry definitions returning dictionary objects containing status metrics.",
-              "5. Avoid declaring dynamic positional arguments on basic index endpoints.",
-              "6. Check spelling of fastapi modules carefully.",
-              "7. Organize variables beautifully and keep scopes local.",
-              "8. Set default schemas properties cleanly.",
-              "9. Compile to evaluate ASGI runner simulations in the preview container.",
-              "10. Verify progress using the check criteria trigger."
+              "Declare microservice engine imports: from fastapi import FastAPI.",
+              "Instantiate main service application module: app = FastAPI().",
+              "Construct entry routes decorators mapping standard GET parameters: @app.get('/').",
+              "Declare entry actions definitions routing system status data.",
+              "Return dictionary arrays carrying validation status elements.",
+              "Check FastAPI module namespaces spelling formats.",
+              "Organize dependencies beautifully on top layers.",
+              "Ensure there are no trailing syntax leaks in method headers.",
+              "Verify uvicorn simulation logs inside system terminal view.",
+              "Process checklist validation tracker parameters."
             ],
             codeTemplate: "# Task 9: Initialize FastAPI service application schemas here...\n",
             verify: (code) => code.includes("from fastapi import FastAPI") && code.includes("app = FastAPI()")
@@ -319,16 +322,16 @@
             info: "Asynchronous servers map variables, parse data nodes, and respond dynamically under Starlette.",
             requirements: ["Setup asynchronous GET router path mapping '@app.get(\"/student\")'"],
             steps: [
-              "1. Open active FastAPI router configuration layouts in main code workspace.",
-              "2. Structure endpoint routers targeting student listings: `@app.get('/student')`.",
-              "3. Declare structural async definitions mapping returned academic lists.",
-              "4. Match dictionaries properties containing names and grading scores metrics.",
-              "5. Confirm return structures map correctly inside REST gateway parameters.",
-              "6. Double check syntax matching of decorator rules.",
-              "7. Ensure path queries align with standards specifications.",
-              "8. Safely dispose duplicate routes in the file.",
-              "9. Execute ASGI simulation compile checks.",
-              "10. Finalize the student module pathway. Validate 100% completion metrics."
+              "Open FastAPI microservice router templates in code editor.",
+              "Configure route paths targeting academic students: @app.get('/student').",
+              "Declare asynchronous method handler: async def read_student().",
+              "Return standard mock dictionary payload with student names and grades.",
+              "Avoid port conflicts inside ASGI microserver parameters.",
+              "Verify endpoint spelling coordinates match standard APIs conventions.",
+              "Release server configuration properties smoothly on close.",
+              "Provide helpful developer documentation inside the method.",
+              "Execute compiler process checking server initialization logs.",
+              "Submit final project checklist. Confirm completion metrics reaches 100%!"
             ],
             codeTemplate: "# Task 10: Setup production async route structures on FastAPI here...\n",
             verify: (code) => code.includes("@app.get") && code.includes("student")
@@ -347,16 +350,16 @@
             info: "Using high-performance arrays lets you manipulate multi-zone sensor logs at microsecond speed.",
             requirements: ["Import numpy as 'np'", "Generate temperature metrics with 'np.array([28.4, 31.2, 29.5])'"],
             steps: [
-              "1. Target 'main.py' file buffer structures inside workspace area.",
-              "2. Put the numerical calculations module import: `import numpy as np`.",
-              "3. Declare float lists containing climate parameters: 28.4, 31.2, 29.5.",
-              "4. Construct matrix grids utilizing standard arrays wrappers: `np.array()`.",
-              "5. Save values outputs inside variable references named `temps`.",
-              "6. Add a logging check mapping metrics directly to stdout.",
-              "7. Validate precision levels using typical NumPy shape parameters.",
-              "8. Check there are no compilation errors in indentation headers.",
-              "9. Compile code to see logs output values.",
-              "10. Trigger progress checks dynamically to unlock subsequent phases."
+              "Declare import statements mapping NumPy calculations alias 'np'.",
+              "Build floating lists containing zone temperatures: 28.4, 31.2, 29.5.",
+              "Construct matrix vectors utilizing array wrappers: np.array().",
+              "Assign calculated vectors references to variables named 'temps'.",
+              "Add log commands writing metrics arrays to standard terminal output.",
+              "Call temps.mean() inspecting statistics properties.",
+              "Check there are no compilation warnings inside variable formats.",
+              "Confirm indices range mapping works cleanly.",
+              "Compile script to confirm standard matrix responses are processed.",
+              "Complete first progressive milestones checker checklist."
             ],
             codeTemplate: "# Task 1: Initialize NumPy float arrays for temperature matrices...\n",
             verify: (code) => code.includes("import numpy as np") && code.includes("np.array") && code.includes("28.4")
@@ -369,16 +372,16 @@
             info: "DataFrames let you categorize tabular logs representing humidity, rain metrics, and wind vectors easily.",
             requirements: ["Import pandas as 'pd'", "Structure wind speed rows using 'pd.DataFrame()'"],
             steps: [
-              "1. Implement analytical pandas module calling standard alias reference 'pd'.",
-              "2. Construct weather listings holding Day parameters and Wind variables.",
-              "3. Initialize tabular frames utilizing standard parameters: `pd.DataFrame(wind_data)`.",
-              "4. Set structural results inside variable named `df`.",
-              "5. Output columns contents onto active console logs panel.",
-              "6. Double-check there are no structural leaks inside nested lists.",
-              "7. Keep datatypes cohesive to avoid parsing warnings.",
-              "8. Add comments verifying the active module segment.",
-              "9. Run files using the shell compiler to inspect telemetry logs.",
-              "10. Push the progress verification checklist rules."
+              "Add core data structures engine: import pandas as pd.",
+              "Structure mock weather records using Python dictionary.",
+              "Set dictionary metrics representing climate parameters like Day and Wind.",
+              "Construct standard tabular formats invoking pd.DataFrame(data).",
+              "Set result properties inside local variable named 'df'.",
+              "Write logging checks: print(df) to inspect structure layouts.",
+              "Organize columns mapping lists perfectly to prevent offset bugs.",
+              "Keep column metrics aligned inside key lists.",
+              "Compile code targeting main.py verifying logs parameters.",
+              "Process progressive milestones tracker parameters."
             ],
             codeTemplate: "# Task 2: Build tabular Pandas DataFrame structure for climate records...\n",
             verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
@@ -391,16 +394,16 @@
             info: "Conditional checks help screen dataset registers for warnings.",
             requirements: ["Apply row filter constraints on Pandas Dataframe (e.g. df[df['temp'] > 30])"],
             steps: [
-              "1. Maintain DataFrame structure references on the workspace code.",
-              "2. Isolate thermal records values using condition indices: `df['temp'] > 30`.",
-              "3. Assign filtered subset results onto a localized variables reference.",
-              "4. Display matching elements cleanly onto screen logs.",
-              "5. Ensure boundaries values match requirement bounds precisely.",
-              "6. Verify index coordinates match row listings perfectly.",
-              "7. Clean up duplicates to avoid parsing data collisions.",
-              "8. Add informational comments validating logic details.",
-              "9. Compile script execution blocks safely.",
-              "10. Execute check criteria to verify progress."
+              "Maintain current DataFrame records initialized in workspace.",
+              "Formulate boolean filter triggers checking temperature boundaries.",
+              "Write conditional indexes structure: df[df['temp'] > 30].",
+              "Save filter parameters result in variables references.",
+              "Output filtered anomalies lines safely onto shell console.",
+              "Test query indexing parameters carefully to prevent syntax crashes.",
+              "Confirm datatype properties align across filter values.",
+              "Clean up unused variables from the local block.",
+              "Compile files and verify console outputs are filtered.",
+              "Select 'Check My Progress' validation modules."
             ],
             codeTemplate: "# Task 3: Implement conditional filtering algorithms on data frames...\n",
             verify: (code) => code.includes("df['temp']") || code.includes('df["temp"]')
@@ -413,16 +416,16 @@
             info: "Local ledgers store warning configurations across restarts.",
             requirements: ["Initialize SQLite engine connection", "Create local table 'weather_alerts'"],
             steps: [
-              "1. Call built-in persistent database driver utilizing `import sqlite3`.",
-              "2. Configure localized connection instances using file named 'alerts.db'.",
-              "3. Trigger execution statements using sql queries: 'CREATE TABLE IF NOT EXISTS weather_alerts...'.",
-              "4. Map columns fields cleanly matching alert ID and status message variables.",
-              "5. Commit transactional state safely using the active connection.",
-              "6. Safely dispose structural cursor handles.",
-              "7. Implement standard database closure rules calling `.close()`.",
-              "8. Ensure query string is free from sql syntax errors.",
-              "9. Run compilation scripts to verify local files construction.",
-              "10. Click 'Check My Progress' to complete."
+              "Add built-in transactional driver: import sqlite3.",
+              "Establish localized database session targeting file 'alerts.db'.",
+              "Assign returned connection handler to variable 'conn'.",
+              "Write SQL table layout string: 'CREATE TABLE IF NOT EXISTS weather_alerts...'.",
+              "Define fields schemas containing alert IDs and severity text values.",
+              "Execute database command calling active connection cursor.",
+              "Commit operational transactions invoking conn.commit().",
+              "Release database files safely calling .close().",
+              "Check statement structure ensuring zero SQL syntax errors.",
+              "Execute sandbox compilation validating local schema generation."
             ],
             codeTemplate: "# Task 4: Setup SQLite schema connections and local tables here...\n",
             verify: (code) => code.includes("sqlite3.connect") && code.includes("weather_alerts")
@@ -435,16 +438,16 @@
             info: "SQL transactions commit critical security events safely to SQLite databases.",
             requirements: ["Incorporate SQL 'INSERT' parameters inside execution statement"],
             steps: [
-              "1. Keep database structures connected safely targeting 'alerts.db'.",
-              "2. Formulate database INSERT command strings.",
-              "3. Bind dynamic warning parameters within SQL statements securely.",
-              "4. Run update query calling database connection execute layers.",
-              "5. Confirm updates are written persistently invoking `conn.commit()`.",
-              "6. Free up db assets upon execution completion.",
-              "7. Guard sql statements from syntax parsing locks.",
-              "8. Add log strings showing success updates.",
-              "9. Verify console output results using execution controls.",
-              "10. Finalize milestone checking metrics on this task."
+              "Open SQLite connector to file database 'alerts.db'.",
+              "Prepare standard relational INSERT transactions commands.",
+              "Write query query strings: 'INSERT INTO weather_alerts VALUES...'.",
+              "Bind anomaly details parameters inside query safely.",
+              "Trigger command executions leveraging active connections cursors.",
+              "Persist updates calling database transaction commit methods.",
+              "Release active connection resources on complete.",
+              "Guard statement parameters from database deadlock conditions.",
+              "Run local script sandbox checks.",
+              "Clear task validation checks on progress tracker."
             ],
             codeTemplate: "# Task 5: Execute database record insertions and commit states...\n",
             verify: (code) => code.includes("INSERT") && code.includes("weather_alerts")
@@ -457,16 +460,16 @@
             info: "BeautifulSoup parses complex HTML node configurations into clean variables arrays.",
             requirements: ["Import BeautifulSoup from bs4", "Instantiate parser object using 'html.parser'"],
             steps: [
-              "1. Put parsing libraries declaration: `from bs4 import BeautifulSoup`.",
-              "2. Supply raw HTML input mock configurations containing alert element strings.",
-              "3. Instantiate standard BeautifulSoup object: `BeautifulSoup(html, 'html.parser')`.",
-              "4. Fetch specific tags using class mapping parameters.",
-              "5. Write printed logs verifying string elements parser logic outputs.",
-              "6. Confirm parser types match requirements properties.",
-              "7. Double check imports are clean and correct.",
-              "8. Protect scraping modules from empty network targets.",
-              "9. Compile code script and verify output responses.",
-              "10. Trigger check criteria validation checks."
+              "Import parsing libraries: from bs4 import BeautifulSoup.",
+              "Formulate mock HTML page string carrying emergency alert tags.",
+              "Create parser target calling constructor: BeautifulSoup(html, 'html.parser').",
+              "Save returned parser descriptors in variables references.",
+              "Locate elements tags using class or ID properties selectors.",
+              "Print parsed text parameters out to diagnostic logs.",
+              "Double-check BeautifulSoup module import formatting.",
+              "Handle null node configurations gracefully.",
+              "Compile files and evaluate standard outputs.",
+              "Confirm progressive milestones check parameters."
             ],
             codeTemplate: "# Task 6: Implement parsing engines using BeautifulSoup layouts...\n",
             verify: (code) => code.includes("BeautifulSoup") && code.includes("html.parser")
@@ -479,16 +482,16 @@
             info: "Requests manages HTTP network call blocks asynchronously.",
             requirements: ["Import 'requests'", "Formulate dummy target GET call using 'requests.get()'"],
             steps: [
-              "1. Import standard requests execution libraries using `import requests`.",
-              "2. Set target mock REST interface endpoints values.",
-              "3. Execute standard REST requests calling `requests.get()`.",
-              "4. Check returned payload details or HTTP status variables.",
-              "5. Verify connection logic handles timeout metrics safely.",
-              "6. Handle communication boundaries carefully inside code block.",
-              "7. Avoid hardcoding confidential authorization keys.",
-              "8. Output response logs details directly to console stream.",
-              "9. Run the script compilation to test endpoint integrations.",
-              "10. Trigger progress validation checkers."
+              "Add HTTP client module import: import requests.",
+              "Formulate API query coordinates for weather servers.",
+              "Trigger requests mapping GET protocols calling requests.get().",
+              "Assign returned response object to variable.",
+              "Examine returned HTTP status parameters (e.g. status_code).",
+              "Parse response bodies cleanly using .json() helpers.",
+              "Implement network communication timeout properties safely.",
+              "Avoid registering confidential access tokens values.",
+              "Evaluate requests queries within workspace console emulator.",
+              "Verify milestone checking triggers."
             ],
             codeTemplate: "# Task 7: Build API query clients using requests tools...\n",
             verify: (code) => code.includes("import requests") && code.includes("requests.get")
@@ -501,18 +504,18 @@
             info: "Plotly enables responsive graphic charts within HTML viewports.",
             requirements: ["Import 'plotly.graph_objects as go' or 'plotly.express as px'"],
             steps: [
-              "1. Put standard interactive graphics module: `import plotly.graph_objects as go`.",
-              "2. Construct scatter or trace models using coordinate parameters.",
-              "3. Create chart figures invoking constructor `go.Figure()`.",
-              "4. Keep structural coordinate indices mapped properly.",
-              "5. Write printed validation outputs on successful configuration.",
-              "6. Double check chart definitions are aligned with parameters.",
-              "7. Add documentation to outline plotting attributes.",
-              "8. Maintain clear boundaries for layout scaling metrics.",
-              "9. Compile code to see interactive console outcomes.",
-              "10. Verify charts loaded correctly under preview panels."
+              "Add interactive graphics module: import plotly.graph_objects as go.",
+              "Prepare coordinate tracking vectors for temperatures.",
+              "Construct plotting models calling Scatter or Bar methods.",
+              "Instantiate figures controller calling go.Figure().",
+              "Set trace items inside chart configuration map.",
+              "Set coordinate values precisely to map axes.",
+              "Log plotting validation message on successful initialization.",
+              "Double check module import is free from spelling errors.",
+              "Run local script checks inside workspace terminal.",
+              "Confirm milestone verification checking parameters."
             ],
-            codeTemplate: "import plotly.graph_objects as go\nfig = go.Figure(data=go.Scatter(x=[1,2], y=[28, 32]))\nprint('Plotly active')",
+            codeTemplate: "# Task 8: Setup Plotly visual dashboard components here...\n",
             verify: (code) => code.includes("plotly")
           },
           {
@@ -523,18 +526,18 @@
             info: "Flask leverages clean routes to serve dashboards over standard TCP/IP gateways.",
             requirements: ["Import Flask", "Initialize app with 'app = Flask(__name__)'"],
             steps: [
-              "1. Declare micro WSGI backend layouts importing Flask.",
-              "2. Initialize app instances: `app = Flask(__name__)`.",
-              "3. Construct route mappings decorator targets: `@app.route('/')`.",
-              "4. Build standard return responses indicating system status values.",
-              "5. Prevent port allocation conflicts within local setup.",
-              "6. Double check syntax matching of decorators details.",
-              "7. Format response payloads beautifully.",
-              "8. Safely dispose duplicated router references.",
-              "9. Test server simulation layouts inside standard workspace compiler.",
-              "10. Confirm and clear console warnings before continuing."
+              "Add backend server framework import: from flask import Flask.",
+              "Instantiate application engine: app = Flask(__name__).",
+              "Construct controller route decorators targeting base paths: @app.route('/').",
+              "Define method handler mapping default status responses.",
+              "Return standard text or dashboard HTML templates.",
+              "Confirm application variables name mapping is spelling correct.",
+              "Clean up duplicate path routings configurations.",
+              "Structure configuration layers nicely to avoid import loops.",
+              "Compile code to monitor server simulation process.",
+              "Check tasks progress benchmarks."
             ],
-            codeTemplate: "from flask import Flask\napp = Flask(__name__)\n@app.route('/')\ndef weather():\n    return 'Weather OK'",
+            codeTemplate: "# Task 9: Setup Flask server instances and route bindings...\n",
             verify: (code) => code.includes("from flask import Flask") && code.includes("app = Flask")
           },
           {
@@ -545,18 +548,18 @@
             info: "Running Flask servers lets external clients inspect telemetry metrics instantly.",
             requirements: ["Establish Flask route for endpoint '/alerts'"],
             steps: [
-              "1. Open dynamic routing layouts in workspace.",
-              "2. Setup target alerting route path: `@app.route('/alerts')`.",
-              "3. Declare functions returning dictionary structures cleanly.",
-              "4. Return warning parameters like 'Cyclone Alert' details.",
-              "5. Protect endpoints parameters using standard schema validations.",
-              "6. Check capitalization of keywords inside path selectors.",
-              "7. Release server configuration assets upon completion.",
-              "8. Document active path details cleanly inside code blocks.",
-              "9. Run compilation checks and review server simulation results.",
-              "10. Push verification checker module. Track total project completion!"
+              "Open Flask server configurations in active workspace.",
+              "Add router path targeting alerts parameters: @app.route('/alerts').",
+              "Declare routing definitions returning dictionary parameters.",
+              "Map metrics representing severe warning indicators.",
+              "Avoid port binding exceptions in development servers configuration.",
+              "Check capitalization formatting of paths variables.",
+              "Verify imports namespaces match system rules.",
+              "Include descriptive block documentation for the alert endpoint.",
+              "Verify uvicorn simulation logs inside system terminal view.",
+              "Complete final project checks. Validate overall completion milestones!"
             ],
-            codeTemplate: "from flask import Flask\napp = Flask(__name__)\n@app.route('/alerts')\ndef get_alerts():\n    return {'alert': 'Severe Rainfall Alert'}",
+            codeTemplate: "# Task 10: Register alerts endpoints inside Flask router...\n",
             verify: (code) => code.includes("route('/alerts')") || code.includes('route("/alerts")')
           }
         ]
@@ -573,16 +576,16 @@
             info: "Array vectors handle complex numerical balances without float precision leaks.",
             requirements: ["Import numpy as 'np'", "Define transaction vector elements utilizing 'np.array'"],
             steps: [
-              "1. Ensure 'main.py' file tab is selected in active workspace.",
-              "2. Enter standard array module import statement: `import numpy as np`.",
-              "3. Declare transaction ledger float inputs: -150.50, 2000.00, -45.00.",
-              "4. Assemble high speed vector structures: `np.array()`.",
-              "5. Save computed vector elements inside variable named `balances`.",
-              "6. Print vector parameters details cleanly onto standard shell.",
-              "7. Call basic NumPy operations validating totals metrics.",
-              "8. Clean up syntax formatting issues inside main block.",
-              "9. Execute script execution checking code correctness.",
-              "10. Click verification progress checking trigger."
+              "Select main.py workspace buffer cleanly.",
+              "Declare calculations module import: import numpy as np.",
+              "Prepare standard financial transactional balances values list.",
+              "Construct high speed NumPy vector calling np.array().",
+              "Set results inside variable reference named 'balances'.",
+              "Add output prints logging financial parameters directly.",
+              "Inspect array dimensions type using balances.shape properties.",
+              "Ensure numerical formatting is free from floating leaks.",
+              "Compile code running script checks in terminal.",
+              "Verify progressive milestones check parameters."
             ],
             codeTemplate: "# Task 1: Build NumPy vectors containing financial ledger arrays...\n",
             verify: (code) => code.includes("import numpy as np") && code.includes("np.array")
@@ -595,16 +598,16 @@
             info: "Pandas formats unstructured logs into tidy tabular columns.",
             requirements: ["Import pandas as 'pd'", "Create transactional columns within standard DataFrame wrapper"],
             steps: [
-              "1. Add tabular processing module: `import pandas as pd`.",
-              "2. Construct dictionary holdings containing Categories and Expenses properties.",
-              "3. Load elements into pandas frame constructs: `pd.DataFrame()`.",
-              "4. Print output columns onto active terminal panel.",
-              "5. Set correct naming parameters across dataframe columns.",
-              "6. Double check data consistency constraints across all lists.",
-              "7. Guard dataframe parsing logic from empty rows structures.",
-              "8. Comment code block segment validations clearly.",
-              "9. Run compile validation scripts inside sandboxed shell.",
-              "10. Click 'Check My Progress' to complete this milestone."
+              "Declare data analytics modules: import pandas as pd.",
+              "Prepare dictionary carrying ledger parameters categories and cost.",
+              "Construct DataFrame utilizing constructor pd.DataFrame(data).",
+              "Save active DataFrame inside variable named 'df'.",
+              "Output columns format layout calling print(df).",
+              "Ensure columns dimensions align across structural dictionaries.",
+              "Eliminate duplicates before launching rows processing.",
+              "Add simple comments documenting DataFrame initialization rules.",
+              "Compile to review tabular grid representation in console.",
+              "Confirm milestone verification checking parameters."
             ],
             codeTemplate: "# Task 2: Build tabular Pandas DataFrame structure for ledger records...\n",
             verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
@@ -617,16 +620,16 @@
             info: "Aggregation metrics consolidate large arrays into structured budgets.",
             requirements: ["Incorporate Pandas DataFrame 'groupby()' to sum transaction records"],
             steps: [
-              "1. Bring in the established dataframe configurations.",
-              "2. Apply pandas aggregations logic on columns: `df.groupby('Category')`.",
-              "3. Map values calculation summation calling standard `.sum()`.",
-              "4. Assign aggregated outcomes inside local variables cleanly.",
-              "5. Output matching pivot blocks onto active shell terminal.",
-              "6. Protect script logic from column spelling mismatch errors.",
-              "7. Verify datatype compatibility metrics across outputs.",
-              "8. Double check logic structures align with requirements.",
-              "9. Run code scripts to review output results.",
-              "10. Trigger checklist checking action."
+              "Maintain active pandas configurations in python code workspace.",
+              "Apply grouping aggregations: df.groupby('Category').",
+              "Calculate sum values of costs calling standard .sum() method.",
+              "Store pivot aggregates in variables references.",
+              "Log results directly to system outputs stream.",
+              "Avoid column indexing conflicts inside data tables.",
+              "Verify datatypes remain numerical after aggregation rules.",
+              "Add informational comments validating logic details.",
+              "Run local script checks inside workspace terminal.",
+              "Click 'Check My Progress' validation modules."
             ],
             codeTemplate: "# Task 3: Execute groupby pivot metrics aggregation on ledgers...\n",
             verify: (code) => code.includes("groupby")
@@ -639,16 +642,16 @@
             info: "Lightweight local database storage structures transaction history safely.",
             requirements: ["Define SQLite ledger schema with 'CREATE TABLE IF NOT EXISTS ledger'"],
             steps: [
-              "1. Write database imports line: `import sqlite3`.",
-              "2. Map local file connection streams: `sqlite3.connect('finance.db')`.",
-              "3. Declare schema queries: 'CREATE TABLE IF NOT EXISTS ledger...'.",
-              "4. Match fields containing category tags and numeric amount floats.",
-              "5. Open transaction executions pipelines inside connection cursor.",
-              "6. Commit SQL tables structural metrics safely on exit.",
-              "7. Call connection close wrapper function cleanly.",
-              "8. Confirm sql variables spelling checks are correct.",
-              "9. Check local terminal output values using compile panel.",
-              "10. Process milestone checker criteria."
+              "Add SQL module interface libraries using `import sqlite3`.",
+              "Open local connection pipeline targeting file 'finance.db'.",
+              "Draft schema query: 'CREATE TABLE IF NOT EXISTS ledger...'.",
+              "Incorporate necessary fields: transaction ID, category string, amount float.",
+              "Execute statement leveraging active connection cursor driver.",
+              "Always trigger connection commit on schema registration.",
+              "Safely close databases handles using `.close()` method.",
+              "Verify query text strings have zero spelling bugs.",
+              "Compile code logic on standard sandboxed terminal.",
+              "Clear tasks progress milestones checklist rules."
             ],
             codeTemplate: "# Task 4: Configure SQLite schema pipelines and local databases...\n",
             verify: (code) => code.includes("sqlite3.connect") && code.includes("ledger")
@@ -661,16 +664,16 @@
             info: "Standard database cursor executions update ledger records correctly.",
             requirements: ["Execute SQL 'INSERT' into financial ledger tables"],
             steps: [
-              "1. Open connection pipelines targeting 'finance.db'.",
-              "2. Prepare insert command structure: 'INSERT INTO ledger VALUES...'.",
-              "3. Run transactional sql command calls using active cursors.",
-              "4. Secure modifications persistently calling `conn.commit()`.",
-              "5. Close operational connection properties completely.",
-              "6. Catch transactional write locks cleanly inside exception wrapper.",
-              "7. Validate variables mapping alignments inside query parameters.",
-              "8. Standardize variables formats across code structures.",
-              "9. Run compilation checks and review standard logs output.",
-              "10. Select 'Check My Progress' to proceed."
+              "Establish operational sessions targeting database 'finance.db'.",
+              "Construct relational SQL database INSERT statement commands.",
+              "Format query variables targeting tables name: 'INSERT INTO ledger VALUES...'.",
+              "Execute query utilizing connection cursor executes logic.",
+              "Persist transactions securely calling conn.commit() method.",
+              "Deallocate active session parameters correctly on completion.",
+              "Wrap database insertions in try-except bounds handling write locks.",
+              "Double check indexing coordinates map cleanly.",
+              "Execute workspace compilation checking sqlite update telemetry.",
+              "Trigger progressive milestones check parameters."
             ],
             codeTemplate: "# Task 5: Execute database transactions inserting ledger elements...\n",
             verify: (code) => code.includes("INSERT") && code.includes("ledger")
@@ -683,16 +686,16 @@
             info: "OpenPyXL generates standardized spreadsheet files with styling controls.",
             requirements: ["Import 'openpyxl'", "Call 'openpyxl.Workbook()' method"],
             steps: [
-              "1. Put standard Excel generation module: `import openpyxl`.",
-              "2. Construct active worksheets calling `openpyxl.Workbook()`.",
-              "3. Write target balance parameters onto worksheet cells indices.",
-              "4. Save Excel workbook structures into disk files cleanly.",
-              "5. Secure calculations streams from index out of range bugs.",
-              "6. Confirm workspace directory references match system rules.",
-              "7. Clean up unreferenced variable entities inside block.",
-              "8. Print custom success validation notifications on save.",
-              "9. Run scripts to review standard logs feedback.",
-              "10. Select the progressive tracker validation tab."
+              "Add Excel sheets manager engine: import openpyxl.",
+              "Create workbook files calling openpyxl.Workbook().",
+              "Bind operational sheets to active worksheets pointer.",
+              "Write transaction values to target grid cell indices.",
+              "Save output file to disk calling wb.save('Ledger_Report.xlsx').",
+              "Catch file locking errors when updating spreadsheets.",
+              "Check paths pointers are local to workspace environment.",
+              "Log completion indicator after workbook gets closed.",
+              "Compile scripts and inspect directory assets creation.",
+              "Clear milestones checklists validating targets metrics."
             ],
             codeTemplate: "# Task 6: Build Excel sheet generation operations using openpyxl...\n",
             verify: (code) => code.includes("import openpyxl") && code.includes("Workbook()")
@@ -705,16 +708,16 @@
             info: "ReportLab creates professional financial documents programmatically.",
             requirements: ["Import 'reportlab' module assets (e.g. from reportlab.pdfgen import canvas)"],
             steps: [
-              "1. Include reportlab pdfgen modules inside main import blocks.",
-              "2. Construct canvas drivers targeting PDF output files cleanly.",
-              "3. Call text coordinates mapping methods: `canvas.drawString()`.",
-              "4. Finalize PDF document layouts calling `.save()` method.",
-              "5. Ensure coordinate margins values stay within PDF page limits.",
-              "6. Formulate clean statement output headers text parameters.",
-              "7. Protect PDF write routines from file write access blocks.",
-              "8. Double check reportlab module namespaces spellings.",
-              "9. Compile code to see execution log status results.",
-              "10. Push task progress verification action rules."
+              "Add PDF document compiler: from reportlab.pdfgen import canvas.",
+              "Instantiate drawing canvas targeting Statement.pdf cleanly.",
+              "Draw text nodes coordinates calling canvas.drawString() commands.",
+              "Apply formatting configurations mapping document titles.",
+              "Finalize document structure calling canvas.save() method.",
+              "Check coordinate bounding limits align safely to page dimensions.",
+              "Confirm write directory parameters are accessible.",
+              "Verify module imports namespaces spelling structures.",
+              "Execute script execution check.",
+              "Select task progress verification module."
             ],
             codeTemplate: "# Task 7: Generate statement documents using reportlab canvas...\n",
             verify: (code) => code.includes("reportlab") || code.includes("Canvas")
@@ -727,16 +730,16 @@
             info: "Plotting spending visualizes where money is allocated.",
             requirements: ["Use Matplotlib 'plt.pie()' to render spending percentages"],
             steps: [
-              "1. Retain Matplotlib imports on the workspace file.",
-              "2. Construct expense data arrays matching category classifications.",
-              "3. Execute circular plotting structures calling `plt.pie()` function.",
-              "4. Bind chart label names parameters list cleanly.",
-              "5. Render layout to stdout using standard plot show calls.",
-              "6. Eliminate chart overlaps by defining proper layout sizing.",
-              "7. Confirm data percentages total up correctly.",
-              "8. Maintain high contrast colors across chart segments.",
-              "9. Run compile validation checks in active console.",
-              "10. Push the progress check verification."
+              "Verify active matplotlib plotting libraries references.",
+              "Declare expense slices parameters lists and category labels.",
+              "Trigger circular plotting charts calling plt.pie().",
+              "Pass category name structures inside plot properties mapping.",
+              "Render chart directly into output stream calling plt.show().",
+              "Verify values percentages sum up precisely to expected scale limits.",
+              "Select professional color configurations for chart regions.",
+              "Add brief comments verifying active mapping logic.",
+              "Compile code script verifying visual graphs outputs.",
+              "Check progressive checklists criteria tracker."
             ],
             codeTemplate: "# Task 8: Generate visual pie charts using Matplotlib libraries...\n",
             verify: (code) => code.includes("pie")
@@ -749,16 +752,16 @@
             info: "Asynchronous APIs provide structured integration paths for finance apps.",
             requirements: ["Setup FastAPI router with 'app = FastAPI()'"],
             steps: [
-              "1. Put FastAPI service declarations inside import workspace block.",
-              "2. Establish REST application engine references: `app = FastAPI()`.",
-              "3. Bind custom post route rules decorators targeting `/upload`.",
-              "4. Map return definitions validating input transactions state.",
-              "5. Protect application routines from structural path duplicates.",
-              "6. Format returned status messages beautifully inside standard JSON.",
-              "7. Standardize variable mappings inside decorator configurations.",
-              "8. Organize dependencies cleanly on top framework levels.",
-              "9. Compile script check to verify ASGI servers execution.",
-              "10. Click 'Check My Progress' to complete."
+              "Add async backend API module: from fastapi import FastAPI.",
+              "Instantiate REST routing context: app = FastAPI().",
+              "Configure route decorator mappings targeting POST endpoint: @app.post('/upload').",
+              "Declare router action returning verification payload dict.",
+              "Eliminate duplicate pathway configurations from router layers.",
+              "Maintain high structural standards for returned status parameters.",
+              "Verify namespaces spelling syntax are fully correct.",
+              "Format JSON returns beautifully inside method logic.",
+              "Test server setups compiling workspace logic.",
+              "Process milestone checking triggers."
             ],
             codeTemplate: "# Task 9: Initialize FastAPI router layouts inside workspace...\n",
             verify: (code) => code.includes("FastAPI") && code.includes("upload")
@@ -771,16 +774,16 @@
             info: "Pydantic enforces data types before processing API inputs.",
             requirements: ["Import 'BaseModel' from pydantic", "Define a schema subclass"],
             steps: [
-              "1. Open active schema definitions section inside workspace.",
-              "2. Put standard Pydantic models import: `from pydantic import BaseModel`.",
-              "3. Construct customized transaction data model subclassing `BaseModel`.",
-              "4. Specify typed fields containing transaction amount and string category.",
-              "5. Ensure properties names align with client payload models.",
-              "6. Prevent typing conflicts within database record layers.",
-              "7. Clean up unreferenced class parameters inside namespace.",
-              "8. Format all subclass rules with clean indentation spaces.",
-              "9. Compile script to guarantee zero execution syntax errors.",
-              "10. Finalize the finance tracking pipeline. Click Check My Progress to verify!"
+              "Add data schema validator components: from pydantic import BaseModel.",
+              "Create custom Transaction model subclass extending BaseModel.",
+              "Setup strongly typed fields representing ID, cost, and category.",
+              "Review datatype mappings parameters conform to API standards.",
+              "Prevent datatype mismatch exceptions on server execution layers.",
+              "Keep model classes nicely organized with standard indentation blocks.",
+              "Remove unreferenced parameters from modules declarations.",
+              "Incorporate descriptive docstring explaining schema fields values.",
+              "Compile files verifying code executes with zero syntax errors.",
+              "Complete final project checks. Congrats on finishing your financial portfolio!"
             ],
             codeTemplate: "# Task 10: Setup Pydantic data schema models for incoming payloads...\n",
             verify: (code) => code.includes("BaseModel") && code.includes("pydantic")
@@ -799,16 +802,16 @@
             info: "NumPy arrays form the raw dimensional matrices that represent pixels in memory.",
             requirements: ["Import numpy as 'np'", "Generate pixel matrix utilizing 'np.zeros()' or similar initialization"],
             steps: [
-              "1. Ensure 'main.py' file buffer is active in code IDE workspace.",
-              "2. Declare standard numerical multidimensional arrays module: `import numpy as np`.",
-              "3. Construct zero-initialized array maps mimicking pixel coordinates: `np.zeros()`.",
-              "4. Define height, width, and color channels parameters: (100, 100, 3).",
-              "5. Save computed array dimensions output into local variable named `pixels`.",
-              "6. Render diagnostic print checks checking matrix datatype formats.",
-              "7. Verify grid shape matching rules are correct.",
-              "8. Avoid code indentation bugs in main script structure.",
-              "9. Compile code to see logs output values.",
-              "10. Trigger progress check validation checkpoints."
+              "Select main.py workspace editor context.",
+              "Declare multi-dimensional calculation references: import numpy as np.",
+              "Construct matrix grid representing blank canvas using np.zeros().",
+              "Supply height, width, and color channels parameters: (100, 100, 3).",
+              "Assign grid matrix reference inside variable named 'pixels'.",
+              "Write output print statements checking array structures formats.",
+              "Confirm array datatypes are unsigned 8-bit integers (np.uint8).",
+              "Verify matrix shape coordinates match expected parameters.",
+              "Compile script running core sandbox checks.",
+              "Clear task progress milestones checklists tracker."
             ],
             codeTemplate: "# Task 1: Generate zero-initialized pixel coordinate grids with NumPy...\n",
             verify: (code) => code.includes("import numpy as np") && (code.includes("zeros") || code.includes("array"))
@@ -821,16 +824,16 @@
             info: "Math transforms process scale grids across channels smoothly.",
             requirements: ["Perform pixel vector multiplication by a scaling scalar"],
             steps: [
-              "1. Keep NumPy matrices active on workspace scripts.",
-              "2. Formulate numeric scaler multiplications factors (e.g. 2.5).",
-              "3. Multiply matrices arrays with scaler factor cleanly.",
-              "4. Store transformed scale results back to vector variables.",
-              "5. Output array calculation summaries onto system terminal.",
-              "6. Double check multiplication operations are element-wise.",
-              "7. Keep coordinates positive to preserve color scales rules.",
-              "8. Standardize datatype ranges inside variable constructs.",
-              "9. Run scripts compiling local calculations check.",
-              "10. Process milestone checking parameters."
+              "Retain NumPy active configurations on the script.",
+              "Prepare numeric multiplier scalar representing exposure scale factors (e.g. 2.5).",
+              "Multiply pixels matrices by scaling factor element-wise.",
+              "Save scaled outcomes back in local variables references.",
+              "Display resulting matrices details directly to console log.",
+              "Protect calculations against negative limits overflows.",
+              "Ensure numerical formatting is free from float bounds bugs.",
+              "Add detailed inline comments detailing scaling transform metrics.",
+              "Execute local workspace compiler validating array values.",
+              "Verify progressive milestones check parameters."
             ],
             codeTemplate: "# Task 2: Implement scalar matrix transformations using NumPy...\n",
             verify: (code) => code.includes("pixels *") || code.includes("scaled")
@@ -843,16 +846,16 @@
             info: "DataFrames organize image data like metadata, colors, and resolution tables.",
             requirements: ["Load image dimensions data utilizing 'pd.DataFrame'"],
             steps: [
-              "1. Declare Pandas analytics module using `import pandas as pd`.",
-              "2. Construct dictionary databases mapping metadata properties.",
-              "3. Construct frame templates calling constructor `pd.DataFrame()`.",
-              "4. Display matching elements cleanly onto screen logs.",
-              "5. Ensure properties indices match image dimension metrics.",
-              "6. Check datatypes values format before printing.",
-              "7. Remove duplicates from structured metadata inputs.",
-              "8. Comment target sections logic beautifully inside code.",
-              "9. Run compilation checks and review standard logs feedback.",
-              "10. Trigger checklist checking action."
+              "Add database tables engines: import pandas as pd.",
+              "Build dictionary mapping metadata fields: path, filter name, dimension.",
+              "Construct Pandas DataFrame calling constructor: pd.DataFrame(data).",
+              "Save tabular outputs in variables references.",
+              "Display formatted column metrics directly to console.",
+              "Confirm column labels match properties defined in keys.",
+              "Prune duplicates from local variables array.",
+              "Add informative comment lines explaining active metadata mapping.",
+              "Compile code logic on standard sandboxed terminal.",
+              "Click 'Check My Progress' validation modules."
             ],
             codeTemplate: "# Task 3: Build DataFrame metadata schemas using Pandas tools...\n",
             verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
@@ -865,16 +868,16 @@
             info: "SQLite catalogs image metrics for reference across processing tasks.",
             requirements: ["Define sqlite engine connection", "Create schema 'image_metadata'"],
             steps: [
-              "1. Put built-in database drive module: `import sqlite3`.",
-              "2. Establish file connection target to 'studio.db'.",
-              "3. Formulate table schema: 'CREATE TABLE IF NOT EXISTS image_metadata...'.",
-              "4. Map columns fields for image file path and filter names.",
-              "5. Trigger transactional statement connections safely on execute.",
-              "6. Commit SQL schema configurations cleanly to database connection.",
-              "7. Close file cursor assets safely on exit.",
-              "8. Maintain standard SQLite datatypes formats.",
-              "9. Run local compile validations to inspect output.",
-              "10. Process milestone checker criteria."
+              "Add transactional database drivers using `import sqlite3`.",
+              "Initiate active connection pipeline to database file 'studio.db'.",
+              "Formulate schemas setup commands: 'CREATE TABLE IF NOT EXISTS image_metadata...'.",
+              "Include target columns: image ID, file path string, and active filters.",
+              "Run execution using connections cursors directly.",
+              "Ensure SQL statements are committed invoking conn.commit().",
+              "Safely close open connection handles using `.close()` method.",
+              "Prevent statements syntax locks inside database write pipelines.",
+              "Run workspace compilation checking schema establishment.",
+              "Clear tasks progress milestones checklist rules."
             ],
             codeTemplate: "# Task 4: Setup SQLite database configurations and schemas...\n",
             verify: (code) => code.includes("sqlite3.connect") && code.includes("image_metadata")
@@ -887,18 +890,18 @@
             info: "Pillow opens, modifies, and converts static image files securely.",
             requirements: ["Import 'Image' from PIL"],
             steps: [
-              "1. Write import directive: `from PIL import Image`.",
-              "2. Construct virtual file placeholder targets for input images.",
-              "3. Document operational methods calling Pillow configurations.",
-              "4. Keep binary loading handlers organized cleanly inside block.",
-              "5. Log success indicators on successful file load operations.",
-              "6. Support try-catch boundaries on loading binary assets.",
-              "7. Verify directory mapping logic aligns with target workspaces.",
-              "8. Clean up unused imports references inside python code.",
-              "9. Run code scripts to review output results.",
-              "10. Select 'Check My Progress' to proceed."
+              "Add binary file loader references: from PIL import Image.",
+              "Simulate files parameters pointer targeting mock image coordinates.",
+              "Implement Pillow image initialization directives safely.",
+              "Ensure binary load channels process cleanly inside try-except bounds.",
+              "Add output print strings signaling successful loader status.",
+              "Handle file access errors when directories pathways mismatch.",
+              "Clean up unused variables from modules declarations.",
+              "Structure configuration layers nicely to avoid import loops.",
+              "Execute workspace compilation checking Pillow components initialization.",
+              "Trigger progressive milestones check parameters."
             ],
-            codeTemplate: "# Task 5: Configure Pillow modules and image file loading logic...\n",
+            codeTemplate: "# Task 5: Configure Pillow library image handlers within script...\n",
             verify: (code) => code.includes("PIL") && code.includes("Image")
           },
           {
@@ -909,16 +912,16 @@
             info: "OpenCV applies grayscaling transforms to matrices representing pixels in memory.",
             requirements: ["Import 'cv2' library parameters", "Reference 'cv2.cvtColor()' conversion call"],
             steps: [
-              "1. Put advanced image processor library import: `import cv2`.",
-              "2. Document simulated target variables representing pixel elements.",
-              "3. Mention standard conversion rules calling `cv2.cvtColor()` method.",
-              "4. Pass color channel targets correctly inside transform configurations.",
-              "5. Output diagnostics success verification lines directly to console.",
-              "6. Double check cv2 module spelling structure.",
-              "7. Ensure input parameters match OpenCV arrays specs.",
-              "8. Prevent missing arrays bounds exceptions inside transforms.",
-              "9. Compile script check to evaluate logs outputs.",
-              "10. Select the progressive tracker validation tab."
+              "Import image processing context: import cv2.",
+              "Formulate placeholder variables representing raw image pixels arrays.",
+              "Trigger color spacing transformations calling cv2.cvtColor().",
+              "Pass target space parameter: cv2.COLOR_BGR2GRAY.",
+              "Log conversion complete metrics safely in console.",
+              "Verify cv2 namespaces spelling layouts.",
+              "Confirm array dimensions coordinates match OpenCV inputs constraints.",
+              "Incorporate detailed comments showcasing filter logic.",
+              "Run sandbox compilation validating grayscale conversions script.",
+              "Clear milestones checklists validating targets metrics."
             ],
             codeTemplate: "# Task 6: Implement OpenCV image matrix grayscale transformations...\n",
             verify: (code) => code.includes("import cv2")
@@ -931,16 +934,16 @@
             info: "Edge mapping helps isolate structures within the image matrix.",
             requirements: ["Reference the OpenCV 'cv2.Canny()' structural algorithm method"],
             steps: [
-              "1. Maintain cv2 modules configurations on the workspace code.",
-              "2. Reference edge detection algorithms calling `cv2.Canny()` method.",
-              "3. Bind upper and lower threshold metrics variables list safely.",
-              "4. Render diagnostics outputs showing success calculations.",
-              "5. Check arrays index bounds targeting edge mappings.",
-              "6. Standardize coordinate limits in parameter calculations.",
-              "7. Format image dimension parameters clearly inside comments.",
-              "8. double check parameter namespaces spelling constraints.",
-              "9. Compile script check to verify algorithms correctness.",
-              "10. Push task progress verification action rules."
+              "Verify OpenCV module configurations inside python script.",
+              "Map outline detectors calling edge locator: cv2.Canny().",
+              "Supply minimum and maximum bounds threshold parameters.",
+              "Log standard operations complete markers inside console output.",
+              "Ensure array parameters match expected data size levels.",
+              "Format pixel indices ranges with standard values limits.",
+              "Include descriptive block documentation for the edge method.",
+              "Clean up unreferenced coordinates within logic blocks.",
+              "Compile code checking edge tracing calculations telemetry.",
+              "Select task progress verification module."
             ],
             codeTemplate: "# Task 7: Execute edge mapping transforms using Canny filters...\n",
             verify: (code) => code.includes("cv2")
@@ -953,16 +956,16 @@
             info: "Drawing bounding boxes highlights detected structures in the image.",
             requirements: ["Reference standard OpenCV 'cv2.rectangle()' plotting call"],
             steps: [
-              "1. Retain OpenCV functions configurations in python scripts.",
-              "2. Map bounding limits calling coordinate draw: `cv2.rectangle()`.",
-              "3. Supply coordinate indices parameters matching overlay coordinates.",
-              "4. Choose line colors parameters and width boundaries cleanly.",
-              "5. Build printed checks validating bounding properties.",
-              "6. Confirm bounding dimensions stay within pixel limits.",
-              "7. Minimize visual overlay offsets by using proper coordinates.",
-              "8. Maintain clean structures throughout code block layouts.",
-              "9. Compile code to see execution log status results.",
-              "10. Push the progress check verification."
+              "Maintain OpenCV script logic configurations in active workspace.",
+              "Trigger bounding shape graphics builder: cv2.rectangle().",
+              "Supply coordinates offsets bounding matching image coordinates.",
+              "Set outline boundary color values and line width parameters cleanly.",
+              "Ensure bounding coordinates do not exceed array limits.",
+              "Print drawing operations success indicators directly to standard logs.",
+              "Check that coordinate vector matrices match layout perfectly.",
+              "Avoid positioning offset calculations bugs inside drawing params.",
+              "Compile scripts checking visual overlays mapping outputs.",
+              "Check progressive checklists criteria tracker."
             ],
             codeTemplate: "# Task 8: Generate visual overlays bounding matrices via cv2...\n",
             verify: (code) => code.includes("cv2")
@@ -975,16 +978,16 @@
             info: "Flask routes process remote requests to apply image transformations.",
             requirements: ["Spin up Flask server", "Add router mapping decorator for route '/apply_filter'"],
             steps: [
-              "1. Put Flask framework modules inside code imports block.",
-              "2. Construct web service engine calling constructor: `Flask(__name__)`.",
-              "3. Establish endpoint decorators targeting `/apply_filter` route.",
-              "4. Map return values showing matrix filter status results.",
-              "5. Ensure routing paths match requirements guidelines.",
-              "6. Clean up nested port allocations to prevent duplicate server locks.",
-              "7. Standardize variable properties in returned response objects.",
-              "8. Separate application logic from path routing decs.",
-              "9. Run compilation checks and review server simulation results.",
-              "10. Click 'Check My Progress' to complete."
+              "Add server platform components: from flask import Flask.",
+              "Create backend applications engine: app = Flask(__name__).",
+              "Bind endpoint route decorators targeting: @app.route('/apply_filter').",
+              "Construct action method returning process validation metrics.",
+              "Confirm application variables name mapping matches standard setups.",
+              "Ensure no port binding conflicts occur in development workspace.",
+              "Safely close operational server properties cleanly.",
+              "Format JSON returns beautifully inside route parameters.",
+              "Test server setups compiling workspace logic.",
+              "Process milestone checking triggers."
             ],
             codeTemplate: "# Task 9: Initialize Flask routing server layouts inside code...\n",
             verify: (code) => code.includes("apply_filter")
@@ -997,16 +1000,16 @@
             info: "Streamlit translates code parameters into interactive slider, tab, and image components.",
             requirements: ["Import 'streamlit as st' module"],
             steps: [
-              "1. Open active dashboard configuration layers in workspace.",
-              "2. Put standard Streamlit tool: `import streamlit as st`.",
-              "3. Set application headings using `st.title()` method.",
-              "4. Construct visual parameters slider interfaces using `st.slider()`.",
-              "5. Validate sliders values are mapped correctly inside layouts.",
-              "6. Prevent workspace directory conflicts in execution setups.",
-              "7. Dispose duplicated component configurations in dashboard sections.",
-              "8. Format structural details with neat layout spacing.",
-              "9. Run compile diagnostics to review Streamlit simulations.",
-              "10. Finalize the computer vision pipeline. Click Check My Progress to verify!"
+              "Add interactive UI dashboard libraries: import streamlit as st.",
+              "Set primary screen title: st.title('Filter Studio').",
+              "Construct custom slide controllers: st.slider().",
+              "Write dashboard texts parameters calling st.write().",
+              "Check that streamlit modules spelling are accurate.",
+              "Keep design components aligned perfectly on layout columns.",
+              "Prune duplicated components from visualization blocks.",
+              "Organize dependencies beautifully on top workspace levels.",
+              "Verify uvicorn simulation logs inside system terminal view.",
+              "Process final milestones checks. Congratulations on completing your Computer Vision Studio!"
             ],
             codeTemplate: "# Task 10: Setup Streamlit dashboards for user parameter controls...\n",
             verify: (code) => code.includes("import streamlit as st")
@@ -1025,18 +1028,18 @@
             info: "High performance vectors track availability states across zones.",
             requirements: ["Import numpy as 'np'", "Define room availability vectors with 'np.array()'"],
             steps: [
-              "1. Select 'main.py' file tab in the active workspace view.",
-              "2. Put standard arrays computation import: `import numpy as np`.",
-              "3. Declare integer room codes: 101, 102, 201, 202.",
-              "4. Construct high speed vectors calling `np.array()`.",
-              "5. Store room indices data output in variable named `rooms`.",
-              "6. Write a print command displaying vector elements cleanly.",
-              "7. Test index mappings using standard array properties.",
-              "8. Ensure there are no code indentation warnings in python block.",
-              "9. Compile code to see logs output values.",
-              "10. Click progress checker validation to unlock next."
+              "Open main.py script workspace.",
+              "Add mathematical matrix libraries: import numpy as np.",
+              "Declare grid lists containing room numbers coordinates.",
+              "Construct high-speed vector array: np.array([101, 102, 201]).",
+              "Save results inside localized variables named 'rooms'.",
+              "Write output prints displaying active room grids values.",
+              "Confirm vector shapes are single dimensional.",
+              "Check numpy array datatypes are spelling correct.",
+              "Compile code running script checks in terminal.",
+              "Clear tasks progress milestones checklist rules."
             ],
-            codeTemplate: "# Task 1: Generate high performance room vectors using NumPy...\n",
+            codeTemplate: "# Task 1: Initialize NumPy vector arrays for rooms mapping...\n",
             verify: (code) => code.includes("import numpy as np") && code.includes("np.array")
           },
           {
@@ -1047,18 +1050,18 @@
             info: "Dataframe columns organize guest check-in parameters clearly.",
             requirements: ["Import pandas as 'pd'", "Create guest roster with 'pd.DataFrame'"],
             steps: [
-              "1. Put pandas library declaration: `import pandas as pd`.",
-              "2. Construct dictionary mappings for Names and Room indexes.",
-              "3. Initialize tabular layouts: `pd.DataFrame(guests)`.",
-              "4. Print table structure onto system output console.",
-              "5. Match row coordinates cleanly with client records.",
-              "6. Ensure indices match guest registrations perfectly.",
-              "7. Avoid hardcoding row bounds inside dataframe pipelines.",
-              "8. Log success checks verifying file execution flow.",
-              "9. Run compilation checks and review standard logs feedback.",
-              "10. Trigger checklist checking action."
+              "Add data structures matrix libraries: import pandas as pd.",
+              "Structure Python dict carrying guest parameters columns keys.",
+              "Construct pandas DataFrame utilizing constructor: pd.DataFrame(data).",
+              "Save outputs in variables references named 'guests'.",
+              "Display formatted spreadsheet columns directly to console.",
+              "Check column index mapping corresponds to keys names.",
+              "Eliminate duplicates before starting rows parsing.",
+              "Add brief comments detailing DataFrame setups.",
+              "Compile to review tabular grid representation in console.",
+              "Confirm milestone verification checking parameters."
             ],
-            codeTemplate: "# Task 2: Build tabular Pandas DataFrame structure for reservation rosters...\n",
+            codeTemplate: "# Task 2: Build tabular Pandas DataFrame structure for guest records...\n",
             verify: (code) => code.includes("import pandas as pd") && code.includes("pd.DataFrame")
           },
           {
@@ -1069,18 +1072,18 @@
             info: "Removing redundant check-in records prevents double-booking errors.",
             requirements: ["Utilize the Pandas dataframe 'drop_duplicates()' optimization call"],
             steps: [
-              "1. Keep dataframe variables active inside python script.",
-              "2. Trigger cleansing logic calling: `df.drop_duplicates()`.",
-              "3. Set processed clean dataframe onto local variable reference.",
-              "4. Output cleaned rows directly to system shell.",
-              "5. Confirm duplicated items are completely purged on execution.",
-              "6. Guard columns references from typing errors.",
-              "7. Formulate code blocks cleanly with proper formatting styles.",
-              "8. Check variables properties match target dataframes fields.",
-              "9. Run compile checks on script logic to evaluate outcomes.",
-              "10. Trigger progress check verification criteria."
+              "Verify active pandas modules references in scripts.",
+              "Apply de-duplication method calling: guests.drop_duplicates().",
+              "Add conditional checks logging duplicate rows counts.",
+              "Save clean outputs safely inside variables references.",
+              "Write print statements printing cleaned DataFrame records.",
+              "Avoid column indexing conflicts inside data tables.",
+              "Check columns data types are correct.",
+              "Incorporate descriptive block comments detailing the cleaning steps.",
+              "Run local script checks inside workspace terminal.",
+              "Click 'Check My Progress' validation modules."
             ],
-            codeTemplate: "# Task 3: Implement data deduplication algorithms on dataframes...\n",
+            codeTemplate: "# Task 3: Clean columns duplicates utilizing Pandas libraries...\n",
             verify: (code) => code.includes("drop_duplicates")
           },
           {
@@ -1091,18 +1094,18 @@
             info: "Local SQLite databases organize guest check-in histories efficiently.",
             requirements: ["Establish SQLite database connection file", "Create table 'reservations'"],
             steps: [
-              "1. Put built-in database drive module: `import sqlite3`.",
-              "2. Setup relational file pipeline targeting 'hotel.db'.",
-              "3. Declare sql queries: 'CREATE TABLE IF NOT EXISTS reservations...'.",
-              "4. Specify database fields matching guest details and room properties.",
-              "5. Open transaction executions inside sql connection schema.",
-              "6. Commit schema state safely to the relational file database.",
-              "7. Call connection close properties safely on system exit.",
-              "8. Ensure SQL syntax strings match standard SQL protocols.",
-              "9. Run code scripts to see database local setups.",
-              "10. Process milestone checker criteria."
+              "Add database engine dependencies: import sqlite3.",
+              "Connect to localized file database: sqlite3.connect('hotel.db').",
+              "Save connection handle in variables pointers.",
+              "Formulate database schemas parameters: 'CREATE TABLE IF NOT EXISTS reservations...'.",
+              "Incorporate required fields: ID primary key, guest name text, room number integer.",
+              "Execute table registration using active connection cursors.",
+              "Trigger connection commit to save database layouts.",
+              "Safely release database handles calling connection close.",
+              "Run workspace compilation checking schema establishment.",
+              "Clear task progress milestones checklists tracker."
             ],
-            codeTemplate: "# Task 4: Configure SQLite file pipelines and schema structures...\n",
+            codeTemplate: "# Task 4: Setup SQLite database configurations and schemas...\n",
             verify: (code) => code.includes("sqlite3.connect") && code.includes("reservations")
           },
           {
@@ -1113,18 +1116,18 @@
             info: "Database cursors commit critical reservation actions safely to SQLite databases.",
             requirements: ["Incorporate SQL 'INSERT' into reservation transaction logs"],
             steps: [
-              "1. Connect database streams targeting 'hotel.db' safely.",
-              "2. Formulate sql queries: 'INSERT INTO reservations VALUES...'.",
-              "3. Execute insert command using active cursor execute handlers.",
-              "4. Save table updates persistently calling connection commit.",
-              "5. Dispose active database connectors and cursor instances cleanly.",
-              "6. Protect transactional workflows using standard error handlings.",
-              "7. Map variables cleanly inside execution queries parameters.",
-              "8. Organize coding blocks cleanly with structured comments.",
-              "9. Run compilation checks and review standard logs feedback.",
-              "10. Select 'Check My Progress' to proceed."
+              "Establish database sessions pointing to 'hotel.db'.",
+              "Structure transactional SQL INSERT statements.",
+              "Map insert parameters values: 'INSERT INTO reservations VALUES...'.",
+              "Execute command cursors executing updates.",
+              "Ensure SQL transaction gets committed invoking conn.commit().",
+              "Release active sqlite links smoothly on completion.",
+              "Guard executions against locked database exceptions.",
+              "Verify variables indexing limits match table fields schemas.",
+              "Compile scripts checking database updates telemetry.",
+              "Trigger progressive milestones check parameters."
             ],
-            codeTemplate: "# Task 5: Execute SQLite database record insertion transactions...\n",
+            codeTemplate: "# Task 5: Execute database transactions inserting booking elements...\n",
             verify: (code) => code.includes("INSERT") && code.includes("reservations")
           },
           {
@@ -1135,18 +1138,18 @@
             info: "Pydantic validates API input fields automatically.",
             requirements: ["Import 'BaseModel' from pydantic", "Define reservation schema subclass"],
             steps: [
-              "1. Declare pydantic module references: `from pydantic import BaseModel`.",
-              "2. Construct customized payload model extending `BaseModel` class.",
-              "3. Setup fields templates for guest name and room numbers.",
-              "4. Ensure parameters are strongly typed using python standards.",
-              "5. Guard incoming dataset mappings from invalid datatypes properties.",
-              "6. Structure validation schemas with clean spacing formats.",
-              "7. Remove unneeded variables from module namespaces.",
-              "8. Log validation checks execution flow directly in terminal.",
-              "9. Run compile diagnostics to inspect schema compliance.",
-              "10. Select the progressive tracker validation tab."
+              "Import validation library components: from pydantic import BaseModel.",
+              "Create custom data schema subclassing BaseModel class.",
+              "Configure typed properties for guest name string and room number integer.",
+              "Confirm data parsing conforms to schema structures constraints.",
+              "Handle invalid datatypes validations parameters safely.",
+              "Ensure classes layout have standard indentation formatting.",
+              "Remove unreferenced parameters from modules declarations.",
+              "Incorporate detailed comments showcasing validation limits.",
+              "Run local script checks inside workspace terminal.",
+              "Select task progress verification module."
             ],
-            codeTemplate: "# Task 6: Build validation data schemas using pydantic models...\n",
+            codeTemplate: "# Task 6: Setup Pydantic data schema models for incoming payloads...\n",
             verify: (code) => code.includes("BaseModel") && code.includes("pydantic")
           },
           {
@@ -1156,7 +1159,19 @@
             useCase: "Modeling database schemas using declarative ORM classes",
             info: "SQLAlchemy maps database tables directly to standard Python objects.",
             requirements: ["Import 'declarative_base' or 'Column' from sqlalchemy"],
-            codeTemplate: "from sqlalchemy.ext.declarative import declarative_base\nBase = declarative_base()\nprint('ORM configurations loaded')",
+            steps: [
+              "Add ORM mapping libraries: from sqlalchemy.ext.declarative import declarative_base.",
+              "Create declarative model configurations baseline class.",
+              "Construct table mapping descriptors subclassing base configurations.",
+              "Map fields variables targeting active database fields column structures.",
+              "Verify module imports namespaces spelling layouts.",
+              "Ensure table relationships pointers map correctly.",
+              "Incorporate standard schema models descriptive block comments.",
+              "Clean up unreferenced coordinates within logic blocks.",
+              "Compile code script verifying ORM setup telemetry.",
+              "Check progressive checklists criteria tracker."
+            ],
+            codeTemplate: "# Task 7: Execute declarative ORM structures using SQLAlchemy...\n",
             verify: (code) => code.includes("sqlalchemy")
           },
           {
@@ -1167,18 +1182,18 @@
             info: "FastAPI creates standardized RESTful pathways using Python syntax decorators.",
             requirements: ["Define FastAPI REST endpoint mapping '@app.post(\"/booking\")'"],
             steps: [
-              "1. Setup FastAPI REST routing service imports in main script.",
-              "2. Instantiate application gateway: `app = FastAPI()`.",
-              "3. Build target endpoint routes: `@app.post('/booking')`.",
-              "4. Define router handlers returning booking confirmed variables.",
-              "5. Protect endpoint parameters from path duplicates in server setup.",
-              "6. Format JSON responses matching standard parameters schemas.",
-              "7. Guard active routing rules decorators from compilation bugs.",
-              "8. Standardize path routing definitions on top framework levels.",
-              "9. Compile script check to verify ASGI servers execution.",
-              "10. Click 'Check My Progress' to complete."
+              "Add REST gateway frameworks: from fastapi import FastAPI.",
+              "Instantiate ASGI application pointer: app = FastAPI().",
+              "Bind route mappings decorator targeting: @app.post('/booking').",
+              "Declare routing actions returning response status dictionary.",
+              "Eliminate duplicate pathway configurations from router layers.",
+              "Confirm route endpoints are accessible inside dev parameters.",
+              "Verify uvicorn simulation logs inside system terminal view.",
+              "Write descriptive documentation inside method parameters.",
+              "Test server setups compiling workspace logic.",
+              "Process milestone checking triggers."
             ],
-            codeTemplate: "from fastapi import FastAPI\napp = FastAPI()\n@app.post('/booking')\ndef book():\n    return {'status': 'confirmed'}",
+            codeTemplate: "# Task 8: Initialize FastAPI service application schemas here...\n",
             verify: (code) => code.includes("app.post") && code.includes("booking")
           },
           {
@@ -1189,18 +1204,18 @@
             info: "Session dependencies ensure secure database transactions for reservations.",
             requirements: ["Reference FastAPI dependency parameters: 'Depends'"],
             steps: [
-              "1. Retain FastAPI routing setups on the workspace code.",
-              "2. Declare dependency elements using FastAPI `Depends` imports.",
-              "3. Structure database session parameters mapping routes injects.",
-              "4. Validate route injections processes calling dependency handlers.",
-              "5. Secure operations using transaction session bounds.",
-              "6. Formulate clean session injections comments inside block.",
-              "7. Standardize parameter mappings across dependencies frameworks.",
-              "8. Keep code layout organized with neat functional spacing.",
-              "9. Compile code to see interactive console outcomes.",
-              "10. Click progress checker validation to proceed."
+              "Maintain active FastAPI systems in python workspace.",
+              "Import FastAPI routing injection helper: Depends.",
+              "Structure transactional database sessions provider methods.",
+              "Map route inputs validating injection triggers.",
+              "Structure operational dependency parameters within route decorators.",
+              "Incorporate descriptive comments outlining dependency logic.",
+              "Clean up unused variables from the local block.",
+              "Double-check variables name syntax matches FastAPI rules.",
+              "Compile files and verify console outputs are active.",
+              "Click 'Check My Progress' validation modules."
             ],
-            codeTemplate: "from fastapi import FastAPI, Depends\napp = FastAPI()\n# Setup dependency injections\nprint('Dependencies configured')",
+            codeTemplate: "# Task 9: Setup FastAPI routes dependency injectors...\n",
             verify: (code) => code.includes("Depends")
           },
           {
@@ -1211,25 +1226,35 @@
             info: "Running FastAPI APIs lets external clients inspect telemetry metrics instantly.",
             requirements: ["Setup asynchronous GET router path mapping '@app.get(\"/health\")'"],
             steps: [
-              "1. Retain FastAPI configurations inside workspace files.",
-              "2. Bind server health route decorators: `@app.get('/health')`.",
-              "3. Create dynamic async method return status mappings.",
-              "4. Map parameters representing app wellness cleanly in JSON dict.",
-              "5. Double-check syntax accuracy of endpoint routes naming.",
-              "6. Avoid duplicated routes layouts across active scripts.",
-              "7. Remove unreferenced imports references from local block.",
-              "8. Standardize variables parameters inside response bodies.",
-              "9. Run compilation checks and review server simulation results.",
-              "10. Finalize booking REST system. Click Check My Progress to verify!"
+              "Open API gateway routers setups inside workspace.",
+              "Configure router pathways targeting server healthiness: @app.get('/health').",
+              "Declare asynchronously handled actions mapping wellness metrics dictionary.",
+              "Ensure uvicorn process handles routing loads safely.",
+              "Avoid port conflicts inside ASGI microserver parameters.",
+              "Verify endpoint spelling coordinates match standard APIs conventions.",
+              "Release server configuration properties smoothly on close.",
+              "Include descriptive block documentation for the health endpoint.",
+              "Verify uvicorn simulation logs inside system terminal view.",
+              "Complete final project checks. Congratulations on completing your booking server API!"
             ],
-            codeTemplate: "from fastapi import FastAPI\napp = FastAPI()\n@app.get('/health')\ndef health():\n    return {'health': 'ok'}",
+            codeTemplate: "# Task 10: Setup production async route structures on FastAPI here...\n",
             verify: (code) => code.includes("health") && code.includes("@app.get")
           }
         ]
       }
     };
 
+    // --- STREAMING_CHUNK: Starting React Application UI Component Setup... ---
     function App() {
+      // Light / Warm Theme Toggle (White / Sand Alabaster)
+      const [theme, setTheme] = useState(() => {
+        try {
+          return localStorage.getItem("pv_theme") || "light";
+        } catch (e) {
+          return "light";
+        }
+      });
+
       // Authentication configurations
       const [currentUser, setCurrentUser] = useState(() => {
         try {
@@ -1244,21 +1269,63 @@
       const [loginPassword, setLoginPassword] = useState("");
       const [loginError, setLoginError] = useState("");
 
-      // Course project execution parameters
-      const [activeTaskIdx, setActiveTaskIndex] = useState(0);
-      const [completedTaskIds, setCompletedTaskIds] = useState(() => {
+      // --- STREAMING_CHUNK: Defining and Migrating Cross-User Student Progress Maps... ---
+      // We store student progress inside a global progress map. This resolves the zero progress error on logout or when the Admin logs in.
+      // We automatically migrate legacy single-session pv_completed_tasks parameters to preserve progress without reset.
+      const [studentProgressMap, setStudentProgressMap] = useState(() => {
+        let baselineMap = {
+          "KD001": [],
+          "PJ002": [],
+          "RK003": [],
+          "SP004": [],
+          "KK005": []
+        };
         try {
-          const saved = localStorage.getItem("pv_completed_tasks");
-          return saved ? JSON.parse(saved) : [];
+          const savedMap = localStorage.getItem("pv_students_progress_map");
+          if (savedMap) {
+            return JSON.parse(savedMap);
+          }
+          // If unified map doesn't exist, check for legacy flat array and migrate it safely
+          const legacyTasks = localStorage.getItem("pv_completed_tasks");
+          if (legacyTasks) {
+            const parsedLegacy = JSON.parse(legacyTasks);
+            parsedLegacy.forEach(taskId => {
+              if (taskId.startsWith("kd_")) baselineMap["KD001"].push(taskId);
+              else if (taskId.startsWith("pj_")) baselineMap["PJ002"].push(taskId);
+              else if (taskId.startsWith("rk_")) baselineMap["RK003"].push(taskId);
+              else if (taskId.startsWith("sp_")) baselineMap["SP004"].push(taskId);
+              else if (taskId.startsWith("kk_")) baselineMap["KK005"].push(taskId);
+            });
+            // Persist the migrated result immediately
+            localStorage.setItem("pv_students_progress_map", JSON.stringify(baselineMap));
+          }
         } catch (e) {
-          return [];
+          console.error("Migration error:", e);
         }
+        return baselineMap;
       });
 
-      const [workspaceFiles, setWorkspaceFiles] = useState({
-        "main.py": "",
-        "data.csv": "Names,Scores\nKedar,320\nPranav,310\nRajlakshmi,420\nSamruddhi,450\nKalyani,390\n",
-        "README.md": "# PythonVerse Workspace\nSelect a task from the list on the left to begin coding."
+      // Retrieve completed task IDs of current user
+      const completedTaskIds = useMemo(() => {
+        if (currentUser && currentUser.role === "student") {
+          return studentProgressMap[currentUser.id] || [];
+        }
+        return [];
+      }, [studentProgressMap, currentUser]);
+
+      const [activeTaskIdx, setActiveTaskIndex] = useState(0);
+
+      // --- STREAMING_CHUNK: Initializing workspace virtual workspace files... ---
+      const [workspaceFiles, setWorkspaceFiles] = useState(() => {
+        try {
+          const savedFiles = localStorage.getItem("pv_workspace_files");
+          if (savedFiles) return JSON.parse(savedFiles);
+        } catch (e) {}
+        return {
+          "main.py": "",
+          "data.csv": "Names,Scores\nKedar,320\nPranav,310\nRajlakshmi,420\nSamruddhi,450\nKalyani,390\n",
+          "README.md": "# PythonVerse Workspace\nSelect a task from the list on the left to begin coding."
+        };
       });
       const [activeFile, setActiveFile] = useState("main.py");
       const [terminalLogs, setTerminalLogs] = useState(["Environment ready. Select any task module on the left side directory to initialize code structures!"]);
@@ -1310,21 +1377,22 @@
         }
       }, [activeTaskIdx, activeTask]);
 
-      // Synchronize states
+      // Save states on changes
       useEffect(() => {
         try {
           localStorage.setItem("pv_user", currentUser ? JSON.stringify(currentUser) : "");
-          localStorage.setItem("pv_completed_tasks", JSON.stringify(completedTaskIds));
+          localStorage.setItem("pv_students_progress_map", JSON.stringify(studentProgressMap));
           localStorage.setItem("pv_announcements", JSON.stringify(announcements));
+          localStorage.setItem("pv_workspace_files", JSON.stringify(workspaceFiles));
         } catch (e) {}
-      }, [currentUser, completedTaskIds, announcements]);
+      }, [currentUser, studentProgressMap, announcements, workspaceFiles]);
 
       const triggerToast = (msg, type = "success") => {
         setToast({ msg, type });
         setTimeout(() => setToast(null), 3500);
       };
 
-      // Authentication action handlers
+      // --- STREAMING_CHUNK: Authenticating Users & Loading Student Environments... ---
       const handleLogin = (e) => {
         e.preventDefault();
         const match = USER_ROSTER.find(
@@ -1344,25 +1412,10 @@
 
       const handleLogout = () => {
         setCurrentUser(null);
-        setCompletedTaskIds([]);
         triggerToast("Logged out of session.");
       };
 
-      // Tab indentation handler inside code sandbox
-      const handleTabKey = (e) => {
-        if (e.key === "Tab") {
-          e.preventDefault();
-          const { selectionStart, selectionEnd, value } = e.target;
-          const spaces = "    ";
-          const updated = value.substring(0, selectionStart) + spaces + value.substring(selectionEnd);
-          setWorkspaceFiles(prev => ({ ...prev, [activeFile]: updated }));
-          setTimeout(() => {
-            e.target.selectionStart = e.target.selectionEnd = selectionStart + spaces.length;
-          }, 0);
-        }
-      };
-
-      // Standard run code compiler simulation
+      // --- STREAMING_CHUNK: Running sandboxed compiler simulations... ---
       const handleRunCode = () => {
         const code = workspaceFiles["main.py"] || "";
         setTerminalLogs(prev => [...prev, `\n$ python main.py`]);
@@ -1406,21 +1459,28 @@
         }, 500);
       };
 
-      // "Check My Progress" validator: checks the code against rules
+      // --- STREAMING_CHUNK: Running Check My Progress semantic validator checks... ---
       const handleCheckProgress = () => {
         if (!activeTask) return;
         const code = workspaceFiles["main.py"] || "";
         const validated = activeTask.verify(code);
 
         if (validated) {
-          if (!completedTaskIds.includes(activeTask.id)) {
-            const nextCompleted = [...completedTaskIds, activeTask.id];
-            setCompletedTaskIds(nextCompleted);
+          const currentStudentCompletions = studentProgressMap[currentUser.id] || [];
+          if (!currentStudentCompletions.includes(activeTask.id)) {
+            const nextCompletedList = [...currentStudentCompletions, activeTask.id];
+            
+            // Save inside cross-user global Student Progress Map
+            setStudentProgressMap(prev => ({
+              ...prev,
+              [currentUser.id]: nextCompletedList
+            }));
+
             triggerToast(`🎉 Task Complete: "${activeTask.title}" verified!`, "success");
             setTerminalLogs(prev => [...prev, `\n[SYSTEM]: Successfully verified task: "${activeTask.title}"`]);
 
-            // Update README.md dynamically (no solution code spoiled)
-            const autoReadme = `# ${studentProject.projectName} Portfolio\n\n## Roster Owner\n- **Student Name**: ${studentProject.studentName}\n- **Classroom ID**: ${currentUser.id}\n\n## Tasks Completed Matrix\n${nextCompleted.map((id, index) => {
+            // Update README.md dynamically
+            const autoReadme = `# ${studentProject.projectName} Portfolio\n\n## Roster Owner\n- **Student Name**: ${studentProject.studentName}\n- **Classroom ID**: ${currentUser.id}\n\n## Tasks Completed Matrix\n${nextCompletedList.map((id, index) => {
               const matching = studentProject.tasks.find(t => t.id === id);
               return `- **[x] Task ${index + 1}: ${matching.title}** utilizing *${matching.library}* (Use case: ${matching.useCase})`;
             }).join("\n")}\n\n*Auto-generated on progress checks.*`;
@@ -1438,14 +1498,15 @@
         }
       };
 
-      // Automatically generate a complete README on active request (no solution codes leaked)
+      // --- STREAMING_CHUNK: Generating dynamic clean README.md logs... ---
       const forceAutoReadme = () => {
         if (!studentProject) return;
+        const currentStudentCompletions = studentProgressMap[currentUser.id] || [];
         const total = studentProject.tasks.length;
-        const current = studentProject.tasks.filter(t => completedTaskIds.includes(t.id)).length;
+        const current = currentStudentCompletions.length;
         
         const text = `# ${studentProject.projectName} Portfolio\n\n## Academic Summary\n- **Project Status**: ${current === total ? "COMPLETED" : "IN PROGRESS"}\n- **Tasks Completed**: ${current} / ${total} tasks checked.\n\n## Progressive Project Tasks Map\n${studentProject.tasks.map((t, idx) => {
-          const isDone = completedTaskIds.includes(t.id);
+          const isDone = currentStudentCompletions.includes(t.id);
           return `### Task ${idx + 1}: ${t.title}\n- **Library/Framework**: \`${t.library}\`\n- **Verification Status**: ${isDone ? "✅ VERIFIED" : "⏳ IN PROGRESS"}\n- **Use case**: ${t.useCase}\n`;
         }).join("\n")}\n\n*Auto-generated inside PythonVerse Sandbox.*`;
 
@@ -1454,21 +1515,36 @@
         triggerToast("Custom README.md successfully created inside Workspace!");
       };
 
-      // Simulated project download containing all code assets
-      const handleDownloadProject = () => {
-        let manifest = `========================================================\nPYTHONVERSE PROJECT WORKSPACE ZIP BUNDLE\n========================================================\n\n`;
-        Object.keys(workspaceFiles).forEach(fileName => {
-          manifest += `--- FILE: ${fileName} ---\n${workspaceFiles[fileName]}\n\n`;
-        });
+      // --- STREAMING_CHUNK: Implementing True Multi-File browser ZIP exports... ---
+      // We integrate JSZip to gather and compress all file assets dynamically. No simple single files, downloads a real zip folder.
+      const handleDownloadProjectZip = () => {
+        try {
+          const zip = new JSZip();
+          
+          // Inject all files from student workspace into the ZIP compilation map
+          Object.keys(workspaceFiles).forEach(fileName => {
+            zip.file(fileName, workspaceFiles[fileName]);
+          });
 
-        const blob = new Blob([manifest], { type: "text/plain" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${studentProject ? studentProject.projectName.replace(/\s+/g, '_') : 'python_project'}_workspace.zip.txt`;
-        a.click();
-        URL.revokeObjectURL(url);
-        triggerToast("Downloaded simulated project structure package!");
+          // Generate binary ZIP stream as asynchronous blog data
+          zip.generateAsync({ type: "blob" }).then((contentBlob) => {
+            const url = URL.createObjectURL(contentBlob);
+            const a = document.createElement("a");
+            a.href = url;
+            const formattedProjectName = studentProject ? studentProject.projectName.replace(/\s+/g, '_') : 'python_project';
+            a.download = `${formattedProjectName}_workspace.zip`;
+            a.click();
+            URL.revokeObjectURL(url);
+            triggerToast("Successfully downloaded full compiled project ZIP archive!");
+          }).catch(err => {
+            console.error(err);
+            triggerToast("Failed to compile ZIP archive. Downloading combined manifest fallback.", "error");
+            handleDownloadProject(); // fallback
+          });
+        } catch (error) {
+          console.error(error);
+          handleDownloadProject(); // fallback
+        }
       };
 
       // File system creation handlers
@@ -1518,21 +1594,20 @@
       };
 
       const resetStudentProgress = (id) => {
-        const student = USER_ROSTER.find(s => s.id === id);
-        if (!student) return;
-
-        // Clear completed task IDs matching this student's task templates prefix
-        const prefix = id === "KD001" ? "kd_" : id === "PJ002" ? "pj_" : id === "RK003" ? "rk_" : id === "SP004" ? "sp_" : "kk_";
-        const nextCompleted = completedTaskIds.filter(taskId => !taskId.startsWith(prefix));
-        setCompletedTaskIds(nextCompleted);
-        triggerToast(`Progress for ${student.name} reset successfully!`);
+        // Clear completed task IDs matching this student's ID list
+        setStudentProgressMap(prev => ({
+          ...prev,
+          [id]: []
+        }));
+        triggerToast(`Progress for student ${id} reset successfully!`);
       };
 
       // Verify overall project completeness
       const isAllProjectCompleted = useMemo(() => {
         if (!studentProject) return false;
-        return studentProject.tasks.every(t => completedTaskIds.includes(t.id));
-      }, [studentProject, completedTaskIds]);
+        const currentStudentCompletions = studentProgressMap[currentUser.id] || [];
+        return studentProject.tasks.every(t => currentStudentCompletions.includes(t.id));
+      }, [studentProject, studentProgressMap, currentUser]);
 
       // Render login screen when unauthenticated
       if (!currentUser) {
@@ -1591,11 +1666,11 @@
         );
       }
 
-      // Render Admin interface if role matches
+      // --- STREAMING_CHUNK: Rendering Instructor Administrator Controls... ---
+      // We retrieve each student's progress directly from our unified Student Progress Map
       if (currentUser.role === "admin") {
         const activeAdminStudent = PROJECTS_DATABASE[selectedAdminStudentId];
-        const prefix = selectedAdminStudentId === "KD001" ? "kd_" : selectedAdminStudentId === "PJ002" ? "pj_" : selectedAdminStudentId === "RK003" ? "rk_" : selectedAdminStudentId === "SP004" ? "sp_" : "kk_";
-        const verifiedTasksCount = completedTaskIds.filter(id => id.startsWith(prefix)).length;
+        const studentCompletions = studentProgressMap[selectedAdminStudentId] || [];
 
         return (
           <div className="flex-1 flex flex-col bg-earth-50">
@@ -1630,8 +1705,7 @@
                 <h3 className="font-extrabold text-xs text-earth-500 uppercase tracking-widest">Enrolled Students</h3>
                 <div className="space-y-2">
                   {USER_ROSTER.filter(u => u.role === "student").map(student => {
-                    const studentPrefix = student.id === "KD001" ? "kd_" : student.id === "PJ002" ? "pj_" : student.id === "RK003" ? "rk_" : student.id === "SP004" ? "sp_" : "kk_";
-                    const doneCount = completedTaskIds.filter(id => id.startsWith(studentPrefix)).length;
+                    const studentCompletionsCount = (studentProgressMap[student.id] || []).length;
                     return (
                       <button
                         key={student.id}
@@ -1645,7 +1719,7 @@
                         <div className="flex justify-between items-center mb-1">
                           <span className="font-bold text-sm text-earth-800">{student.name}</span>
                           <span className="text-[10px] bg-white border border-earth-200 px-2 py-0.5 rounded font-bold text-earth-600">
-                            {doneCount} / 10 Tasks
+                            {studentCompletionsCount} / 10 Tasks
                           </span>
                         </div>
                         <div className="text-[10px] text-earth-400">ID: {student.id}</div>
@@ -1679,7 +1753,7 @@
                     {/* Progressive Task Completion Status */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {activeAdminStudent.tasks.map((task, idx) => {
-                        const verified = completedTaskIds.includes(task.id);
+                        const verified = studentCompletions.includes(task.id);
                         return (
                           <div key={task.id} className="p-3.5 bg-earth-50/50 rounded-xl border border-earth-100 space-y-2">
                             <div className="flex justify-between items-center">
@@ -1732,7 +1806,7 @@
         );
       }
 
-      // Render student interface
+      // --- STREAMING_CHUNK: Building Interactive Student Development Workspaces... ---
       return (
         <div className="flex-1 flex flex-col bg-earth-50">
           
@@ -1757,23 +1831,24 @@
                   <div 
                     style={{
                       width: `${
-                        (studentProject ? completedTaskIds.filter(id => studentProject.tasks.some(t => t.id === id)).length / studentProject.tasks.length : 0) * 100
+                        (studentProject ? completedTaskIds.length / studentProject.tasks.length : 0) * 100
                       }%`
                     }}
                     className="bg-earth-600 h-full transition-all duration-300"
                   />
                 </div>
                 <span className="font-bold text-earth-800">
-                  {studentProject ? completedTaskIds.filter(id => studentProject.tasks.some(t => t.id === id)).length : 0} / {studentProject ? studentProject.tasks.length : 10}
+                  {studentProject ? completedTaskIds.length : 0} / {studentProject ? studentProject.tasks.length : 10}
                 </span>
               </div>
 
+              {/* Dynamic ZIP exporter to download all workspace files securely in memory */}
               <button
-                onClick={handleDownloadProject}
+                onClick={handleDownloadProjectZip}
                 className="bg-earth-700 hover:bg-earth-800 text-earth-50 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 shadow-sm"
               >
                 <Icons.Download />
-                <span>Download Project</span>
+                <span>Download Project ZIP</span>
               </button>
 
               <button
@@ -1874,33 +1949,26 @@
                     </div>
 
                     <div className="space-y-2">
-                      <span className="text-[10px] font-extrabold text-earth-400 uppercase tracking-widest">Checklist Criteria</span>
-                      <ul className="list-disc pl-4 space-y-1">
-                        {activeTask.requirements.map((req, i) => (
-                          <li key={i} className="text-xs text-earth-600 leading-relaxed">
-                            {req}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="space-y-2">
-                      <span className="text-[10px] font-extrabold text-earth-400 uppercase tracking-widest font-semibold block">Step-By-Step Interactive Guide (10 Steps)</span>
-                      <div className="bg-earth-100/50 p-3 rounded-xl border border-earth-200/60 space-y-2.5 text-xs text-earth-700 leading-relaxed max-h-72 overflow-y-auto">
+                      <span className="text-[10px] font-extrabold text-earth-400 uppercase tracking-widest font-bold">10 Step-By-Step Implementation Guidelines</span>
+                      <div className="bg-[#fdfbf7] p-3.5 border border-earth-200 rounded-xl space-y-2.5 max-h-72 overflow-y-auto">
                         {activeTask.steps.map((step, idx) => (
-                          <div key={idx} className="flex gap-2">
-                            <span className="text-earth-600 font-bold block min-w-[20px]">{idx + 1}.</span>
-                            <span>{step.substring(3)}</span>
+                          <div key={idx} className="flex items-start text-xs text-earth-700 leading-relaxed">
+                            <span className="font-extrabold text-earth-500 mr-2">{idx + 1}.</span>
+                            <span>{step}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <span className="text-[10px] font-extrabold text-earth-400 uppercase tracking-widest">Syntax Assistant Snippet</span>
-                      <pre className="p-3 bg-earth-100 rounded-lg text-xs monospace text-earth-800 select-all border border-earth-200 whitespace-pre-wrap leading-relaxed">
-                        {activeTask.syntaxGuide}
-                      </pre>
+                      <span className="text-[10px] font-extrabold text-earth-400 uppercase tracking-widest">Checklist Criteria</span>
+                      <ul className="list-disc pl-4 space-y-1">
+                        {activeTask.requirements.map((req, i) => (
+                          <li key={i} className="text-xs text-earth-600 leading-relaxed font-semibold">
+                            {req}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 )}
