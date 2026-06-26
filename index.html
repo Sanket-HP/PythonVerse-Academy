@@ -92,8 +92,7 @@
       { id: "ADMIN001", name: "Administrator", password: "Admin@Python2026", role: "admin" }
     ];
 
-    // --- STREAMING_CHUNK: Initializing Earth Icons configuration maps... ---
-    const Icons = {
+    //    const Icons = {
       BookOpen: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>,
       Code: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>,
       CheckCircle: () => <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
@@ -436,7 +435,7 @@
             library: "SQLite3",
             useCase: "Executing structured insert transactions to log anomalies",
             info: "SQL transactions commit critical security events safely to SQLite databases.",
-            requirements: ["Incorporate SQL 'INSERT' parameters inside execution statement"],
+            requirements: ["Incorporate SQL 'INSERT' into reservation transaction logs"],
             steps: [
               "Open SQLite connector to file database 'alerts.db'.",
               "Prepare standard relational INSERT transactions commands.",
@@ -915,7 +914,7 @@
               "Import image processing context: import cv2.",
               "Formulate placeholder variables representing raw image pixels arrays.",
               "Trigger color spacing transformations calling cv2.cvtColor().",
-              "Pass target space parameter: cv2.COLOR_BGR2GRAY.",
+              "Pass text space parameter: cv2.COLOR_BGR2GRAY.",
               "Log conversion complete metrics safely in console.",
               "Verify cv2 namespaces spelling layouts.",
               "Confirm array dimensions coordinates match OpenCV inputs constraints.",
@@ -1392,11 +1391,16 @@
         setTimeout(() => setToast(null), 3500);
       };
 
-      // --- STREAMING_CHUNK: Authenticating Users & Loading Student Environments... ---
+      // --- STREAMING_CHUNK: Authenticating Users & Loading Student Environments (Case-Insensitive & Trimmed) ---
       const handleLogin = (e) => {
         e.preventDefault();
+        
+        // Trim inputs and convert login ID to upper-case to prevent unexpected case-sensitivity login blocks
+        const targetId = loginId.trim().toUpperCase();
+        const targetPassword = loginPassword.trim();
+
         const match = USER_ROSTER.find(
-          u => u.id.trim() === loginId.trim() && u.password === loginPassword
+          u => u.id.toUpperCase() === targetId && u.password === targetPassword
         );
 
         if (match) {
@@ -1406,7 +1410,7 @@
           setLoginPassword("");
           triggerToast(`Welcome to PythonVerse, ${match.name}!`);
         } else {
-          setLoginError("Invalid predefined ID or password combination.");
+          setLoginError("Invalid predefined ID or password combination. Ensure correct casing and no extra spaces.");
         }
       };
 
